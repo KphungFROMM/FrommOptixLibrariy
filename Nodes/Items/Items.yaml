@@ -565,26 +565,20 @@ Children:
   - Name: LibraryItemVersion
     Type: BaseDataVariableType
     DataType: UInt32
-    Value: 4
+    Value: 6
   - Name: ModernUIGenerator
     Id: g=8a79076bb996474e940356fb9d254cb1
     Supertype: NetLogic
     ReferenceType: HasComponent
     Children:
-    - Name: BehaviourStartPriority
-      Type: BehaviourStartPriorityVariableType
-      DataType: Byte
-      Value: 180
-    - Class: Method
-      Name: ClearAllScreens
     - Class: Method
       Name: CreateBothScreens
     - Class: Method
       Name: CreateOEEDashboard
     - Class: Method
-      Name: RefreshWithModernStyling
+      Name: ClearAllScreens
     - Class: Method
-      Name: CreateCompleteOEESystem
+      Name: RefreshWithModernStyling
     - Class: Method
       Name: CreateConfigurationScreen
     - Class: Method
@@ -594,7 +588,17 @@ Children:
     - Class: Method
       Name: CreateTargetPerformanceScreen
     - Class: Method
+      Name: CreateCompleteOEESystem
+    - Class: Method
+      Name: CreateLiveDashboard
+    - Class: Method
+      Name: TestSystemMonitoring
+    - Class: Method
       Name: ShowAvailableScreens
+    - Name: BehaviourStartPriority
+      Type: BehaviourStartPriorityVariableType
+      DataType: Byte
+      Value: 180
 - Name: OEEWidgetGenerator
   Type: ObjectLibraryItem
   Children:
@@ -605,26 +609,44 @@ Children:
   - Name: LibraryItemVersion
     Type: BaseDataVariableType
     DataType: UInt32
-    Value: 4
+    Value: 5
   - Name: OEEWidgetGenerator
     Id: g=f77edaddec2f02508454fc6f4e0ef059
     Supertype: NetLogic
     ReferenceType: HasComponent
     Children:
-    - Class: Method
-      Name: CreateAllOEEWidgets
-    - Class: Method
-      Name: CreateOEEMetricCard
-    - Class: Method
-      Name: CreateMachineStatusIndicator
-    - Class: Method
-      Name: CreateChartPlaceholder
-    - Class: Method
-      Name: DeleteAllOEEWidgets
     - Name: BehaviourStartPriority
       Type: BehaviourStartPriorityVariableType
       DataType: Byte
       Value: 180
+    - Class: Method
+      Name: CreateAllOEEWidgets
+    - Class: Method
+      Name: CreateChartPlaceholder
+    - Class: Method
+      Name: CreateConfigInputField
+    - Class: Method
+      Name: CreateConfigSection
+    - Class: Method
+      Name: CreateDataField
+    - Class: Method
+      Name: CreateHeaderPanel
+    - Class: Method
+      Name: CreateLiveCounter
+    - Class: Method
+      Name: CreateMachineStatusIndicator
+    - Class: Method
+      Name: CreateOEEMetricCard
+    - Class: Method
+      Name: CreateStatusIndicator
+    - Class: Method
+      Name: CreateTargetComparison
+    - Class: Method
+      Name: CreateTrendDisplay
+    - Class: Method
+      Name: DeleteAllOEEWidgets
+    - Class: Method
+      Name: ShowAvailableWidgets
 - Name: OEEType
   Type: ObjectLibraryItem
   Children:

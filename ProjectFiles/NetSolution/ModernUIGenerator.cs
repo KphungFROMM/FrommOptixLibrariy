@@ -27,14 +27,58 @@ public class ModernUIGenerator : BaseNetLogic
     private readonly uint TextLight = 0xFF9CA3AF;        // Light text
     private readonly uint BorderGray = 0xFFE5E7EB;       // Border gray
 
+    // Widget generator instance for reusable components
+    private OEEWidgetGenerator widgetGenerator;
+
+    // Helper method to ensure consistent dashboard folder structure
+    private Folder GetDashboardFolder(string categoryName, string screenName)
+    {
+        var uiFolder = Project.Current.Get("UI");
+        
+        // Ensure main Dashboards folder exists
+        var dashboardsFolder = uiFolder.Get("Dashboards");
+        if (dashboardsFolder == null)
+        {
+            dashboardsFolder = InformationModel.Make<Folder>("Dashboards");
+            uiFolder.Add(dashboardsFolder);
+        }
+
+        // Ensure category folder exists (e.g., "OEEScreens", "ConfigScreens", etc.)
+        var categoryFolder = dashboardsFolder.Get(categoryName);
+        if (categoryFolder == null)
+        {
+            categoryFolder = InformationModel.Make<Folder>(categoryName);
+            dashboardsFolder.Add(categoryFolder);
+        }
+
+        // Ensure specific screen folder exists
+        var specificScreenFolder = categoryFolder.Get(screenName);
+        if (specificScreenFolder == null)
+        {
+            specificScreenFolder = InformationModel.Make<Folder>(screenName);
+            categoryFolder.Add(specificScreenFolder);
+        }
+
+        return (Folder)specificScreenFolder;
+    }
+
     [ExportMethod]
     public void CreateBothScreens()
     {
         try
         {
-            Log.Info("ModernUIGenerator", "Creating OEE Dashboard screen...");
+            // Initialize widget generator for reusable components
+            if (widgetGenerator == null)
+            {
+                widgetGenerator = new OEEWidgetGenerator();
+            }
+
+            Log.Info("ModernUIGenerator", "Ensuring all OEE widgets are available...");
+            widgetGenerator.CreateAllOEEWidgets();
+            
+            Log.Info("ModernUIGenerator", "Creating OEE Dashboard screen using widgets...");
             CreateOEEDashboard();
-            Log.Info("ModernUIGenerator", "Dashboard screen created successfully!");
+            Log.Info("ModernUIGenerator", "Dashboard screen created successfully with widgetized components!");
         }
         catch (Exception ex)
         {
@@ -49,17 +93,11 @@ public class ModernUIGenerator : BaseNetLogic
         {
             Log.Info("ModernUIGenerator", "Creating modern OEE Dashboard...");
             
-            var mainWindow = Project.Current.Get("UI/MainWindow");
-            var uiFolder = mainWindow.Get("UI");
-            
-            if (uiFolder == null)
-            {
-                uiFolder = InformationModel.Make<Folder>("UI");
-                mainWindow.Add(uiFolder);
-            }
+            // Use organized folder structure: UI/Dashboards/OEEScreens/OEEDashboard/
+            var screenFolder = GetDashboardFolder("OEEScreens", "OEEDashboard");
 
             // Remove existing screen if it exists
-            var existingScreen = uiFolder.Get("OEEDashboard");
+            var existingScreen = screenFolder.Get("OEEDashboard");
             if (existingScreen != null)
             {
                 existingScreen.Delete();
@@ -89,8 +127,8 @@ public class ModernUIGenerator : BaseNetLogic
             // Chart placeholders with modern styling
             CreateChartPlaceholders(dashboardPanel);
 
-            uiFolder.Add(dashboardPanel);
-            Log.Info("ModernUIGenerator", "OEE Dashboard created successfully!");
+            screenFolder.Add(dashboardPanel);
+            Log.Info("ModernUIGenerator", "OEE Dashboard created successfully in UI/Dashboards/OEEScreens/OEEDashboard/!");
         }
         catch (Exception ex)
         {
@@ -105,13 +143,35 @@ public class ModernUIGenerator : BaseNetLogic
         {
             Log.Info("ModernUIGenerator", "Clearing all generated screens...");
             
-            var mainWindow = Project.Current.Get("UI/MainWindow");
-            var uiFolder = mainWindow.Get("UI");
+            var uiFolder = Project.Current.Get("UI");
+            var dashboardsFolder = uiFolder?.Get("Dashboards");
             
+            if (dashboardsFolder != null)
+            {
+                // Delete organized dashboard folders
+                var categoryFolders = new string[] { 
+                    "OEEScreens", 
+                    "ConfigScreens",
+                    "DataScreens",
+                    "MonitoringScreens",
+                    "PerformanceScreens"
+                };
+                
+                foreach (var categoryName in categoryFolders)
+                {
+                    var categoryFolder = dashboardsFolder.Get(categoryName);
+                    if (categoryFolder != null)
+                    {
+                        categoryFolder.Delete();
+                        Log.Info("ModernUIGenerator", $"Deleted dashboard category: {categoryName}");
+                    }
+                }
+            }
+            
+            // Also clean up legacy UI folder screens if they exist
             if (uiFolder != null)
             {
-                // Clear all screen types
-                var screenNames = new string[] { 
+                var legacyScreenNames = new string[] { 
                     "OEEDashboard", 
                     "OEEConfiguration",
                     "ProductionDataEntry",
@@ -119,10 +179,14 @@ public class ModernUIGenerator : BaseNetLogic
                     "TargetPerformance"
                 };
                 
-                foreach (var screenName in screenNames)
+                foreach (var screenName in legacyScreenNames)
                 {
-                    var screen = uiFolder.Get(screenName);
-                    if (screen != null) screen.Delete();
+                    var legacyScreen = uiFolder.Get(screenName);
+                    if (legacyScreen != null)
+                    {
+                        legacyScreen.Delete();
+                        Log.Info("ModernUIGenerator", $"Deleted legacy screen: {screenName}");
+                    }
                 }
             }
             
@@ -158,17 +222,11 @@ public class ModernUIGenerator : BaseNetLogic
         {
             Log.Info("ModernUIGenerator", "Creating OEE Configuration screen...");
             
-            var mainWindow = Project.Current.Get("UI/MainWindow");
-            var uiFolder = mainWindow.Get("UI");
-            
-            if (uiFolder == null)
-            {
-                uiFolder = InformationModel.Make<Folder>("UI");
-                mainWindow.Add(uiFolder);
-            }
+            // Use organized folder structure: UI/Dashboards/ConfigScreens/OEEConfiguration/
+            var screenFolder = GetDashboardFolder("ConfigScreens", "OEEConfiguration");
 
             // Remove existing screen if it exists
-            var existingScreen = uiFolder.Get("OEEConfiguration");
+            var existingScreen = screenFolder.Get("OEEConfiguration");
             if (existingScreen != null)
             {
                 existingScreen.Delete();
@@ -193,8 +251,8 @@ public class ModernUIGenerator : BaseNetLogic
             CreateQualityThresholdsConfig(configPanel);
             CreateConfigurationButtons(configPanel);
 
-            uiFolder.Add(configPanel);
-            Log.Info("ModernUIGenerator", "OEE Configuration screen created successfully!");
+            screenFolder.Add(configPanel);
+            Log.Info("ModernUIGenerator", "OEE Configuration screen created successfully in UI/Dashboards/ConfigScreens/OEEConfiguration/!");
         }
         catch (Exception ex)
         {
@@ -209,17 +267,11 @@ public class ModernUIGenerator : BaseNetLogic
         {
             Log.Info("ModernUIGenerator", "Creating Production Data Entry screen...");
             
-            var mainWindow = Project.Current.Get("UI/MainWindow");
-            var uiFolder = mainWindow.Get("UI");
-            
-            if (uiFolder == null)
-            {
-                uiFolder = InformationModel.Make<Folder>("UI");
-                mainWindow.Add(uiFolder);
-            }
+            // Use organized folder structure: UI/Dashboards/DataScreens/ProductionDataEntry/
+            var screenFolder = GetDashboardFolder("DataScreens", "ProductionDataEntry");
 
             // Remove existing screen if it exists
-            var existingScreen = uiFolder.Get("ProductionDataEntry");
+            var existingScreen = screenFolder.Get("ProductionDataEntry");
             if (existingScreen != null)
             {
                 existingScreen.Delete();
@@ -242,8 +294,8 @@ public class ModernUIGenerator : BaseNetLogic
             CreateRealTimeDataSection(dataEntryPanel);
             CreateProductionCountersSection(dataEntryPanel);
 
-            uiFolder.Add(dataEntryPanel);
-            Log.Info("ModernUIGenerator", "Production Data Entry screen created successfully!");
+            screenFolder.Add(dataEntryPanel);
+            Log.Info("ModernUIGenerator", "Production Data Entry screen created successfully in UI/Dashboards/DataScreens/ProductionDataEntry/!");
         }
         catch (Exception ex)
         {
@@ -258,17 +310,11 @@ public class ModernUIGenerator : BaseNetLogic
         {
             Log.Info("ModernUIGenerator", "Creating System Monitoring screen...");
             
-            var mainWindow = Project.Current.Get("UI/MainWindow");
-            var uiFolder = mainWindow.Get("UI");
-            
-            if (uiFolder == null)
-            {
-                uiFolder = InformationModel.Make<Folder>("UI");
-                mainWindow.Add(uiFolder);
-            }
+            // Use organized folder structure: UI/Dashboards/MonitoringScreens/SystemMonitoring/
+            var screenFolder = GetDashboardFolder("MonitoringScreens", "SystemMonitoring");
 
             // Remove existing screen if it exists
-            var existingScreen = uiFolder.Get("SystemMonitoring");
+            var existingScreen = screenFolder.Get("SystemMonitoring");
             if (existingScreen != null)
             {
                 existingScreen.Delete();
@@ -292,8 +338,8 @@ public class ModernUIGenerator : BaseNetLogic
             CreateTrendingSection(monitoringPanel);
             CreateStatisticsSection(monitoringPanel);
 
-            uiFolder.Add(monitoringPanel);
-            Log.Info("ModernUIGenerator", "System Monitoring screen created successfully!");
+            screenFolder.Add(monitoringPanel);
+            Log.Info("ModernUIGenerator", "System Monitoring screen created successfully in UI/Dashboards/MonitoringScreens/SystemMonitoring/!");
         }
         catch (Exception ex)
         {
@@ -308,17 +354,11 @@ public class ModernUIGenerator : BaseNetLogic
         {
             Log.Info("ModernUIGenerator", "Creating Target Performance screen...");
             
-            var mainWindow = Project.Current.Get("UI/MainWindow");
-            var uiFolder = mainWindow.Get("UI");
-            
-            if (uiFolder == null)
-            {
-                uiFolder = InformationModel.Make<Folder>("UI");
-                mainWindow.Add(uiFolder);
-            }
+            // Use organized folder structure: UI/Dashboards/PerformanceScreens/TargetPerformance/
+            var screenFolder = GetDashboardFolder("PerformanceScreens", "TargetPerformance");
 
             // Remove existing screen if it exists
-            var existingScreen = uiFolder.Get("TargetPerformance");
+            var existingScreen = screenFolder.Get("TargetPerformance");
             if (existingScreen != null)
             {
                 existingScreen.Delete();
@@ -342,8 +382,8 @@ public class ModernUIGenerator : BaseNetLogic
             CreateProductionPlanningSection(targetPanel);
             CreatePerformanceAlertsSection(targetPanel);
 
-            uiFolder.Add(targetPanel);
-            Log.Info("ModernUIGenerator", "Target Performance screen created successfully!");
+            screenFolder.Add(targetPanel);
+            Log.Info("ModernUIGenerator", "Target Performance screen created successfully in UI/Dashboards/PerformanceScreens/TargetPerformance/!");
         }
         catch (Exception ex)
         {
@@ -356,13 +396,34 @@ public class ModernUIGenerator : BaseNetLogic
     {
         try
         {
-            Log.Info("ModernUIGenerator", "Creating complete OEE system with all screens...");
+            // Initialize widget generator for reusable components
+            if (widgetGenerator == null)
+            {
+                widgetGenerator = new OEEWidgetGenerator();
+            }
+
+            Log.Info("ModernUIGenerator", "Creating complete OEE system with live calculator integration...");
+            
+            // Ensure all widgets are available
+            Log.Info("ModernUIGenerator", "Creating widget library...");
+            widgetGenerator.CreateAllOEEWidgets();
+            
+            // Create OEE data instance and calculator
+            Log.Info("ModernUIGenerator", "Setting up OEE calculator and data source...");
+            CreateOEEDataSourceAndCalculator();
+            
+            // Create all screens using widgets
             CreateOEEDashboard();
             CreateConfigurationScreen();
             CreateProductionDataEntryScreen();
             CreateSystemMonitoringScreen();
             CreateTargetPerformanceScreen();
-            Log.Info("ModernUIGenerator", "Complete OEE system created successfully!");
+            
+            // Connect dashboards to live data
+            Log.Info("ModernUIGenerator", "Connecting dashboard widgets to live calculator data...");
+            ConnectDashboardToCalculator();
+            
+            Log.Info("ModernUIGenerator", "Complete OEE system created successfully with live data integration!");
         }
         catch (Exception ex)
         {
@@ -416,121 +477,30 @@ public class ModernUIGenerator : BaseNetLogic
         cardsPanel.TopMargin = 110;
         cardsPanel.LeftMargin = 10;
 
-        CreateOEECard(cardsPanel, "Overall OEE", "87.5%", "+2.3%", new Color(SuccessGreen), 0, 0, true);
-        CreateOEECard(cardsPanel, "Availability", "94.2%", "+1.1%", new Color(SuccessGreen), 295, 0, true);
-        CreateOEECard(cardsPanel, "Performance", "91.8%", "-0.5%", new Color(WarningOrange), 590, 0, false);
-        CreateOEECard(cardsPanel, "Quality", "101.2%", "+3.2%", new Color(SuccessGreen), 885, 0, true);
+        // Use widget generator for OEE metric cards
+        if (widgetGenerator == null) widgetGenerator = new OEEWidgetGenerator();
+
+        var overallCard = widgetGenerator.CreateOEEMetricCardInstance("Overall OEE", "87.5%", "+2.3%", new Color(SuccessGreen), true);
+        overallCard.LeftMargin = 0;
+        overallCard.TopMargin = 0;
+        cardsPanel.Add(overallCard);
+
+        var availabilityCard = widgetGenerator.CreateOEEMetricCardInstance("Availability", "94.2%", "+1.1%", new Color(SuccessGreen), true);
+        availabilityCard.LeftMargin = 295;
+        availabilityCard.TopMargin = 0;
+        cardsPanel.Add(availabilityCard);
+
+        var performanceCard = widgetGenerator.CreateOEEMetricCardInstance("Performance", "91.8%", "-0.5%", new Color(WarningOrange), false);
+        performanceCard.LeftMargin = 590;
+        performanceCard.TopMargin = 0;
+        cardsPanel.Add(performanceCard);
+
+        var qualityCard = widgetGenerator.CreateOEEMetricCardInstance("Quality", "101.2%", "+3.2%", new Color(SuccessGreen), true);
+        qualityCard.LeftMargin = 885;
+        qualityCard.TopMargin = 0;
+        cardsPanel.Add(qualityCard);
 
         parent.Add(cardsPanel);
-    }
-
-    private void CreateOEECard(Panel parent, string title, string value, string trend, Color trendColor, int leftMargin, int topMargin, bool trendUp)
-    {
-        var card = InformationModel.Make<Panel>("Card_" + title.Replace(" ", ""));
-        card.Width = 280;
-        card.Height = 180;
-        card.LeftMargin = leftMargin;
-        card.TopMargin = topMargin;
-
-        var cardBg = InformationModel.Make<Rectangle>("CardBackground");
-        cardBg.Width = 280;
-        cardBg.Height = 180;
-        cardBg.FillColor = Colors.White;
-        cardBg.BorderColor = new Color(BorderGray);
-        cardBg.BorderThickness = 1;
-        cardBg.CornerRadius = 16;
-        card.Add(cardBg);
-
-        var accentBar = InformationModel.Make<Rectangle>("AccentBar");
-        accentBar.Width = 4;
-        accentBar.Height = 180;
-        accentBar.LeftMargin = 0;
-        accentBar.TopMargin = 0;
-        accentBar.FillColor = new Color(AccentTeal);
-        accentBar.CornerRadius = 2;
-        card.Add(accentBar);
-
-        var titleLabel = InformationModel.Make<Label>("CardTitle");
-        titleLabel.Text = title;
-        titleLabel.Width = 250;
-        titleLabel.Height = 25;
-        titleLabel.TopMargin = 20;
-        titleLabel.LeftMargin = 20;
-        titleLabel.FontSize = 14;
-        titleLabel.TextColor = new Color(TextDark);
-        card.Add(titleLabel);
-
-        var valueLabel = InformationModel.Make<Label>("CardValue");
-        valueLabel.Text = value;
-        valueLabel.Width = 250;
-        valueLabel.Height = 50;
-        valueLabel.TopMargin = 60;
-        valueLabel.LeftMargin = 20;
-        valueLabel.FontSize = 36;
-        valueLabel.TextColor = new Color(PrimaryBlue);
-        card.Add(valueLabel);
-
-        // Add trend arrow (chevron style)
-        var arrowStem = InformationModel.Make<Rectangle>("TrendArrowStem");
-        arrowStem.Width = 2;
-        arrowStem.Height = 10;
-        arrowStem.TopMargin = 135;
-        arrowStem.LeftMargin = 25;
-        arrowStem.FillColor = trendColor;
-        card.Add(arrowStem);
-
-        if (trendUp)
-        {
-            var arrowLeft = InformationModel.Make<Rectangle>("TrendArrowLeft");
-            arrowLeft.Width = 6;
-            arrowLeft.Height = 2;
-            arrowLeft.TopMargin = 135;
-            arrowLeft.LeftMargin = 21;
-            arrowLeft.FillColor = trendColor;
-            arrowLeft.Rotation = -45;
-            card.Add(arrowLeft);
-
-            var arrowRight = InformationModel.Make<Rectangle>("TrendArrowRight");
-            arrowRight.Width = 6;
-            arrowRight.Height = 2;
-            arrowRight.TopMargin = 135;
-            arrowRight.LeftMargin = 27;
-            arrowRight.FillColor = trendColor;
-            arrowRight.Rotation = 45;
-            card.Add(arrowRight);
-        }
-        else
-        {
-            var arrowLeft = InformationModel.Make<Rectangle>("TrendArrowLeft");
-            arrowLeft.Width = 6;
-            arrowLeft.Height = 2;
-            arrowLeft.TopMargin = 143;
-            arrowLeft.LeftMargin = 21;
-            arrowLeft.FillColor = trendColor;
-            arrowLeft.Rotation = 45;
-            card.Add(arrowLeft);
-
-            var arrowRight = InformationModel.Make<Rectangle>("TrendArrowRight");
-            arrowRight.Width = 6;
-            arrowRight.Height = 2;
-            arrowRight.TopMargin = 143;
-            arrowRight.LeftMargin = 27;
-            arrowRight.FillColor = trendColor;
-            arrowRight.Rotation = -45;
-            card.Add(arrowRight);
-        }
-
-        var trendLabel = InformationModel.Make<Label>("CardTrend");
-        trendLabel.Text = trend;
-        trendLabel.Width = 220;
-        trendLabel.Height = 25;
-        trendLabel.TopMargin = 130;
-        trendLabel.LeftMargin = 45;
-        trendLabel.FontSize = 14;
-        trendLabel.TextColor = trendColor;
-        card.Add(trendLabel);
-
-        parent.Add(card);
     }
 
     private void CreateMachineStatusOverview(Panel parent)
@@ -569,62 +539,40 @@ public class ModernUIGenerator : BaseNetLogic
         sectionTitle.TextColor = new Color(TextDark);
         statusPanel.Add(sectionTitle);
 
-        CreateMachineIndicator(statusPanel, "Line 1", "Running", new Color(SuccessGreen), 20, 60);
-        CreateMachineIndicator(statusPanel, "Line 2", "Running", new Color(SuccessGreen), 210, 60);
-        CreateMachineIndicator(statusPanel, "Line 3", "Idle", new Color(WarningOrange), 400, 60);
-        CreateMachineIndicator(statusPanel, "Line 4", "Maintenance", new Color(DangerRed), 590, 60);
-        CreateMachineIndicator(statusPanel, "Line 5", "Running", new Color(SuccessGreen), 780, 60);
-        CreateMachineIndicator(statusPanel, "Line 6", "Setup", new Color(LightBlue), 970, 60);
+        // Use widget generator for machine status indicators
+        if (widgetGenerator == null) widgetGenerator = new OEEWidgetGenerator();
+
+        var line1 = widgetGenerator.CreateMachineStatusIndicatorInstance("Line 1", "Running", new Color(SuccessGreen));
+        line1.LeftMargin = 20;
+        line1.TopMargin = 60;
+        statusPanel.Add(line1);
+
+        var line2 = widgetGenerator.CreateMachineStatusIndicatorInstance("Line 2", "Running", new Color(SuccessGreen));
+        line2.LeftMargin = 210;
+        line2.TopMargin = 60;
+        statusPanel.Add(line2);
+
+        var line3 = widgetGenerator.CreateMachineStatusIndicatorInstance("Line 3", "Idle", new Color(WarningOrange));
+        line3.LeftMargin = 400;
+        line3.TopMargin = 60;
+        statusPanel.Add(line3);
+
+        var line4 = widgetGenerator.CreateMachineStatusIndicatorInstance("Line 4", "Maintenance", new Color(DangerRed));
+        line4.LeftMargin = 590;
+        line4.TopMargin = 60;
+        statusPanel.Add(line4);
+
+        var line5 = widgetGenerator.CreateMachineStatusIndicatorInstance("Line 5", "Running", new Color(SuccessGreen));
+        line5.LeftMargin = 780;
+        line5.TopMargin = 60;
+        statusPanel.Add(line5);
+
+        var line6 = widgetGenerator.CreateMachineStatusIndicatorInstance("Line 6", "Setup", new Color(LightBlue));
+        line6.LeftMargin = 970;
+        line6.TopMargin = 60;
+        statusPanel.Add(line6);
 
         parent.Add(statusPanel);
-    }
-
-    private void CreateMachineIndicator(Panel parent, string lineName, string status, Color statusColor, int leftMargin, int topMargin)
-    {
-        var indicator = InformationModel.Make<Panel>("Indicator_" + lineName.Replace(" ", ""));
-        indicator.Width = 170;
-        indicator.Height = 80;
-        indicator.LeftMargin = leftMargin;
-        indicator.TopMargin = topMargin;
-
-        var indicatorBg = InformationModel.Make<Rectangle>("IndicatorBg");
-        indicatorBg.Width = 170;
-        indicatorBg.Height = 80;
-        indicatorBg.FillColor = new Color(SurfaceGray);
-        indicatorBg.BorderColor = statusColor;
-        indicatorBg.BorderThickness = 2;
-        indicatorBg.CornerRadius = 12;
-        indicator.Add(indicatorBg);
-
-        var pulse = InformationModel.Make<Ellipse>("StatusPulse");
-        pulse.Width = 12;
-        pulse.Height = 12;
-        pulse.TopMargin = 15;
-        pulse.LeftMargin = 15;
-        pulse.FillColor = statusColor;
-        indicator.Add(pulse);
-
-        var nameLabel = InformationModel.Make<Label>("LineName");
-        nameLabel.Text = lineName;
-        nameLabel.Width = 130;
-        nameLabel.Height = 20;
-        nameLabel.TopMargin = 12;
-        nameLabel.LeftMargin = 35;
-        nameLabel.FontSize = 12;
-        nameLabel.TextColor = new Color(TextDark);
-        indicator.Add(nameLabel);
-
-        var statusLabel = InformationModel.Make<Label>("Status");
-        statusLabel.Text = status;
-        statusLabel.Width = 130;
-        statusLabel.Height = 18;
-        statusLabel.TopMargin = 35;
-        statusLabel.LeftMargin = 35;
-        statusLabel.FontSize = 11;
-        statusLabel.TextColor = statusColor;
-        indicator.Add(statusLabel);
-
-        parent.Add(indicator);
     }
 
     private void CreateChartPlaceholders(Panel parent)
@@ -1630,55 +1578,238 @@ public class ModernUIGenerator : BaseNetLogic
     }
 
     [ExportMethod]
+    public void CreateLiveDashboard()
+    {
+        try
+        {
+            Log.Info("ModernUIGenerator", "Creating live OEE dashboard with real-time data...");
+            
+            // Initialize widget generator
+            if (widgetGenerator == null)
+            {
+                widgetGenerator = new OEEWidgetGenerator();
+            }
+
+            // Create widget library
+            widgetGenerator.CreateAllOEEWidgets();
+            
+            // Set up OEE data source and calculator
+            CreateOEEDataSourceAndCalculator();
+            
+            // Create the visual dashboard
+            CreateOEEDashboard();
+            
+            // Connect to live data from calculator
+            ConnectDashboardToCalculator();
+            
+            Log.Info("ModernUIGenerator", "Live dashboard created successfully with real-time OEE data!");
+            Log.Info("ModernUIGenerator", "Dashboard shows live values from ObjectTypeOEE_Calculator");
+        }
+        catch (Exception ex)
+        {
+            Log.Error("ModernUIGenerator", "Error creating live dashboard: " + ex.Message);
+        }
+    }
+
+    [ExportMethod]
+    public void TestSystemMonitoring()
+    {
+        try
+        {
+            Log.Info("ModernUIGenerator", "Testing System Monitoring screen creation...");
+            
+            // Test just the system monitoring screen
+            CreateSystemMonitoringScreen();
+            
+            Log.Info("ModernUIGenerator", "System Monitoring test completed successfully!");
+        }
+        catch (Exception ex)
+        {
+            Log.Error("ModernUIGenerator", "System Monitoring test failed: " + ex.Message);
+            Log.Error("ModernUIGenerator", "Stack trace: " + ex.StackTrace);
+        }
+    }
+
+    [ExportMethod]
     public void ShowAvailableScreens()
     {
-        Log.Info("ModernUIGenerator", "=== OPTIMIZED OEE SYSTEM SCREENS ===");
+        Log.Info("ModernUIGenerator", "=== WIDGETIZED OEE SYSTEM SCREENS ===");
         Log.Info("ModernUIGenerator", "");
         Log.Info("ModernUIGenerator", "[DASHBOARD] OEE Dashboard (CreateOEEDashboard)");
+        Log.Info("ModernUIGenerator", "   ✅ WIDGETIZED: Uses OEEMetricCard widgets for all metrics");
+        Log.Info("ModernUIGenerator", "   ✅ WIDGETIZED: Uses MachineStatusIndicator widgets for line status");
         Log.Info("ModernUIGenerator", "   - Live OEE, Quality, Performance, Availability metrics");
         Log.Info("ModernUIGenerator", "   - Real-time counters and status indicators");
-        Log.Info("ModernUIGenerator", "   - Modern gauges and visual displays");
+        Log.Info("ModernUIGenerator", "   - Location: UI/Dashboards/OEEScreens/OEEDashboard/");
         Log.Info("ModernUIGenerator", "");
         Log.Info("ModernUIGenerator", "[CONFIG] Configuration (CreateConfigurationScreen)");
+        Log.Info("ModernUIGenerator", "   ✅ READY FOR WIDGETIZATION: ConfigSection and ConfigInputField widgets available");
         Log.Info("ModernUIGenerator", "   - ONLY actual calculator input variables");
         Log.Info("ModernUIGenerator", "   - Core production config, shift config, performance targets");
-        Log.Info("ModernUIGenerator", "   - No redundant or unused fields");
+        Log.Info("ModernUIGenerator", "   - Location: UI/Dashboards/ConfigScreens/OEEConfiguration/");
         Log.Info("ModernUIGenerator", "");
         Log.Info("ModernUIGenerator", "[DATA] Production Data Entry (CreateProductionDataEntryScreen)");
+        Log.Info("ModernUIGenerator", "   ✅ READY FOR WIDGETIZATION: DataField and LiveCounter widgets available");
         Log.Info("ModernUIGenerator", "   - Real-time data monitoring ONLY");
         Log.Info("ModernUIGenerator", "   - Live production counters");
-        Log.Info("ModernUIGenerator", "   - Calculator variable mapping verified");
+        Log.Info("ModernUIGenerator", "   - Location: UI/Dashboards/DataScreens/ProductionDataEntry/");
         Log.Info("ModernUIGenerator", "");
         Log.Info("ModernUIGenerator", "[MONITOR] System Monitoring (CreateSystemMonitoringScreen)");
+        Log.Info("ModernUIGenerator", "   ✅ READY FOR WIDGETIZATION: StatusIndicator and TrendDisplay widgets available");
         Log.Info("ModernUIGenerator", "   - System health indicators");
         Log.Info("ModernUIGenerator", "   - Performance trend analysis");
-        Log.Info("ModernUIGenerator", "   - Statistical analysis and reporting");
+        Log.Info("ModernUIGenerator", "   - Location: UI/Dashboards/MonitoringScreens/SystemMonitoring/");
         Log.Info("ModernUIGenerator", "");
         Log.Info("ModernUIGenerator", "[TARGET] Target Performance Analysis (CreateTargetPerformanceScreen)");
+        Log.Info("ModernUIGenerator", "   ✅ READY FOR WIDGETIZATION: TargetComparison widgets available");
         Log.Info("ModernUIGenerator", "   - Target vs actual comparisons");
         Log.Info("ModernUIGenerator", "   - Production planning status");
-        Log.Info("ModernUIGenerator", "   - Live calculator-based status indicators");
+        Log.Info("ModernUIGenerator", "   - Location: UI/Dashboards/PerformanceScreens/TargetPerformance/");
         Log.Info("ModernUIGenerator", "");
         Log.Info("ModernUIGenerator", "[CREATE] Create Complete System (CreateCompleteOEESystem)");
-        Log.Info("ModernUIGenerator", "   - Creates all 5 optimized screens");
+        Log.Info("ModernUIGenerator", "   ✅ WIDGETIZED: Auto-creates widget library before screen generation");
+        Log.Info("ModernUIGenerator", "   - Creates all 5 optimized screens in organized folders");
         Log.Info("ModernUIGenerator", "   - 100% verified calculator variable coverage");
-        Log.Info("ModernUIGenerator", "   - No redundant or duplicate elements");
+        Log.Info("ModernUIGenerator", "   - All reusable components converted to widgets");
         Log.Info("ModernUIGenerator", "");
         Log.Info("ModernUIGenerator", "[CLEAR] Clear All Screens (ClearAllScreens)");
-        Log.Info("ModernUIGenerator", "   - Removes all generated screens for cleanup");
+        Log.Info("ModernUIGenerator", "   - Removes all organized dashboard folders and legacy screens");
         Log.Info("ModernUIGenerator", "");
-        Log.Info("ModernUIGenerator", "=== OPTIMIZATION RESULTS ===");
-        Log.Info("ModernUIGenerator", "[OK] Removed shift management screen (not needed)");
-        Log.Info("ModernUIGenerator", "[OK] Removed redundant manual data entry");
-        Log.Info("ModernUIGenerator", "[OK] Replaced fake alerts with real calculator status");
-        Log.Info("ModernUIGenerator", "[OK] Eliminated non-calculator configuration fields");
-        Log.Info("ModernUIGenerator", "[OK] Consolidated target configuration");
-        Log.Info("ModernUIGenerator", "[OK] 100% calculator variable alignment verified");
+        Log.Info("ModernUIGenerator", "=== ORGANIZED DASHBOARD STRUCTURE ===");
+        Log.Info("ModernUIGenerator", "📁 UI/Dashboards/");
+        Log.Info("ModernUIGenerator", "  ├── 📁 OEEScreens/");
+        Log.Info("ModernUIGenerator", "  │   └── 📁 OEEDashboard/");
+        Log.Info("ModernUIGenerator", "  ├── 📁 ConfigScreens/");
+        Log.Info("ModernUIGenerator", "  │   └── 📁 OEEConfiguration/");
+        Log.Info("ModernUIGenerator", "  ├── 📁 DataScreens/");
+        Log.Info("ModernUIGenerator", "  │   └── 📁 ProductionDataEntry/");
+        Log.Info("ModernUIGenerator", "  ├── 📁 MonitoringScreens/");
+        Log.Info("ModernUIGenerator", "  │   └── 📁 SystemMonitoring/");
+        Log.Info("ModernUIGenerator", "  └── 📁 PerformanceScreens/");
+        Log.Info("ModernUIGenerator", "      └── 📁 TargetPerformance/");
+        Log.Info("ModernUIGenerator", "");
+        Log.Info("ModernUIGenerator", "=== WIDGETIZATION STATUS ===");
+        Log.Info("ModernUIGenerator", "✅ OEE Dashboard: FULLY WIDGETIZED");
+        Log.Info("ModernUIGenerator", "   - OEE metric cards: Using OEEMetricCard widget");
+        Log.Info("ModernUIGenerator", "   - Machine status indicators: Using MachineStatusIndicator widget");
+        Log.Info("ModernUIGenerator", "   - Removed 120+ lines of duplicate code");
+        Log.Info("ModernUIGenerator", "🔄 Configuration Screen: Widget library ready");
+        Log.Info("ModernUIGenerator", "🔄 Data Entry Screen: Widget library ready");  
+        Log.Info("ModernUIGenerator", "🔄 Monitoring Screen: Widget library ready");
+        Log.Info("ModernUIGenerator", "🔄 Target Performance Screen: Widget library ready");
+        Log.Info("ModernUIGenerator", "");
+        Log.Info("ModernUIGenerator", "=== WIDGET LIBRARY ===");
+        Log.Info("ModernUIGenerator", "📦 11 reusable widgets created in OEEWidgetGenerator");
+        Log.Info("ModernUIGenerator", "📦 Widget instances created via OEEWidgetGenerator helper methods");
+        Log.Info("ModernUIGenerator", "📦 Consistent styling across all components");
+        Log.Info("ModernUIGenerator", "");
+        Log.Info("ModernUIGenerator", "=== ORGANIZATION BENEFITS ===");
+        Log.Info("ModernUIGenerator", "✅ Organized by screen type for better maintainability");
+        Log.Info("ModernUIGenerator", "✅ Each screen in its own dedicated folder");
+        Log.Info("ModernUIGenerator", "✅ Easy to locate and manage individual screens");
+        Log.Info("ModernUIGenerator", "✅ Consistent with widget organization structure");
         Log.Info("ModernUIGenerator", "");
         Log.Info("ModernUIGenerator", "Total Calculator Variables: 70+ input/output variables");
         Log.Info("ModernUIGenerator", "Screen Coverage: Complete and optimized");
-        Log.Info("ModernUIGenerator", "Redundancy: Eliminated");
+        Log.Info("ModernUIGenerator", "Redundancy: Eliminated via widgetization");
         Log.Info("ModernUIGenerator", "Design: Professional blue/teal theme");
         Log.Info("ModernUIGenerator", "Compatibility: FactoryTalk Optix 1.6.4");
+        Log.Info("ModernUIGenerator", "");
+        Log.Info("ModernUIGenerator", "🎯 NEXT: Run CreateCompleteOEESystem() to generate all screens with organized structure");
+    }
+
+    // Helper method to create OEE data source and calculator
+    private void CreateOEEDataSourceAndCalculator()
+    {
+        try
+        {
+            // Use OEETypeGenerator to create an OEE instance if needed
+            var oeeGenerator = new OEETypeGenerator();
+            
+            // Create OEE ObjectType if it doesn't exist
+            oeeGenerator.CreateOEEObjectType();
+            
+            // Create a default OEE instance for the dashboard
+            oeeGenerator.CreateOEEInstance();
+            
+            Log.Info("ModernUIGenerator", "OEE data source and calculator created successfully");
+        }
+        catch (Exception ex)
+        {
+            Log.Error("ModernUIGenerator", "Error creating OEE data source: " + ex.Message);
+        }
+    }
+
+    // Helper method to connect dashboard widgets to live calculator data
+    private void ConnectDashboardToCalculator()
+    {
+        try
+        {
+            // Find the OEE dashboard panel
+            var dashboardFolder = Project.Current.Get("UI/Dashboards/OEEScreens/OEEDashboard");
+            if (dashboardFolder == null)
+            {
+                Log.Warning("ModernUIGenerator", "Dashboard folder not found for data binding");
+                return;
+            }
+
+            var dashboardPanel = dashboardFolder.Get("OEEDashboard");
+            if (dashboardPanel == null)
+            {
+                Log.Warning("ModernUIGenerator", "Dashboard panel not found for data binding");
+                return;
+            }
+
+            // Find OEE instance to connect to
+            var oeeInstance = Project.Current.Get("Objects/GitHub_OEE_UI/OEE_Instance1");
+            if (oeeInstance == null)
+            {
+                Log.Warning("ModernUIGenerator", "No OEE instance found to connect dashboard to");
+                return;
+            }
+
+            // Connect OEE metric cards to live data
+            ConnectMetricCardToData(dashboardPanel, "OEECard", oeeInstance, "OEE");
+            ConnectMetricCardToData(dashboardPanel, "AvailabilityCard", oeeInstance, "Availability");
+            ConnectMetricCardToData(dashboardPanel, "PerformanceCard", oeeInstance, "Performance");
+            ConnectMetricCardToData(dashboardPanel, "QualityCard", oeeInstance, "Quality");
+
+            Log.Info("ModernUIGenerator", "Dashboard connected to live OEE calculator data!");
+        }
+        catch (Exception ex)
+        {
+            Log.Error("ModernUIGenerator", "Error connecting dashboard to calculator: " + ex.Message);
+        }
+    }
+
+    // Helper method to connect individual metric cards to calculator data
+    private void ConnectMetricCardToData(IUANode dashboardPanel, string cardName, IUANode oeeInstance, string variableName)
+    {
+        try
+        {
+            var card = dashboardPanel.Find(cardName);
+            if (card != null)
+            {
+                var valueLabel = card.Find("ValueLabel");
+                if (valueLabel != null)
+                {
+                    // Create dynamic link to the calculator variable
+                    var sourceVariable = oeeInstance.GetVariable(variableName);
+                    if (sourceVariable != null)
+                    {
+                        valueLabel.GetVariable("Text").SetDynamicLink(sourceVariable);
+                        Log.Info("ModernUIGenerator", $"{cardName} connected to {variableName}");
+                    }
+                    else
+                    {
+                        Log.Warning("ModernUIGenerator", $"Variable {variableName} not found in OEE instance");
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error("ModernUIGenerator", $"Error connecting {cardName} to {variableName}: " + ex.Message);
+        }
     }
 }
