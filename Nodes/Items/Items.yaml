@@ -523,7 +523,7 @@ Children:
   - Name: LibraryItemVersion
     Type: BaseDataVariableType
     DataType: UInt32
-    Value: 4
+    Value: 5
   - Name: ObjectTypeOEE_Calculator
     Id: g=a64a0f2dd0a9bb7568ad5cb27dc23546
     Supertype: NetLogic
