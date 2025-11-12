@@ -1,0 +1,15 @@
+Name: Metrics
+Type: FolderType
+Children:
+- Name: OEE_Overall
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: Availability
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: Performance
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: Quality
+  Type: BaseDataVariableType
+  DataType: Double

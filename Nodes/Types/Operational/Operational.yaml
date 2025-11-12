@@ -1,0 +1,15 @@
+Name: Operational
+Type: FolderType
+Children:
+- Name: TotalOperatingTime
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: ProductionRate
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: EfficiencyRating
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: UtilizationRate
+  Type: BaseDataVariableType
+  DataType: Double
