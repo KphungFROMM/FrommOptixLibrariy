@@ -630,3 +630,33 @@ Children:
       Name: CreateTargetPerformanceScreen
     - Class: Method
       Name: ShowAvailableScreens
+- Name: OEEWidgetGenerator
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "509adea0d5551167704ec108c9380c3a"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Name: OEEWidgetGenerator
+    Id: g=f77edaddec2f02508454fc6f4e0ef059
+    Supertype: NetLogic
+    ReferenceType: HasComponent
+    Children:
+    - Class: Method
+      Name: CreateAllOEEWidgets
+    - Class: Method
+      Name: CreateOEEMetricCard
+    - Class: Method
+      Name: CreateMachineStatusIndicator
+    - Class: Method
+      Name: CreateChartPlaceholder
+    - Class: Method
+      Name: DeleteAllOEEWidgets
+    - Name: BehaviourStartPriority
+      Type: BehaviourStartPriorityVariableType
+      DataType: Byte
+      Value: 180
