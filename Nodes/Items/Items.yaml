@@ -590,3 +590,43 @@ Children:
         ValueRank: OneDimension
         ArrayDimensions: [0]
         Value: [{"TypeId":{"Id":296},"Body":{"Name":"oeeInstanceNodeId","DataType":{"Id":17},"ValueRank":-1,"ArrayDimensions":[],"Description":{"NamespaceIndex":-1,"LocaleId":"","Text":""}}}]
+- Name: ModernUIGenerator
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "5eb09338c33cd113366bed5e8d9c6984"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Name: ModernUIGenerator
+    Id: g=8a79076bb996474e940356fb9d254cb1
+    Supertype: NetLogic
+    ReferenceType: HasComponent
+    Children:
+    - Name: BehaviourStartPriority
+      Type: BehaviourStartPriorityVariableType
+      DataType: Byte
+      Value: 180
+    - Class: Method
+      Name: ClearAllScreens
+    - Class: Method
+      Name: CreateBothScreens
+    - Class: Method
+      Name: CreateOEEDashboard
+    - Class: Method
+      Name: RefreshWithModernStyling
+    - Class: Method
+      Name: CreateCompleteOEESystem
+    - Class: Method
+      Name: CreateConfigurationScreen
+    - Class: Method
+      Name: CreateProductionDataEntryScreen
+    - Class: Method
+      Name: CreateSystemMonitoringScreen
+    - Class: Method
+      Name: CreateTargetPerformanceScreen
+    - Class: Method
+      Name: ShowAvailableScreens
