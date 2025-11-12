@@ -1,27 +1,5 @@
 Name: Types
 Type: FolderType
 Children:
-- Name: OEE1
-  Id: g=aed7f4747c8d4346bcc779f987997c6c
-  Supertype: BaseObjectType
-  Children:
-  - Name: Inputs
-    Type: FolderType
-    Children:
-    - File: Production/Production.yaml
-    - File: Quality/Quality.yaml
-    - File: Performance/Performance.yaml
-    - File: MachineStatus/MachineStatus.yaml
-  - Name: Outputs
-    Type: FolderType
-    Children:
-    - File: Metrics/Metrics.yaml
-    - File: KPIs/KPIs.yaml
-    - File: Operational/Operational.yaml
-    - File: Trends/Trends.yaml
-  - Name: Configuration
-    Type: FolderType
-    Children:
-    - File: Calculation/Calculation.yaml
-    - File: Thresholds/Thresholds.yaml
-    - File: System/System.yaml
+- Class: Reference
+  Target: g=06b34fa69308a8aa3236bfd7579e7dfc

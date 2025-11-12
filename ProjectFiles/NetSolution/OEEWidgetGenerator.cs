@@ -119,14 +119,41 @@ public class OEEWidgetGenerator : BaseNetLogic
             card.Add(valueLabel);
 
             var trendLabel = InformationModel.Make<Label>("CardTrend");
-            trendLabel.Text = "⬆ +0.0%";
-            trendLabel.Width = 250;
+            trendLabel.Text = "+0.0%";
+            trendLabel.Width = 220;
             trendLabel.Height = 25;
             trendLabel.TopMargin = 130;
-            trendLabel.LeftMargin = 20;
+            trendLabel.LeftMargin = 50;
             trendLabel.FontSize = 14;
             trendLabel.TextColor = new Color(SuccessGreen);
             card.Add(trendLabel);
+
+            // Add simple arrow using rectangles (chevron shape)
+            var arrowStem = InformationModel.Make<Rectangle>("ArrowStem");
+            arrowStem.Width = 2;
+            arrowStem.Height = 10;
+            arrowStem.TopMargin = 135;
+            arrowStem.LeftMargin = 30;
+            arrowStem.FillColor = new Color(SuccessGreen);
+            card.Add(arrowStem);
+
+            var arrowLeft = InformationModel.Make<Rectangle>("ArrowLeft");
+            arrowLeft.Width = 6;
+            arrowLeft.Height = 2;
+            arrowLeft.TopMargin = 135;
+            arrowLeft.LeftMargin = 26;
+            arrowLeft.FillColor = new Color(SuccessGreen);
+            arrowLeft.Rotation = -45;
+            card.Add(arrowLeft);
+
+            var arrowRight = InformationModel.Make<Rectangle>("ArrowRight");
+            arrowRight.Width = 6;
+            arrowRight.Height = 2;
+            arrowRight.TopMargin = 135;
+            arrowRight.LeftMargin = 32;
+            arrowRight.FillColor = new Color(SuccessGreen);
+            arrowRight.Rotation = 45;
+            card.Add(arrowRight);
 
             oeeWidgetsFolder.Add(card);
             Log.Info("OEEWidgetGenerator", "OEE Metric Card widget created successfully in UI/Widgets/OEEWidgets!");

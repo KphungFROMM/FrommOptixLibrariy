@@ -386,12 +386,21 @@ public class ModernUIGenerator : BaseNetLogic
         titleBg.CornerRadius = 12;
         titlePanel.Add(titleBg);
 
+        // Add chart icon
+        var chartIcon = InformationModel.Make<Image>("ChartIcon");
+        chartIcon.Width = 20;
+        chartIcon.Height = 20;
+        chartIcon.TopMargin = 25;
+        chartIcon.LeftMargin = 20;
+        chartIcon.Path = new ResourceUri("%APPLICATIONDIR%/Graphics/chart-icon.svg");
+        titlePanel.Add(chartIcon);
+
         var titleLabel = InformationModel.Make<Label>("DashboardTitle");
-        titleLabel.Text = "📊 Manufacturing OEE Dashboard";
+        titleLabel.Text = "Manufacturing OEE Dashboard";
         titleLabel.Width = 600;
         titleLabel.Height = 40;
         titleLabel.TopMargin = 20;
-        titleLabel.LeftMargin = 30;
+        titleLabel.LeftMargin = 50;
         titleLabel.FontSize = 24;
         titleLabel.TextColor = Colors.White;
         titlePanel.Add(titleLabel);
@@ -407,15 +416,15 @@ public class ModernUIGenerator : BaseNetLogic
         cardsPanel.TopMargin = 110;
         cardsPanel.LeftMargin = 10;
 
-        CreateOEECard(cardsPanel, "Overall OEE", "87.5%", "⬆ +2.3%", new Color(SuccessGreen), 0, 0);
-        CreateOEECard(cardsPanel, "Availability", "94.2%", "⬆ +1.1%", new Color(SuccessGreen), 295, 0);
-        CreateOEECard(cardsPanel, "Performance", "91.8%", "⬇ -0.5%", new Color(WarningOrange), 590, 0);
-        CreateOEECard(cardsPanel, "Quality", "101.2%", "⬆ +3.2%", new Color(SuccessGreen), 885, 0);
+        CreateOEECard(cardsPanel, "Overall OEE", "87.5%", "+2.3%", new Color(SuccessGreen), 0, 0, true);
+        CreateOEECard(cardsPanel, "Availability", "94.2%", "+1.1%", new Color(SuccessGreen), 295, 0, true);
+        CreateOEECard(cardsPanel, "Performance", "91.8%", "-0.5%", new Color(WarningOrange), 590, 0, false);
+        CreateOEECard(cardsPanel, "Quality", "101.2%", "+3.2%", new Color(SuccessGreen), 885, 0, true);
 
         parent.Add(cardsPanel);
     }
 
-    private void CreateOEECard(Panel parent, string title, string value, string trend, Color trendColor, int leftMargin, int topMargin)
+    private void CreateOEECard(Panel parent, string title, string value, string trend, Color trendColor, int leftMargin, int topMargin, bool trendUp)
     {
         var card = InformationModel.Make<Panel>("Card_" + title.Replace(" ", ""));
         card.Width = 280;
@@ -461,12 +470,62 @@ public class ModernUIGenerator : BaseNetLogic
         valueLabel.TextColor = new Color(PrimaryBlue);
         card.Add(valueLabel);
 
+        // Add trend arrow (chevron style)
+        var arrowStem = InformationModel.Make<Rectangle>("TrendArrowStem");
+        arrowStem.Width = 2;
+        arrowStem.Height = 10;
+        arrowStem.TopMargin = 135;
+        arrowStem.LeftMargin = 25;
+        arrowStem.FillColor = trendColor;
+        card.Add(arrowStem);
+
+        if (trendUp)
+        {
+            var arrowLeft = InformationModel.Make<Rectangle>("TrendArrowLeft");
+            arrowLeft.Width = 6;
+            arrowLeft.Height = 2;
+            arrowLeft.TopMargin = 135;
+            arrowLeft.LeftMargin = 21;
+            arrowLeft.FillColor = trendColor;
+            arrowLeft.Rotation = -45;
+            card.Add(arrowLeft);
+
+            var arrowRight = InformationModel.Make<Rectangle>("TrendArrowRight");
+            arrowRight.Width = 6;
+            arrowRight.Height = 2;
+            arrowRight.TopMargin = 135;
+            arrowRight.LeftMargin = 27;
+            arrowRight.FillColor = trendColor;
+            arrowRight.Rotation = 45;
+            card.Add(arrowRight);
+        }
+        else
+        {
+            var arrowLeft = InformationModel.Make<Rectangle>("TrendArrowLeft");
+            arrowLeft.Width = 6;
+            arrowLeft.Height = 2;
+            arrowLeft.TopMargin = 143;
+            arrowLeft.LeftMargin = 21;
+            arrowLeft.FillColor = trendColor;
+            arrowLeft.Rotation = 45;
+            card.Add(arrowLeft);
+
+            var arrowRight = InformationModel.Make<Rectangle>("TrendArrowRight");
+            arrowRight.Width = 6;
+            arrowRight.Height = 2;
+            arrowRight.TopMargin = 143;
+            arrowRight.LeftMargin = 27;
+            arrowRight.FillColor = trendColor;
+            arrowRight.Rotation = -45;
+            card.Add(arrowRight);
+        }
+
         var trendLabel = InformationModel.Make<Label>("CardTrend");
         trendLabel.Text = trend;
-        trendLabel.Width = 250;
+        trendLabel.Width = 220;
         trendLabel.Height = 25;
         trendLabel.TopMargin = 130;
-        trendLabel.LeftMargin = 20;
+        trendLabel.LeftMargin = 45;
         trendLabel.FontSize = 14;
         trendLabel.TextColor = trendColor;
         card.Add(trendLabel);
@@ -491,12 +550,21 @@ public class ModernUIGenerator : BaseNetLogic
         statusBg.CornerRadius = 12;
         statusPanel.Add(statusBg);
 
+        // Add factory icon
+        var factoryIcon = InformationModel.Make<Image>("FactoryIcon");
+        factoryIcon.Width = 16;
+        factoryIcon.Height = 16;
+        factoryIcon.TopMargin = 18;
+        factoryIcon.LeftMargin = 20;
+        factoryIcon.Path = new ResourceUri("%APPLICATIONDIR%/Graphics/factory-icon.svg");
+        statusPanel.Add(factoryIcon);
+
         var sectionTitle = InformationModel.Make<Label>("StatusTitle");
-        sectionTitle.Text = "🏭 Production Line Status";
+        sectionTitle.Text = "Production Line Status";
         sectionTitle.Width = 400;
         sectionTitle.Height = 25;
         sectionTitle.TopMargin = 15;
-        sectionTitle.LeftMargin = 20;
+        sectionTitle.LeftMargin = 45;
         sectionTitle.FontSize = 16;
         sectionTitle.TextColor = new Color(TextDark);
         statusPanel.Add(sectionTitle);
@@ -567,15 +635,15 @@ public class ModernUIGenerator : BaseNetLogic
         chartsPanel.TopMargin = 500;
         chartsPanel.LeftMargin = 10;
 
-        CreateChartPlaceholder(chartsPanel, "📈 Production Trend", 0, 0, 580, 280);
-        CreateChartPlaceholder(chartsPanel, "⏰ Downtime Analysis", 600, 0, 580, 280);
+        CreateChartPlaceholder(chartsPanel, "Production Trend", 0, 0, 580, 280, true);
+        CreateChartPlaceholder(chartsPanel, "Downtime Analysis", 600, 0, 580, 280, false);
 
         parent.Add(chartsPanel);
     }
 
-    private void CreateChartPlaceholder(Panel parent, string title, int leftMargin, int topMargin, int width, int height)
+    private void CreateChartPlaceholder(Panel parent, string title, int leftMargin, int topMargin, int width, int height, bool isTrendChart)
     {
-        var chart = InformationModel.Make<Panel>("Chart_" + title.Replace(" ", "").Replace("📈", "").Replace("⏰", ""));
+        var chart = InformationModel.Make<Panel>("Chart_" + title.Replace(" ", ""));
         chart.Width = width;
         chart.Height = height;
         chart.LeftMargin = leftMargin;
@@ -590,12 +658,21 @@ public class ModernUIGenerator : BaseNetLogic
         chartBg.CornerRadius = 12;
         chart.Add(chartBg);
 
+        // Add icon
+        var chartIcon = InformationModel.Make<Image>("ChartIcon");
+        chartIcon.Width = 16;
+        chartIcon.Height = 16;
+        chartIcon.TopMargin = 15;
+        chartIcon.LeftMargin = 20;
+        chartIcon.Path = new ResourceUri(isTrendChart ? "%APPLICATIONDIR%/Graphics/trend-icon.svg" : "%APPLICATIONDIR%/Graphics/clock-icon.svg");
+        chart.Add(chartIcon);
+
         var chartTitle = InformationModel.Make<Label>("ChartTitle");
         chartTitle.Text = title;
-        chartTitle.Width = width - 40;
+        chartTitle.Width = width - 80;
         chartTitle.Height = 25;
         chartTitle.TopMargin = 15;
-        chartTitle.LeftMargin = 20;
+        chartTitle.LeftMargin = 50;
         chartTitle.FontSize = 14;
         chartTitle.TextColor = new Color(TextDark);
         chart.Add(chartTitle);
@@ -619,12 +696,21 @@ public class ModernUIGenerator : BaseNetLogic
         headerBg.CornerRadius = 12;
         headerPanel.Add(headerBg);
 
+        // Add gear icon
+        var gearIcon = InformationModel.Make<Image>("GearIcon");
+        gearIcon.Width = 20;
+        gearIcon.Height = 20;
+        gearIcon.TopMargin = 32;
+        gearIcon.LeftMargin = 30;
+        gearIcon.Path = new ResourceUri("%APPLICATIONDIR%/Graphics/gear-icon.svg");
+        headerPanel.Add(gearIcon);
+
         var titleLabel = InformationModel.Make<Label>("ConfigurationTitle");
-        titleLabel.Text = "⚙️ OEE Configuration Center";
+        titleLabel.Text = "OEE Configuration Center";
         titleLabel.Width = 700;
         titleLabel.Height = 40;
         titleLabel.TopMargin = 20;
-        titleLabel.LeftMargin = 40;
+        titleLabel.LeftMargin = 60;
         titleLabel.FontSize = 28;
         titleLabel.TextColor = Colors.White;
         headerPanel.Add(titleLabel);
@@ -871,12 +957,21 @@ public class ModernUIGenerator : BaseNetLogic
         headerBg.CornerRadius = 12;
         headerPanel.Add(headerBg);
 
+        // Add chart icon
+        var chartIcon = InformationModel.Make<Image>("ChartIcon");
+        chartIcon.Width = 20;
+        chartIcon.Height = 20;
+        chartIcon.TopMargin = 32;
+        chartIcon.LeftMargin = 30;
+        chartIcon.Path = new ResourceUri("%APPLICATIONDIR%/Graphics/chart-icon.svg");
+        headerPanel.Add(chartIcon);
+
         var titleLabel = InformationModel.Make<Label>("ProductionDataTitle");
-        titleLabel.Text = "📊 Production Data Entry & Monitoring";
+        titleLabel.Text = "Production Data Entry & Monitoring";
         titleLabel.Width = 700;
         titleLabel.Height = 40;
         titleLabel.TopMargin = 20;
-        titleLabel.LeftMargin = 40;
+        titleLabel.LeftMargin = 60;
         titleLabel.FontSize = 28;
         titleLabel.TextColor = Colors.White;
         headerPanel.Add(titleLabel);
@@ -886,7 +981,7 @@ public class ModernUIGenerator : BaseNetLogic
         subtitleLabel.Width = 800;
         subtitleLabel.Height = 25;
         subtitleLabel.TopMargin = 65;
-        subtitleLabel.LeftMargin = 40;
+        subtitleLabel.LeftMargin = 60;
         subtitleLabel.FontSize = 14;
         subtitleLabel.TextColor = Colors.White;
         headerPanel.Add(subtitleLabel);
@@ -939,12 +1034,21 @@ public class ModernUIGenerator : BaseNetLogic
         headerBg.CornerRadius = 12;
         headerPanel.Add(headerBg);
 
+        // Add search icon
+        var searchIcon = InformationModel.Make<Image>("SearchIcon");
+        searchIcon.Width = 20;
+        searchIcon.Height = 20;
+        searchIcon.TopMargin = 32;
+        searchIcon.LeftMargin = 30;
+        searchIcon.Path = new ResourceUri("%APPLICATIONDIR%/Graphics/search-icon.svg");
+        headerPanel.Add(searchIcon);
+
         var titleLabel = InformationModel.Make<Label>("SystemMonitoringTitle");
-        titleLabel.Text = "🔍 System Health & Performance Monitoring";
+        titleLabel.Text = "System Health & Performance Monitoring";
         titleLabel.Width = 700;
         titleLabel.Height = 40;
         titleLabel.TopMargin = 20;
-        titleLabel.LeftMargin = 40;
+        titleLabel.LeftMargin = 60;
         titleLabel.FontSize = 28;
         titleLabel.TextColor = Colors.White;
         headerPanel.Add(titleLabel);
@@ -954,7 +1058,7 @@ public class ModernUIGenerator : BaseNetLogic
         subtitleLabel.Width = 800;
         subtitleLabel.Height = 25;
         subtitleLabel.TopMargin = 65;
-        subtitleLabel.LeftMargin = 40;
+        subtitleLabel.LeftMargin = 60;
         subtitleLabel.FontSize = 14;
         subtitleLabel.TextColor = Colors.White;
         headerPanel.Add(subtitleLabel);
@@ -1040,12 +1144,21 @@ public class ModernUIGenerator : BaseNetLogic
         headerBg.CornerRadius = 12;
         headerPanel.Add(headerBg);
 
+        // Add target icon
+        var targetIcon = InformationModel.Make<Image>("TargetIcon");
+        targetIcon.Width = 20;
+        targetIcon.Height = 20;
+        targetIcon.TopMargin = 32;
+        targetIcon.LeftMargin = 30;
+        targetIcon.Path = new ResourceUri("%APPLICATIONDIR%/Graphics/target-icon.svg");
+        headerPanel.Add(targetIcon);
+
         var titleLabel = InformationModel.Make<Label>("TargetPerformanceTitle");
-        titleLabel.Text = "🎯 Target Performance Analysis";
+        titleLabel.Text = "Target Performance Analysis";
         titleLabel.Width = 700;
         titleLabel.Height = 40;
         titleLabel.TopMargin = 20;
-        titleLabel.LeftMargin = 40;
+        titleLabel.LeftMargin = 60;
         titleLabel.FontSize = 28;
         titleLabel.TextColor = Colors.White;
         headerPanel.Add(titleLabel);
@@ -1055,7 +1168,7 @@ public class ModernUIGenerator : BaseNetLogic
         subtitleLabel.Width = 800;
         subtitleLabel.Height = 25;
         subtitleLabel.TopMargin = 65;
-        subtitleLabel.LeftMargin = 40;
+        subtitleLabel.LeftMargin = 60;
         subtitleLabel.FontSize = 14;
         subtitleLabel.TextColor = Colors.White;
         headerPanel.Add(subtitleLabel);
@@ -1401,12 +1514,21 @@ public class ModernUIGenerator : BaseNetLogic
         CreateComparisonMetric(comparisonPanel, "Target:", "85.0%", new Color(TextDark), 10, 75);
         CreateComparisonMetric(comparisonPanel, "Variance:", "+2.5%", new Color(SuccessGreen), 10, 105);
 
+        // Add checkmark icon
+        var checkIcon = InformationModel.Make<Image>("CheckIcon");
+        checkIcon.Width = 16;
+        checkIcon.Height = 16;
+        checkIcon.TopMargin = 138;
+        checkIcon.LeftMargin = 10;
+        checkIcon.Path = new ResourceUri("%APPLICATIONDIR%/Graphics/checkmark-icon.svg");
+        comparisonPanel.Add(checkIcon);
+
         var statusLabel = InformationModel.Make<Label>("Status");
-        statusLabel.Text = "✅ Above Target";
-        statusLabel.Width = 280;
+        statusLabel.Text = "Above Target";
+        statusLabel.Width = 250;
         statusLabel.Height = 20;
         statusLabel.TopMargin = 140;
-        statusLabel.LeftMargin = 10;
+        statusLabel.LeftMargin = 30;
         statusLabel.FontSize = 12;
         statusLabel.TextColor = new Color(SuccessGreen);
         comparisonPanel.Add(statusLabel);
@@ -1512,46 +1634,46 @@ public class ModernUIGenerator : BaseNetLogic
     {
         Log.Info("ModernUIGenerator", "=== OPTIMIZED OEE SYSTEM SCREENS ===");
         Log.Info("ModernUIGenerator", "");
-        Log.Info("ModernUIGenerator", "📊 OEE Dashboard (CreateOEEDashboard)");
+        Log.Info("ModernUIGenerator", "[DASHBOARD] OEE Dashboard (CreateOEEDashboard)");
         Log.Info("ModernUIGenerator", "   - Live OEE, Quality, Performance, Availability metrics");
         Log.Info("ModernUIGenerator", "   - Real-time counters and status indicators");
         Log.Info("ModernUIGenerator", "   - Modern gauges and visual displays");
         Log.Info("ModernUIGenerator", "");
-        Log.Info("ModernUIGenerator", "⚙️ Configuration (CreateConfigurationScreen)");
+        Log.Info("ModernUIGenerator", "[CONFIG] Configuration (CreateConfigurationScreen)");
         Log.Info("ModernUIGenerator", "   - ONLY actual calculator input variables");
         Log.Info("ModernUIGenerator", "   - Core production config, shift config, performance targets");
         Log.Info("ModernUIGenerator", "   - No redundant or unused fields");
         Log.Info("ModernUIGenerator", "");
-        Log.Info("ModernUIGenerator", "📈 Production Data Entry (CreateProductionDataEntryScreen)");
+        Log.Info("ModernUIGenerator", "[DATA] Production Data Entry (CreateProductionDataEntryScreen)");
         Log.Info("ModernUIGenerator", "   - Real-time data monitoring ONLY");
         Log.Info("ModernUIGenerator", "   - Live production counters");
         Log.Info("ModernUIGenerator", "   - Calculator variable mapping verified");
         Log.Info("ModernUIGenerator", "");
-        Log.Info("ModernUIGenerator", "🔍 System Monitoring (CreateSystemMonitoringScreen)");
+        Log.Info("ModernUIGenerator", "[MONITOR] System Monitoring (CreateSystemMonitoringScreen)");
         Log.Info("ModernUIGenerator", "   - System health indicators");
         Log.Info("ModernUIGenerator", "   - Performance trend analysis");
         Log.Info("ModernUIGenerator", "   - Statistical analysis and reporting");
         Log.Info("ModernUIGenerator", "");
-        Log.Info("ModernUIGenerator", "🎯 Target Performance Analysis (CreateTargetPerformanceScreen)");
+        Log.Info("ModernUIGenerator", "[TARGET] Target Performance Analysis (CreateTargetPerformanceScreen)");
         Log.Info("ModernUIGenerator", "   - Target vs actual comparisons");
         Log.Info("ModernUIGenerator", "   - Production planning status");
         Log.Info("ModernUIGenerator", "   - Live calculator-based status indicators");
         Log.Info("ModernUIGenerator", "");
-        Log.Info("ModernUIGenerator", "🚀 Create Complete System (CreateCompleteOEESystem)");
+        Log.Info("ModernUIGenerator", "[CREATE] Create Complete System (CreateCompleteOEESystem)");
         Log.Info("ModernUIGenerator", "   - Creates all 5 optimized screens");
         Log.Info("ModernUIGenerator", "   - 100% verified calculator variable coverage");
         Log.Info("ModernUIGenerator", "   - No redundant or duplicate elements");
         Log.Info("ModernUIGenerator", "");
-        Log.Info("ModernUIGenerator", "🧹 Clear All Screens (ClearAllScreens)");
+        Log.Info("ModernUIGenerator", "[CLEAR] Clear All Screens (ClearAllScreens)");
         Log.Info("ModernUIGenerator", "   - Removes all generated screens for cleanup");
         Log.Info("ModernUIGenerator", "");
         Log.Info("ModernUIGenerator", "=== OPTIMIZATION RESULTS ===");
-        Log.Info("ModernUIGenerator", "✅ Removed shift management screen (not needed)");
-        Log.Info("ModernUIGenerator", "✅ Removed redundant manual data entry");
-        Log.Info("ModernUIGenerator", "✅ Replaced fake alerts with real calculator status");
-        Log.Info("ModernUIGenerator", "✅ Eliminated non-calculator configuration fields");
-        Log.Info("ModernUIGenerator", "✅ Consolidated target configuration");
-        Log.Info("ModernUIGenerator", "✅ 100% calculator variable alignment verified");
+        Log.Info("ModernUIGenerator", "[OK] Removed shift management screen (not needed)");
+        Log.Info("ModernUIGenerator", "[OK] Removed redundant manual data entry");
+        Log.Info("ModernUIGenerator", "[OK] Replaced fake alerts with real calculator status");
+        Log.Info("ModernUIGenerator", "[OK] Eliminated non-calculator configuration fields");
+        Log.Info("ModernUIGenerator", "[OK] Consolidated target configuration");
+        Log.Info("ModernUIGenerator", "[OK] 100% calculator variable alignment verified");
         Log.Info("ModernUIGenerator", "");
         Log.Info("ModernUIGenerator", "Total Calculator Variables: 70+ input/output variables");
         Log.Info("ModernUIGenerator", "Screen Coverage: Complete and optimized");
