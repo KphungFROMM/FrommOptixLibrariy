@@ -1,0 +1,686 @@
+Name: Items
+Type: FolderType
+Children:
+- Name: MachineSimulator
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "8bf1f657f6194bcf4fc6dc227591f5b0"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Name: MachineSimulator
+    Id: g=01bbbfadbb913464b6dc886149180f42
+    Supertype: NetLogic
+    ReferenceType: HasComponent
+    Children:
+    - Name: StartMachine
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: CycleTimeSeconds
+      Type: BaseDataVariableType
+      DataType: Double
+      Value: 1.0
+    - Name: PerformanceRatePct
+      Type: BaseDataVariableType
+      DataType: Double
+      Value: 100.0
+    - Name: QualityPct
+      Type: BaseDataVariableType
+      DataType: Double
+      Value: 90.0
+    - Name: ResetCounters
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: Running
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: GoodPartPulse
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: BadPartPulse
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: TotalGoodCount
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: TotalBadCount
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: TotalCount
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: PartsPerHour
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: LastPartTimestamp
+      Type: BaseDataVariableType
+      DataType: DateTime
+    - Name: ResetDone
+      Type: BaseDataVariableType
+      DataType: Boolean
+- Name: MachineOEE_Counter
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "70d9e5d634f4107b86ba8cd51559a3ec"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Name: MachineOEE_Counter
+    Id: g=c3c04d48d895c34f4c6b1df14531c9b5
+    Supertype: NetLogic
+    ReferenceType: HasComponent
+    Children:
+    - Name: MachineRunningBit
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: GoodPartPulse
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: BadPartPulse
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: ResetCommand
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: GoodPartCount
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: BadPartCount
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: TotalRuntimeSeconds
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: TotalRuntimeFormatted
+      Type: BaseDataVariableType
+      DataType: String
+      Value: "0"
+- Name: ShiftCalculator
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "09030c883ffbd58a847de1b657d1607f"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Name: ShiftCalculator
+    Id: g=b53c2f92cba61a1672d28b5cc613ac32
+    Supertype: NetLogic
+    ReferenceType: HasComponent
+    Children:
+    - Name: NumberOfShifts
+      Type: BaseDataVariableType
+      DataType: Int32
+      Value: 3
+    - Name: HoursPerShift
+      Type: BaseDataVariableType
+      DataType: String
+      Value: "8"
+    - Name: FirstShiftStartTime
+      Type: BaseDataVariableType
+      DataType: String
+      Value: "06:00"
+    - Name: CurrentShift
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: ShiftChangeImminent
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: ShiftChangeOccurred
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: ShiftChangeImminentTransitioned
+      Type: VariableTransitionEventDispatcher
+      Children:
+      - Name: Value
+        Type: BaseVariableType
+        DataType: Double
+        Value: 1.0
+      - Name: Transition
+        Type: BaseVariableType
+        DataType: VariableTransition
+      - Name: VariableNodePath
+        Type: BaseVariableType
+        DataType: NodePath
+        Value: "../ShiftChangeImminent"
+      - Name: VariableTransitionEventHandler1
+        Type: EventHandler
+        Children:
+        - Name: ListenEventType
+          Type: PropertyType
+          DataType: NodeId
+          Value: "/Types/EventTypes/BaseEventType/VariableConditionEvent/VariableTransitionEvent"
+        - Name: MethodsToCall
+          Type: BaseObjectType
+          Children:
+          - Name: MethodContainer1
+            Type: BaseObjectType
+            Children:
+            - Name: ns=2;ObjectPointer
+              Type: NodePointer
+              DataType: NodeId
+              Children:
+              - Name: Kind
+                Type: PropertyType
+                DataType: NodeId
+                Value: "/Types/ObjectTypes/BaseObjectType"
+              - Name: DynamicLink
+                Type: DynamicLink
+                DataType: NodePath
+                Value: "../../../../../../../Loggers/ShiftReport@NodeId"
+                Children:
+                - Name: Mode
+                  Type: BaseVariableType
+                  DataType: DynamicLinkMode
+                  ModellingRule: Optional
+                  Value: 2
+            - Name: ns=2;Method
+              Type: BaseDataVariableType
+              DataType: String
+              Value: "Log"
+        - Name: EventArguments
+          Type: VariableTransitionEvent
+          Children:
+          - Name: VariableNodeId
+            Type: BaseVariableType
+            DataType: NodeId
+          - Name: NewValue
+            Type: BaseVariableType
+            DataType: BaseDataType
+          - Name: OldValue
+            Type: BaseVariableType
+            DataType: BaseDataType
+          - Name: EventId
+            Type: PropertyType
+            DataType: ByteString
+          - Name: EventType
+            Type: PropertyType
+            DataType: NodeId
+          - Name: SourceNode
+            Type: PropertyType
+            DataType: NodeId
+          - Name: SourceName
+            Type: PropertyType
+            DataType: String
+          - Name: Time
+            Type: PropertyType
+            DataType: UtcTime
+          - Name: ReceiveTime
+            Type: PropertyType
+            DataType: UtcTime
+          - Name: Message
+            Type: PropertyType
+            DataType: LocalizedText
+          - Name: Severity
+            Type: PropertyType
+            DataType: UInt16
+- Name: ManufacturingOEE_Calculator
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "a8f55fd69232a9b58a9c6efec7b85a2d"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Name: ManufacturingOEE_Calculator
+    Id: g=7651951ec074e606e6f55e4152a88fbe
+    Supertype: NetLogic
+    ReferenceType: HasComponent
+    Children:
+    - Name: TotalRuntimeSeconds
+      Type: BaseDataVariableType
+      DataType: Double
+      Children:
+      - Name: DynamicLink
+        Type: DynamicLink
+        DataType: NodePath
+        Value: "../../MachineOEE_Counter/TotalRuntimeSeconds"
+        Children:
+        - Name: Mode
+          Type: BaseVariableType
+          DataType: DynamicLinkMode
+          ModellingRule: Optional
+          Value: 2
+    - Name: GoodPartCount
+      Type: BaseDataVariableType
+      DataType: Int32
+      Children:
+      - Name: DynamicLink
+        Type: DynamicLink
+        DataType: NodePath
+        Value: "../../MachineOEE_Counter/GoodPartCount"
+        Children:
+        - Name: Mode
+          Type: BaseVariableType
+          DataType: DynamicLinkMode
+          ModellingRule: Optional
+          Value: 2
+    - Name: BadPartCount
+      Type: BaseDataVariableType
+      DataType: Int32
+      Children:
+      - Name: DynamicLink
+        Type: DynamicLink
+        DataType: NodePath
+        Value: "../../MachineOEE_Counter/BadPartCount"
+        Children:
+        - Name: Mode
+          Type: BaseVariableType
+          DataType: DynamicLinkMode
+          ModellingRule: Optional
+          Value: 2
+    - Name: IdealCycleTimeSeconds
+      Type: BaseDataVariableType
+      DataType: Double
+      Value: 1.0
+    - Name: PlannedProductionTimeHours
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: HoursPerShift
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: NumberOfShifts
+      Type: BaseDataVariableType
+      DataType: Int32
+      Value: 3
+    - Name: ShiftStartTime
+      Type: BaseDataVariableType
+      DataType: String
+    - Name: ProductionTarget
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: QualityTarget
+      Type: BaseDataVariableType
+      DataType: Double
+      Value: 80.0
+    - Name: PerformanceTarget
+      Type: BaseDataVariableType
+      DataType: Double
+      Value: 80.0
+    - Name: AvailabilityTarget
+      Type: BaseDataVariableType
+      DataType: Double
+      Value: 80.0
+    - Name: OEETarget
+      Type: BaseDataVariableType
+      DataType: Double
+      Value: 80.0
+    - Name: LoggingVerbosity
+      Type: BaseDataVariableType
+      DataType: Int32
+      Value: 30
+    - Name: EnableTrending
+      Type: BaseDataVariableType
+      DataType: Boolean
+      Value: true
+    - Name: EnableShiftTracking
+      Type: BaseDataVariableType
+      DataType: Boolean
+      Value: true
+    - Name: EnableProductionPlanning
+      Type: BaseDataVariableType
+      DataType: Boolean
+      Value: true
+    - Name: DataValidationStrict
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: MaxHistorySize
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: TotalCount
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: Quality
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: Performance
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: Availability
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: OEE
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: AvgCycleTime
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: PartsPerHour
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: ExpectedPartCount
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: DowntimeFormatted
+      Type: BaseDataVariableType
+      DataType: String
+      Value: "0"
+    - Name: TotalRuntimeFormatted
+      Type: BaseDataVariableType
+      DataType: String
+      Value: "0"
+    - Name: CurrentShiftNumber
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: ShiftStartTimeOutput
+      Type: BaseDataVariableType
+      DataType: String
+      Value: "0"
+    - Name: ShiftEndTime
+      Type: BaseDataVariableType
+      DataType: String
+      Value: "0"
+    - Name: TimeIntoShift
+      Type: BaseDataVariableType
+      DataType: String
+      Value: "0"
+    - Name: TimeRemainingInShift
+      Type: BaseDataVariableType
+      DataType: String
+      Value: "0"
+    - Name: ProjectedTotalCount
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: RemainingTimeAtCurrentRate
+      Type: BaseDataVariableType
+      DataType: String
+      Value: "0"
+    - Name: ProductionBehindSchedule
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: RequiredRateToTarget
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: TargetVsActualParts
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: LastUpdateTime
+      Type: BaseDataVariableType
+      DataType: String
+      Value: "0"
+    - Name: SystemStatus
+      Type: BaseDataVariableType
+      DataType: String
+      Value: "0"
+    - Name: CalculationValid
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: DataQualityScore
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: QualityTrend
+      Type: BaseDataVariableType
+      DataType: String
+      Value: "0"
+    - Name: PerformanceTrend
+      Type: BaseDataVariableType
+      DataType: String
+      Value: "0"
+    - Name: AvailabilityTrend
+      Type: BaseDataVariableType
+      DataType: String
+      Value: "0"
+    - Name: OEETrend
+      Type: BaseDataVariableType
+      DataType: String
+      Value: "0"
+    - Name: MinQuality
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: MaxQuality
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: AvgQuality
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: MinPerformance
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: MaxPerformance
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: AvgPerformance
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: MinAvailability
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: MaxAvailability
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: AvgAvailability
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: MinOEE
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: MaxOEE
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: AvgOEE
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: QualityVsTarget
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: PerformanceVsTarget
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: AvailabilityVsTarget
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: OEEVsTarget
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: UpdateRateMs
+      Type: BaseDataVariableType
+      DataType: Int32
+      Value: 500
+    - Name: ShiftChangeOccurred
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: ShiftChangeImminent
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: ShiftChangeImminentTransitioned
+      Type: VariableTransitionEventDispatcher
+      Children:
+      - Name: Value
+        Type: BaseVariableType
+        DataType: Double
+        Value: 1.0
+      - Name: Transition
+        Type: BaseVariableType
+        DataType: VariableTransition
+      - Name: VariableNodePath
+        Type: BaseVariableType
+        DataType: NodePath
+        Value: "../ShiftChangeImminent"
+      - Name: VariableTransitionEventHandler1
+        Type: EventHandler
+        Children:
+        - Name: ListenEventType
+          Type: PropertyType
+          DataType: NodeId
+          Value: "/Types/EventTypes/BaseEventType/VariableConditionEvent/VariableTransitionEvent"
+        - Name: MethodsToCall
+          Type: BaseObjectType
+          Children:
+          - Name: MethodContainer1
+            Type: BaseObjectType
+            Children:
+            - Name: ns=2;ObjectPointer
+              Type: NodePointer
+              DataType: NodeId
+              Children:
+              - Name: Kind
+                Type: PropertyType
+                DataType: NodeId
+                Value: "/Types/ObjectTypes/BaseObjectType"
+              - Name: DynamicLink
+                Type: DynamicLink
+                DataType: NodePath
+                Value: "../../../../../../../Loggers/Shift Report@NodeId"
+                Children:
+                - Name: Mode
+                  Type: BaseVariableType
+                  DataType: DynamicLinkMode
+                  ModellingRule: Optional
+                  Value: 2
+            - Name: ns=2;Method
+              Type: BaseDataVariableType
+              DataType: String
+              Value: "Log"
+        - Name: EventArguments
+          Type: VariableTransitionEvent
+          Children:
+          - Name: VariableNodeId
+            Type: BaseVariableType
+            DataType: NodeId
+          - Name: NewValue
+            Type: BaseVariableType
+            DataType: BaseDataType
+          - Name: OldValue
+            Type: BaseVariableType
+            DataType: BaseDataType
+          - Name: EventId
+            Type: PropertyType
+            DataType: ByteString
+          - Name: EventType
+            Type: PropertyType
+            DataType: NodeId
+          - Name: SourceNode
+            Type: PropertyType
+            DataType: NodeId
+          - Name: SourceName
+            Type: PropertyType
+            DataType: String
+          - Name: Time
+            Type: PropertyType
+            DataType: UtcTime
+          - Name: ReceiveTime
+            Type: PropertyType
+            DataType: UtcTime
+          - Name: Message
+            Type: PropertyType
+            DataType: LocalizedText
+          - Name: Severity
+            Type: PropertyType
+            DataType: UInt16
+    - Name: ShiftChangeOccurredTransitioned
+      Type: VariableTransitionEventDispatcher
+      Children:
+      - Name: Value
+        Type: BaseVariableType
+        DataType: Double
+        Value: 1.0
+      - Name: Transition
+        Type: BaseVariableType
+        DataType: VariableTransition
+      - Name: VariableNodePath
+        Type: BaseVariableType
+        DataType: NodePath
+        Value: "../ShiftChangeOccurred"
+      - Name: VariableTransitionEventHandler1
+        Type: EventHandler
+        Children:
+        - Name: ListenEventType
+          Type: PropertyType
+          DataType: NodeId
+          Value: "/Types/EventTypes/BaseEventType/VariableConditionEvent/VariableTransitionEvent"
+        - Name: MethodsToCall
+          Type: BaseObjectType
+          Children:
+          - Name: MethodContainer1
+            Type: BaseObjectType
+            Children:
+            - Name: ns=2;ObjectPointer
+              Type: NodePointer
+              DataType: NodeId
+              Children:
+              - Name: Kind
+                Type: PropertyType
+                DataType: NodeId
+                Value: "/Types/ObjectTypes/BaseObjectType"
+              - Name: DynamicLink
+                Type: DynamicLink
+                DataType: NodePath
+                Value: "../../../../../../../../Commands/VariableCommands@NodeId"
+                Children:
+                - Name: Mode
+                  Type: BaseVariableType
+                  DataType: DynamicLinkMode
+                  ModellingRule: Optional
+                  Value: 2
+            - Name: ns=2;Method
+              Type: BaseDataVariableType
+              DataType: String
+              Value: "Set"
+            - Name: InputArguments
+              Type: BaseObjectType
+              Children:
+              - Name: VariableToModify
+                Type: BaseDataVariableType
+                DataType: VariablePointer
+                Description: {"NamespaceIndex":2,"TextId":"SetVariableToModifyDescription"}
+                Value: {"IdType":2,"Id":"959cc4daccde76beaeaf9d2db4d70ec6","Namespace":4}
+              - Name: Value
+                Type: BaseDataVariableType
+                DataType: Int32
+                Description: {"NamespaceIndex":2,"TextId":"SetValueDescription"}
+                Value: 1
+              - Name: ArrayIndex
+                Type: BaseDataVariableType
+                DataType: UInt32
+                Description: {"NamespaceIndex":2,"TextId":"SetArrayIndexDescription"}
+                ValueRank: ScalarOrOneDimension
+        - Name: EventArguments
+          Type: VariableTransitionEvent
+          Children:
+          - Name: VariableNodeId
+            Type: BaseVariableType
+            DataType: NodeId
+          - Name: NewValue
+            Type: BaseVariableType
+            DataType: BaseDataType
+          - Name: OldValue
+            Type: BaseVariableType
+            DataType: BaseDataType
+          - Name: EventId
+            Type: PropertyType
+            DataType: ByteString
+          - Name: EventType
+            Type: PropertyType
+            DataType: NodeId
+          - Name: SourceNode
+            Type: PropertyType
+            DataType: NodeId
+          - Name: SourceName
+            Type: PropertyType
+            DataType: String
+          - Name: Time
+            Type: PropertyType
+            DataType: UtcTime
+          - Name: ReceiveTime
+            Type: PropertyType
+            DataType: UtcTime
+          - Name: Message
+            Type: PropertyType
+            DataType: LocalizedText
+          - Name: Severity
+            Type: PropertyType
+            DataType: UInt16
