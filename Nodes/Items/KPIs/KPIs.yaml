@@ -1,0 +1,15 @@
+Name: KPIs
+Type: FolderType
+Children:
+- Name: TEEP
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: MTBF
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: MTTR
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: FirstPassYield
+  Type: BaseDataVariableType
+  DataType: Double

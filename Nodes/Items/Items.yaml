@@ -513,3 +513,38 @@ Children:
       Type: BaseDataVariableType
       DataType: Double
       Description: {"LocaleId":"OEE vs target difference","Text":"en-US"}
+- Name: OEEType
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "2c0ff6ead6a4befee1dc391256db7787"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Name: OEEType
+    Id: g=dee3f6d4eaf3d6cb636c2130a82db2af
+    Supertype: BaseObjectType
+    Children:
+    - Name: Inputs
+      Type: FolderType
+      Children:
+      - File: Production/Production.yaml
+      - File: Quality/Quality.yaml
+      - File: Performance/Performance.yaml
+      - File: MachineStatus/MachineStatus.yaml
+    - Name: Outputs
+      Type: FolderType
+      Children:
+      - File: Metrics/Metrics.yaml
+      - File: KPIs/KPIs.yaml
+      - File: Operational/Operational.yaml
+      - File: Trends/Trends.yaml
+    - Name: Configuration
+      Type: FolderType
+      Children:
+      - File: Calculation/Calculation.yaml
+      - File: Thresholds/Thresholds.yaml
+      - File: System/System.yaml

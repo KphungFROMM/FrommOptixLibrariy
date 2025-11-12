@@ -1,0 +1,15 @@
+Name: Quality
+Type: FolderType
+Children:
+- Name: TotalUnitsProduced
+  Type: BaseDataVariableType
+  DataType: Int32
+- Name: GoodUnitsProduced
+  Type: BaseDataVariableType
+  DataType: Int32
+- Name: DefectiveUnits
+  Type: BaseDataVariableType
+  DataType: Int32
+- Name: ReworkUnits
+  Type: BaseDataVariableType
+  DataType: Int32
