@@ -103,128 +103,6 @@ Children:
       Type: BaseDataVariableType
       DataType: String
       Value: "0"
-- Name: ShiftCalculator
-  Type: ObjectLibraryItem
-  Children:
-  - Name: LibraryItemGuid
-    Type: BaseDataVariableType
-    DataType: Guid
-    Value: "09030c883ffbd58a847de1b657d1607f"
-  - Name: LibraryItemVersion
-    Type: BaseDataVariableType
-    DataType: UInt32
-    Value: 1
-  - Name: ShiftCalculator
-    Id: g=b53c2f92cba61a1672d28b5cc613ac32
-    Supertype: NetLogic
-    ReferenceType: HasComponent
-    Children:
-    - Name: NumberOfShifts
-      Type: BaseDataVariableType
-      DataType: Int32
-      Value: 3
-    - Name: HoursPerShift
-      Type: BaseDataVariableType
-      DataType: String
-      Value: "8"
-    - Name: FirstShiftStartTime
-      Type: BaseDataVariableType
-      DataType: String
-      Value: "06:00"
-    - Name: CurrentShift
-      Type: BaseDataVariableType
-      DataType: Int32
-    - Name: ShiftChangeImminent
-      Type: BaseDataVariableType
-      DataType: Boolean
-    - Name: ShiftChangeOccurred
-      Type: BaseDataVariableType
-      DataType: Boolean
-    - Name: ShiftChangeImminentTransitioned
-      Type: VariableTransitionEventDispatcher
-      Children:
-      - Name: Value
-        Type: BaseVariableType
-        DataType: Double
-        Value: 1.0
-      - Name: Transition
-        Type: BaseVariableType
-        DataType: VariableTransition
-      - Name: VariableNodePath
-        Type: BaseVariableType
-        DataType: NodePath
-        Value: "../ShiftChangeImminent"
-      - Name: VariableTransitionEventHandler1
-        Type: EventHandler
-        Children:
-        - Name: ListenEventType
-          Type: PropertyType
-          DataType: NodeId
-          Value: "/Types/EventTypes/BaseEventType/VariableConditionEvent/VariableTransitionEvent"
-        - Name: MethodsToCall
-          Type: BaseObjectType
-          Children:
-          - Name: MethodContainer1
-            Type: BaseObjectType
-            Children:
-            - Name: ns=2;ObjectPointer
-              Type: NodePointer
-              DataType: NodeId
-              Children:
-              - Name: Kind
-                Type: PropertyType
-                DataType: NodeId
-                Value: "/Types/ObjectTypes/BaseObjectType"
-              - Name: DynamicLink
-                Type: DynamicLink
-                DataType: NodePath
-                Value: "../../../../../../../Loggers/ShiftReport@NodeId"
-                Children:
-                - Name: Mode
-                  Type: BaseVariableType
-                  DataType: DynamicLinkMode
-                  ModellingRule: Optional
-                  Value: 2
-            - Name: ns=2;Method
-              Type: BaseDataVariableType
-              DataType: String
-              Value: "Log"
-        - Name: EventArguments
-          Type: VariableTransitionEvent
-          Children:
-          - Name: VariableNodeId
-            Type: BaseVariableType
-            DataType: NodeId
-          - Name: NewValue
-            Type: BaseVariableType
-            DataType: BaseDataType
-          - Name: OldValue
-            Type: BaseVariableType
-            DataType: BaseDataType
-          - Name: EventId
-            Type: PropertyType
-            DataType: ByteString
-          - Name: EventType
-            Type: PropertyType
-            DataType: NodeId
-          - Name: SourceNode
-            Type: PropertyType
-            DataType: NodeId
-          - Name: SourceName
-            Type: PropertyType
-            DataType: String
-          - Name: Time
-            Type: PropertyType
-            DataType: UtcTime
-          - Name: ReceiveTime
-            Type: PropertyType
-            DataType: UtcTime
-          - Name: Message
-            Type: PropertyType
-            DataType: LocalizedText
-          - Name: Severity
-            Type: PropertyType
-            DataType: UInt16
 - Name: ManufacturingOEE_Calculator
   Type: ObjectLibraryItem
   Children:
@@ -555,98 +433,6 @@ Children:
         ValueRank: OneDimension
         ArrayDimensions: [0]
         Value: [{"TypeId":{"Id":296},"Body":{"Name":"oeeInstanceNodeId","DataType":{"Id":17},"ValueRank":-1,"ArrayDimensions":[],"Description":{"NamespaceIndex":-1,"LocaleId":"","Text":""}}}]
-- Name: ModernUIGenerator
-  Type: ObjectLibraryItem
-  Children:
-  - Name: LibraryItemGuid
-    Type: BaseDataVariableType
-    DataType: Guid
-    Value: "5eb09338c33cd113366bed5e8d9c6984"
-  - Name: LibraryItemVersion
-    Type: BaseDataVariableType
-    DataType: UInt32
-    Value: 6
-  - Name: ModernUIGenerator
-    Id: g=8a79076bb996474e940356fb9d254cb1
-    Supertype: NetLogic
-    ReferenceType: HasComponent
-    Children:
-    - Class: Method
-      Name: CreateBothScreens
-    - Class: Method
-      Name: CreateOEEDashboard
-    - Class: Method
-      Name: ClearAllScreens
-    - Class: Method
-      Name: RefreshWithModernStyling
-    - Class: Method
-      Name: CreateConfigurationScreen
-    - Class: Method
-      Name: CreateProductionDataEntryScreen
-    - Class: Method
-      Name: CreateSystemMonitoringScreen
-    - Class: Method
-      Name: CreateTargetPerformanceScreen
-    - Class: Method
-      Name: CreateCompleteOEESystem
-    - Class: Method
-      Name: CreateLiveDashboard
-    - Class: Method
-      Name: TestSystemMonitoring
-    - Class: Method
-      Name: ShowAvailableScreens
-    - Name: BehaviourStartPriority
-      Type: BehaviourStartPriorityVariableType
-      DataType: Byte
-      Value: 180
-- Name: OEEWidgetGenerator
-  Type: ObjectLibraryItem
-  Children:
-  - Name: LibraryItemGuid
-    Type: BaseDataVariableType
-    DataType: Guid
-    Value: "509adea0d5551167704ec108c9380c3a"
-  - Name: LibraryItemVersion
-    Type: BaseDataVariableType
-    DataType: UInt32
-    Value: 5
-  - Name: OEEWidgetGenerator
-    Id: g=f77edaddec2f02508454fc6f4e0ef059
-    Supertype: NetLogic
-    ReferenceType: HasComponent
-    Children:
-    - Name: BehaviourStartPriority
-      Type: BehaviourStartPriorityVariableType
-      DataType: Byte
-      Value: 180
-    - Class: Method
-      Name: CreateAllOEEWidgets
-    - Class: Method
-      Name: CreateChartPlaceholder
-    - Class: Method
-      Name: CreateConfigInputField
-    - Class: Method
-      Name: CreateConfigSection
-    - Class: Method
-      Name: CreateDataField
-    - Class: Method
-      Name: CreateHeaderPanel
-    - Class: Method
-      Name: CreateLiveCounter
-    - Class: Method
-      Name: CreateMachineStatusIndicator
-    - Class: Method
-      Name: CreateOEEMetricCard
-    - Class: Method
-      Name: CreateStatusIndicator
-    - Class: Method
-      Name: CreateTargetComparison
-    - Class: Method
-      Name: CreateTrendDisplay
-    - Class: Method
-      Name: DeleteAllOEEWidgets
-    - Class: Method
-      Name: ShowAvailableWidgets
 - Name: OEEType
   Type: ObjectLibraryItem
   Children:
@@ -875,32 +661,6 @@ Children:
       - Name: SystemHealthy
         Type: BaseDataVariableType
         DataType: Boolean
-- Name: OEETypeGenerator
-  Type: ObjectLibraryItem
-  Children:
-  - Name: LibraryItemGuid
-    Type: BaseDataVariableType
-    DataType: Guid
-    Value: "601147abced002cbe353dfdb1f175f8c"
-  - Name: LibraryItemVersion
-    Type: BaseDataVariableType
-    DataType: UInt32
-    Value: 1
-  - Name: OEETypeGenerator
-    Id: g=1cf09367a485314dd12da4df79fad980
-    Supertype: NetLogic
-    ReferenceType: HasComponent
-    Children:
-    - Class: Method
-      Name: CreateOEEObjectType
-    - Class: Method
-      Name: DeleteOEEObjectType
-    - Class: Method
-      Name: CreateOEEInstance
-    - Name: BehaviourStartPriority
-      Type: BehaviourStartPriorityVariableType
-      DataType: Byte
-      Value: 180
 - Name: OEE_CompleteDashboardBuilder
   Type: ObjectLibraryItem
   Children:
@@ -925,3 +685,39 @@ Children:
       Type: BehaviourStartPriorityVariableType
       DataType: Byte
       Value: 180
+- Name: OEEUIGenerator
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "ce3d97b89ecd7f604400e9599278d5a1"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 2
+  - Name: OEEUIGenerator
+    Id: g=d8386ff01da74630d5807b5be6d22a07
+    Supertype: NetLogic
+    ReferenceType: HasComponent
+    Children:
+    - Class: Method
+      Name: CreateOEEDashboard
+    - Class: Method
+      Name: Method1
+    - Name: BehaviourStartPriority
+      Type: BehaviourStartPriorityVariableType
+      DataType: Byte
+      Value: 180
+    - Class: Method
+      Name: CreateMachineDetailScreen
+    - Class: Method
+      Name: CreateOEEConfigurationScreen
+    - Class: Method
+      Name: CreateOEETrendingScreen
+    - Class: Method
+      Name: CreateReportsAnalyticsScreen
+    - Class: Method
+      Name: VerifyDataLinks
+    - Class: Method
+      Name: CreateOEEWidgetLibrary
