@@ -407,19 +407,6 @@ Children:
     Supertype: NetLogic
     ReferenceType: HasComponent
     Children:
-    - Name: OEEDataSource
-      Type: NodePointer
-      DataType: NodeId
-      Children:
-      - Name: Kind
-        Type: PropertyType
-        DataType: NodeId
-        Value: "/Objects/FrommOptixLibrariy/Items/OEEType/OEEType"
-      - Name: NodeClass
-        Type: PropertyType
-        DataType: NodePointerNodeClass
-        ModellingRule: Optional
-        Value: 1
     - Class: Method
       Name: GetDataSourceInfo
     - Class: Method
@@ -435,6 +422,45 @@ Children:
         Value: [{"TypeId":{"Id":296},"Body":{"Name":"oeeInstanceNodeId","DataType":{"Id":17},"ValueRank":-1,"ArrayDimensions":[],"Description":{"NamespaceIndex":-1,"LocaleId":"","Text":""}}}]
     - Class: Method
       Name: ForceCalculation
+    - Class: Method
+      Name: GetChildLocalNodes
+    - Class: Method
+      Name: DisableVerboseLogging
+    - Class: Method
+      Name: EnableVerboseLogging
+    - Class: Method
+      Name: VerifyScriptWorking
+    - Class: Method
+      Name: DiagnoseLocalVariables
+    - Class: Method
+      Name: EnableDebugLogging
+    - Class: Method
+      Name: TestLocalVariableAccess
+    - Name: OEEDataSource
+      Type: NodePointer
+      DataType: NodeId
+      Value: {"IdType":2,"Id":"8a36cf0657ca4af4e1d8635f65f91052","Namespace":4}
+      Children:
+      - Name: Kind
+        Type: PropertyType
+        DataType: NodeId
+        Value: "/Objects/FrommOptixLibrariy/Items/OEEType/OEEType"
+    - Class: Method
+      Name: CompareWithManufacturingOEE
+    - Class: Method
+      Name: ForceTestWrite
+    - Class: Method
+      Name: GetShiftInfo
+    - Class: Method
+      Name: RebuildPresenceFlags
+    - Class: Method
+      Name: ShowAllOEEParameters
+    - Class: Method
+      Name: VerifyAllOutputs
+    - Class: Method
+      Name: GetSystemStatusInfo
+    - Class: Method
+      Name: SimulateRuntimeChange
 - Name: OEEType
   Type: ObjectLibraryItem
   Children:
