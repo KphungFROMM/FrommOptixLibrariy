@@ -36,6 +36,9 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
     private IUAVariable BadPartCountVar;
     private IUAVariable IdealCycleTimeSecondsVar;
     private IUAVariable PlannedProductionTimeHoursVar;
+    private IUAVariable NumberOfShiftsVar;
+    private IUAVariable ShiftStartTimeVar;
+    private IUAVariable ProductionTargetVar;
     private IUAVariable UpdateRateMsVar;
     private IUAVariable QualityTargetVar;
     private IUAVariable PerformanceTargetVar;
@@ -44,12 +47,29 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
     private IUAVariable LoggingVerbosityVar;
 
     // Output variables - resolved from ObjectType structure
+    private IUAVariable TotalCountVar;
     private IUAVariable QualityVar;
     private IUAVariable PerformanceVar;
     private IUAVariable AvailabilityVar;
     private IUAVariable OEEVar;
+    private IUAVariable AvgCycleTimeVar;
     private IUAVariable PartsPerHourVar;
     private IUAVariable ExpectedPartCountVar;
+    private IUAVariable HoursPerShiftVar; // Moved from input to output
+    private IUAVariable DowntimeFormattedVar;
+    private IUAVariable TotalRuntimeFormattedVar;
+    private IUAVariable CurrentShiftNumberVar;
+    private IUAVariable ShiftStartTimeOutputVar;
+    private IUAVariable ShiftEndTimeVar;
+    private IUAVariable TimeIntoShiftVar;
+    private IUAVariable TimeRemainingInShiftVar;
+    private IUAVariable ShiftChangeOccurredVar;
+    private IUAVariable ShiftChangeImminentVar;
+    private IUAVariable ProjectedTotalCountVar;
+    private IUAVariable RemainingTimeAtCurrentRateVar;
+    private IUAVariable ProductionBehindScheduleVar;
+    private IUAVariable RequiredRateToTargetVar;
+    private IUAVariable TargetVsActualPartsVar;
     private IUAVariable SystemStatusVar;
     private IUAVariable CalculationValidVar;
     private IUAVariable DataQualityScoreVar;
@@ -81,6 +101,15 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
     private IUAVariable AvailabilityVsTargetVar;
     private IUAVariable OEEVsTargetVar;
 
+    // Configuration variables
+    private IUAVariable EnableRealTimeCalcVar;
+    private IUAVariable MinimumRunTimeVar;
+    private IUAVariable GoodOEEThresholdVar;
+    private IUAVariable PoorOEEThresholdVar;
+    private IUAVariable EnableLoggingVar;
+    private IUAVariable EnableAlarmsVar;
+    private IUAVariable SystemHealthyVar;
+
     // Runtime
     private CancellationTokenSource _cts;
     private Task _loopTask;
@@ -111,6 +140,27 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
     private double _performanceTarget = 85.0;
     private double _availabilityTarget = 90.0;
     private double _oeeTarget = 72.7;
+    private int _productionTarget = 1000;
+    private int _numberOfShifts = 3;
+    private string _shiftStartTime = "06:00:00";
+
+    // Shift tracking
+    private DateTime _lastShiftCalculation = DateTime.MinValue;
+    private int _currentShiftNumber = 1;
+    private DateTime _currentShiftStart = DateTime.Today.AddHours(6);
+    private DateTime _currentShiftEnd = DateTime.Today.AddHours(14);
+    private bool _shiftChangeOccurred = false;
+    private bool _shiftChangeImminent = false;
+    private double _calculatedHoursPerShift = 8.0;
+
+    // Configuration
+    private bool _enableRealTimeCalc = true;
+    private double _minimumRunTime = 60.0;
+    private double _goodOEEThreshold = 80.0;
+    private double _poorOEEThreshold = 60.0;
+    private bool _enableLogging = true;
+    private bool _enableAlarms = true;
+    private bool _systemHealthy = true;
 
     // Settings
     private int _updateRateMs = 1000;
@@ -219,79 +269,86 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
         // Map ObjectType structure to calculator variables
         
         // Input mappings with fallbacks for different naming conventions
-        TotalRuntimeSecondsVar = GetVariableFromPath("Inputs/Production/ActualProductionTime") ?? 
-                               GetVariableFromPath("Inputs/Production/PlannedProductionTime") ??
-                               GetVariableFromPath("TotalRuntimeSeconds");
-                               
-        GoodPartCountVar = GetVariableFromPath("Inputs/Quality/GoodUnitsProduced") ?? 
-                          GetVariableFromPath("GoodPartCount");
-                          
-        BadPartCountVar = GetVariableFromPath("Inputs/Quality/DefectiveUnits") ?? 
-                         GetVariableFromPath("BadPartCount");
-                         
-        IdealCycleTimeSecondsVar = GetVariableFromPath("Inputs/Performance/IdealCycleTime") ?? 
-                                  GetVariableFromPath("IdealCycleTimeSeconds");
-                                  
-        PlannedProductionTimeHoursVar = GetVariableFromPath("Inputs/Production/PlannedProductionTime") ?? 
-                                       GetVariableFromPath("PlannedProductionTimeHours");
+        TotalRuntimeSecondsVar = GetVariableFromPath("Inputs/TotalRuntimeSeconds");
+        GoodPartCountVar = GetVariableFromPath("Inputs/GoodPartCount");
+        BadPartCountVar = GetVariableFromPath("Inputs/BadPartCount");
+        IdealCycleTimeSecondsVar = GetVariableFromPath("Inputs/IdealCycleTimeSeconds");
+        PlannedProductionTimeHoursVar = GetVariableFromPath("Inputs/PlannedProductionTimeHours");
+        NumberOfShiftsVar = GetVariableFromPath("Inputs/NumberOfShifts");
+        ShiftStartTimeVar = GetVariableFromPath("Inputs/ShiftStartTime");
+        ProductionTargetVar = GetVariableFromPath("Inputs/ProductionTarget");
 
         // Configuration mappings
-        UpdateRateMsVar = GetVariableFromPath("Configuration/Calculation/CalculationInterval") ?? 
-                         GetVariableFromPath("Configuration/UpdateRateMs");
-                         
-        QualityTargetVar = GetVariableFromPath("Configuration/Thresholds/TargetOEE") ?? 
-                          GetVariableFromPath("QualityTarget");
-                          
-        PerformanceTargetVar = GetVariableFromPath("Configuration/Thresholds/PerformanceTarget") ?? 
-                              GetVariableFromPath("PerformanceTarget");
-                              
-        AvailabilityTargetVar = GetVariableFromPath("Configuration/Thresholds/AvailabilityTarget") ?? 
-                               GetVariableFromPath("AvailabilityTarget");
-                               
-        OEETargetVar = GetVariableFromPath("Configuration/Thresholds/TargetOEE") ?? 
-                      GetVariableFromPath("OEETarget");
-                      
-        LoggingVerbosityVar = GetVariableFromPath("Configuration/System/LoggingVerbosity") ?? 
-                             GetVariableFromPath("LoggingVerbosity");
+        UpdateRateMsVar = GetVariableFromPath("Inputs/UpdateRateMs");
+        QualityTargetVar = GetVariableFromPath("Inputs/QualityTarget");
+        PerformanceTargetVar = GetVariableFromPath("Inputs/PerformanceTarget");
+        AvailabilityTargetVar = GetVariableFromPath("Inputs/AvailabilityTarget");
+        OEETargetVar = GetVariableFromPath("Inputs/OEETarget");
+        LoggingVerbosityVar = GetVariableFromPath("Inputs/LoggingVerbosity");
+        
+        // Configuration folder mappings
+        EnableRealTimeCalcVar = GetVariableFromPath("Configuration/EnableRealTimeCalc");
+        MinimumRunTimeVar = GetVariableFromPath("Configuration/MinimumRunTime");
+        GoodOEEThresholdVar = GetVariableFromPath("Configuration/GoodOEE_Threshold");
+        PoorOEEThresholdVar = GetVariableFromPath("Configuration/PoorOEE_Threshold");
+        EnableLoggingVar = GetVariableFromPath("Configuration/EnableLogging");
+        EnableAlarmsVar = GetVariableFromPath("Configuration/EnableAlarms");
+        SystemHealthyVar = GetVariableFromPath("Configuration/SystemHealthy");
 
         // Output mappings
-        QualityVar = GetVariableFromPath("Outputs/Metrics/Quality");
-        PerformanceVar = GetVariableFromPath("Outputs/Metrics/Performance");
-        AvailabilityVar = GetVariableFromPath("Outputs/Metrics/Availability");
-        OEEVar = GetVariableFromPath("Outputs/Metrics/OEE_Overall");
-        PartsPerHourVar = GetVariableFromPath("Outputs/Operational/ProductionRate");
+        TotalCountVar = GetVariableFromPath("Outputs/TotalCount");
+        QualityVar = GetVariableFromPath("Outputs/Quality");
+        PerformanceVar = GetVariableFromPath("Outputs/Performance");
+        AvailabilityVar = GetVariableFromPath("Outputs/Availability");
+        OEEVar = GetVariableFromPath("Outputs/OEE");
+        AvgCycleTimeVar = GetVariableFromPath("Outputs/AvgCycleTime");
+        PartsPerHourVar = GetVariableFromPath("Outputs/PartsPerHour");
         ExpectedPartCountVar = GetVariableFromPath("Outputs/ExpectedPartCount");
-        SystemStatusVar = GetVariableFromPath("Configuration/System/SystemHealthy") ?? 
-                         GetVariableFromPath("Outputs/SystemStatus");
+        HoursPerShiftVar = GetVariableFromPath("Outputs/HoursPerShift"); // Now an output
+        DowntimeFormattedVar = GetVariableFromPath("Outputs/DowntimeFormatted");
+        TotalRuntimeFormattedVar = GetVariableFromPath("Outputs/TotalRuntimeFormatted");
+        CurrentShiftNumberVar = GetVariableFromPath("Outputs/CurrentShiftNumber");
+        ShiftStartTimeOutputVar = GetVariableFromPath("Outputs/ShiftStartTimeOutput");
+        ShiftEndTimeVar = GetVariableFromPath("Outputs/ShiftEndTime");
+        TimeIntoShiftVar = GetVariableFromPath("Outputs/TimeIntoShift");
+        TimeRemainingInShiftVar = GetVariableFromPath("Outputs/TimeRemainingInShift");
+        ShiftChangeOccurredVar = GetVariableFromPath("Outputs/ShiftChangeOccurred");
+        ShiftChangeImminentVar = GetVariableFromPath("Outputs/ShiftChangeImminent");
+        ProjectedTotalCountVar = GetVariableFromPath("Outputs/ProjectedTotalCount");
+        RemainingTimeAtCurrentRateVar = GetVariableFromPath("Outputs/RemainingTimeAtCurrentRate");
+        ProductionBehindScheduleVar = GetVariableFromPath("Outputs/ProductionBehindSchedule");
+        RequiredRateToTargetVar = GetVariableFromPath("Outputs/RequiredRateToTarget");
+        TargetVsActualPartsVar = GetVariableFromPath("Outputs/TargetVsActualParts");
+        SystemStatusVar = GetVariableFromPath("Outputs/SystemStatus");
         CalculationValidVar = GetVariableFromPath("Outputs/CalculationValid");
         DataQualityScoreVar = GetVariableFromPath("Outputs/DataQualityScore");
         LastUpdateTimeVar = GetVariableFromPath("Outputs/LastUpdateTime");
 
         // Trending variables
-        QualityTrendVar = GetVariableFromPath("Outputs/Trends/QualityTrend");
-        PerformanceTrendVar = GetVariableFromPath("Outputs/Trends/PerformanceTrend");
-        AvailabilityTrendVar = GetVariableFromPath("Outputs/Trends/AvailabilityTrend");
-        OEETrendVar = GetVariableFromPath("Outputs/Trends/OEETrend");
+        QualityTrendVar = GetVariableFromPath("Outputs/QualityTrend");
+        PerformanceTrendVar = GetVariableFromPath("Outputs/PerformanceTrend");
+        AvailabilityTrendVar = GetVariableFromPath("Outputs/AvailabilityTrend");
+        OEETrendVar = GetVariableFromPath("Outputs/OEETrend");
 
         // Statistics variables
-        MinQualityVar = GetVariableFromPath("Outputs/Statistics/MinQuality");
-        MaxQualityVar = GetVariableFromPath("Outputs/Statistics/MaxQuality");
-        AvgQualityVar = GetVariableFromPath("Outputs/Statistics/AvgQuality");
-        MinPerformanceVar = GetVariableFromPath("Outputs/Statistics/MinPerformance");
-        MaxPerformanceVar = GetVariableFromPath("Outputs/Statistics/MaxPerformance");
-        AvgPerformanceVar = GetVariableFromPath("Outputs/Statistics/AvgPerformance");
-        MinAvailabilityVar = GetVariableFromPath("Outputs/Statistics/MinAvailability");
-        MaxAvailabilityVar = GetVariableFromPath("Outputs/Statistics/MaxAvailability");
-        AvgAvailabilityVar = GetVariableFromPath("Outputs/Statistics/AvgAvailability");
-        MinOEEVar = GetVariableFromPath("Outputs/Statistics/MinOEE");
-        MaxOEEVar = GetVariableFromPath("Outputs/Statistics/MaxOEE");
-        AvgOEEVar = GetVariableFromPath("Outputs/Statistics/AvgOEE");
+        MinQualityVar = GetVariableFromPath("Outputs/MinQuality");
+        MaxQualityVar = GetVariableFromPath("Outputs/MaxQuality");
+        AvgQualityVar = GetVariableFromPath("Outputs/AvgQuality");
+        MinPerformanceVar = GetVariableFromPath("Outputs/MinPerformance");
+        MaxPerformanceVar = GetVariableFromPath("Outputs/MaxPerformance");
+        AvgPerformanceVar = GetVariableFromPath("Outputs/AvgPerformance");
+        MinAvailabilityVar = GetVariableFromPath("Outputs/MinAvailability");
+        MaxAvailabilityVar = GetVariableFromPath("Outputs/MaxAvailability");
+        AvgAvailabilityVar = GetVariableFromPath("Outputs/AvgAvailability");
+        MinOEEVar = GetVariableFromPath("Outputs/MinOEE");
+        MaxOEEVar = GetVariableFromPath("Outputs/MaxOEE");
+        AvgOEEVar = GetVariableFromPath("Outputs/AvgOEE");
 
         // Target comparison variables
-        QualityVsTargetVar = GetVariableFromPath("Outputs/Comparisons/QualityVsTarget");
-        PerformanceVsTargetVar = GetVariableFromPath("Outputs/Comparisons/PerformanceVsTarget");
-        AvailabilityVsTargetVar = GetVariableFromPath("Outputs/Comparisons/AvailabilityVsTarget");
-        OEEVsTargetVar = GetVariableFromPath("Outputs/Comparisons/OEEVsTarget");
+        QualityVsTargetVar = GetVariableFromPath("Outputs/QualityVsTarget");
+        PerformanceVsTargetVar = GetVariableFromPath("Outputs/PerformanceVsTarget");
+        AvailabilityVsTargetVar = GetVariableFromPath("Outputs/AvailabilityVsTarget");
+        OEEVsTargetVar = GetVariableFromPath("Outputs/OEEVsTarget");
 
         int foundVars = CountNonNullVariables();
         LogInfo($"Initialized {foundVars} variables from ObjectType structure");
@@ -323,8 +380,10 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
         var allVars = new IUAVariable[] 
         {
             TotalRuntimeSecondsVar, GoodPartCountVar, BadPartCountVar, IdealCycleTimeSecondsVar,
-            PlannedProductionTimeHoursVar, QualityVar, PerformanceVar, AvailabilityVar,
-            OEEVar, PartsPerHourVar, SystemStatusVar, CalculationValidVar, DataQualityScoreVar
+            PlannedProductionTimeHoursVar, NumberOfShiftsVar, ShiftStartTimeVar, ProductionTargetVar,
+            TotalCountVar, QualityVar, PerformanceVar, AvailabilityVar, OEEVar, AvgCycleTimeVar,
+            PartsPerHourVar, SystemStatusVar, CalculationValidVar, DataQualityScoreVar,
+            HoursPerShiftVar, CurrentShiftNumberVar, ShiftChangeOccurredVar
         };
         
         return allVars.Count(v => v != null);
@@ -386,6 +445,23 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
         }
     }
 
+    [ExportMethod]
+    public void ForceCalculation()
+    {
+        try
+        {
+            LogInfo("Manual calculation triggered...");
+            var calculations = PerformCalculations();
+            UpdateTrendingData(calculations);
+            WriteAllOutputs(calculations);
+            LogInfo($"Manual calculation completed. OEE: {calculations.OEE:F2}%");
+        }
+        catch (Exception ex)
+        {
+            LogError($"Error in manual calculation: {ex.Message}");
+        }
+    }
+
     private void LogVariableStatus(string name, IUAVariable var)
     {
         if (var != null)
@@ -403,13 +479,32 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
     {
         var allOutputVars = new IUAVariable[]
         {
-            QualityVar, PerformanceVar, AvailabilityVar, OEEVar, PartsPerHourVar,
+            // Core outputs
+            TotalCountVar, QualityVar, PerformanceVar, AvailabilityVar, OEEVar, 
+            AvgCycleTimeVar, PartsPerHourVar, ExpectedPartCountVar, HoursPerShiftVar,
+            
+            // Time and shift outputs
+            DowntimeFormattedVar, TotalRuntimeFormattedVar, CurrentShiftNumberVar,
+            ShiftStartTimeOutputVar, ShiftEndTimeVar, TimeIntoShiftVar, TimeRemainingInShiftVar,
+            ShiftChangeOccurredVar, ShiftChangeImminentVar,
+            
+            // Production analysis outputs
+            ProjectedTotalCountVar, RemainingTimeAtCurrentRateVar, ProductionBehindScheduleVar,
+            RequiredRateToTargetVar, TargetVsActualPartsVar,
+            
+            // System outputs
             SystemStatusVar, CalculationValidVar, DataQualityScoreVar, LastUpdateTimeVar,
+            
+            // Trending outputs
             QualityTrendVar, PerformanceTrendVar, AvailabilityTrendVar, OEETrendVar,
+            
+            // Statistics outputs
             MinQualityVar, MaxQualityVar, AvgQualityVar,
             MinPerformanceVar, MaxPerformanceVar, AvgPerformanceVar,
             MinAvailabilityVar, MaxAvailabilityVar, AvgAvailabilityVar,
             MinOEEVar, MaxOEEVar, AvgOEEVar,
+            
+            // Target comparison outputs
             QualityVsTargetVar, PerformanceVsTargetVar, AvailabilityVsTargetVar, OEEVsTargetVar
         };
 
@@ -426,11 +521,24 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
     {
         if (_defaultsInitialized) return;
         
+        // Input defaults
         SetDefaultValue(TotalRuntimeSecondsVar, 0.0, "TotalRuntimeSeconds");
         SetDefaultValue(GoodPartCountVar, 0, "GoodPartCount");
         SetDefaultValue(BadPartCountVar, 0, "BadPartCount");
         SetDefaultValue(IdealCycleTimeSecondsVar, 30.0, "IdealCycleTimeSeconds");
         SetDefaultValue(PlannedProductionTimeHoursVar, 8.0, "PlannedProductionTimeHours");
+        SetDefaultValue(NumberOfShiftsVar, 3, "NumberOfShifts");
+        SetDefaultValue(ShiftStartTimeVar, "06:00:00", "ShiftStartTime");
+        SetDefaultValue(ProductionTargetVar, 1000, "ProductionTarget");
+        
+        // Configuration defaults
+        SetDefaultValue(EnableRealTimeCalcVar, true, "EnableRealTimeCalc");
+        SetDefaultValue(MinimumRunTimeVar, 60.0, "MinimumRunTime");
+        SetDefaultValue(GoodOEEThresholdVar, 80.0, "GoodOEE_Threshold");
+        SetDefaultValue(PoorOEEThresholdVar, 60.0, "PoorOEE_Threshold");
+        SetDefaultValue(EnableLoggingVar, true, "EnableLogging");
+        SetDefaultValue(EnableAlarmsVar, true, "EnableAlarms");
+        SetDefaultValue(SystemHealthyVar, true, "SystemHealthy");
         
         _defaultsInitialized = true;
     }
@@ -479,6 +587,27 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
         _performanceTarget = ReadDoubleVar(PerformanceTargetVar, 85.0);
         _availabilityTarget = ReadDoubleVar(AvailabilityTargetVar, 90.0);
         _oeeTarget = ReadDoubleVar(OEETargetVar, 72.7);
+        _productionTarget = ReadIntVar(ProductionTargetVar, 1000);
+        _numberOfShifts = ReadIntVar(NumberOfShiftsVar, 3);
+        
+        if (ShiftStartTimeVar != null)
+        {
+            var shiftTimeStr = GetUnderlyingValue(ShiftStartTimeVar)?.ToString();
+            if (!string.IsNullOrWhiteSpace(shiftTimeStr))
+                _shiftStartTime = shiftTimeStr;
+        }
+        
+        // Calculate hours per shift from 24 hours divided by number of shifts
+        _calculatedHoursPerShift = _numberOfShifts > 0 ? 24.0 / _numberOfShifts : 8.0;
+        
+        // Read configuration flags
+        _enableRealTimeCalc = ReadBoolVar(EnableRealTimeCalcVar, true);
+        _minimumRunTime = ReadDoubleVar(MinimumRunTimeVar, 60.0);
+        _goodOEEThreshold = ReadDoubleVar(GoodOEEThresholdVar, 80.0);
+        _poorOEEThreshold = ReadDoubleVar(PoorOEEThresholdVar, 60.0);
+        _enableLogging = ReadBoolVar(EnableLoggingVar, true);
+        _enableAlarms = ReadBoolVar(EnableAlarmsVar, true);
+        _systemHealthy = ReadBoolVar(SystemHealthyVar, true);
 
         if (LoggingVerbosityVar != null)
             _loggingVerbosity = ReadIntVar(LoggingVerbosityVar, 1);
@@ -518,6 +647,10 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
     private CalculationResults PerformCalculations()
     {
         var results = new CalculationResults();
+        var now = DateTime.Now;
+        
+        // Update shift information first
+        UpdateShiftInformation(now, results);
 
         double runtimeSeconds = ReadDoubleVar(TotalRuntimeSecondsVar, 0.0);
         int good = ReadIntVar(GoodPartCountVar, 0);
@@ -571,11 +704,47 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
 
         // Derived metrics
         results.PartsPerHour = runtimeSeconds > 0.0 ? (totalCount / runtimeSeconds) * 3600.0 : 0.0;
+        results.AvgCycleTime = totalCount > 0 ? runtimeSeconds / totalCount : idealCycle;
         
         if (plannedSeconds > 0.0 && idealCycle > 0.0)
             results.ExpectedPartCount = plannedSeconds / idealCycle;
         else
             results.ExpectedPartCount = 480.0;
+
+        // Hours per shift (derived from number of shifts)
+        results.HoursPerShift = _calculatedHoursPerShift;
+
+        // Time formatting
+        results.TotalRuntimeFormatted = FormatTimeSpan(TimeSpan.FromSeconds(runtimeSeconds));
+        results.DowntimeFormatted = FormatTimeSpan(TimeSpan.FromSeconds(Math.Max(0, plannedSeconds - runtimeSeconds)));
+        
+        // Production analysis
+        results.TargetVsActualParts = totalCount - _productionTarget;
+        results.ProductionBehindSchedule = totalCount < _productionTarget;
+        
+        if (runtimeSeconds > 0)
+        {
+            double currentRate = totalCount / (runtimeSeconds / 3600.0); // parts per hour
+            double remainingHours = Math.Max(0, (_currentShiftEnd - now).TotalHours);
+            results.RequiredRateToTarget = remainingHours > 0 ? Math.Max(0, (_productionTarget - totalCount) / remainingHours) : 0;
+            results.ProjectedTotalCount = (int)(totalCount + (currentRate * remainingHours));
+            
+            if (currentRate > 0)
+            {
+                double hoursToTarget = Math.Max(0, (_productionTarget - totalCount) / currentRate);
+                results.RemainingTimeAtCurrentRate = FormatTimeSpan(TimeSpan.FromHours(hoursToTarget));
+            }
+            else
+            {
+                results.RemainingTimeAtCurrentRate = "Indefinite";
+            }
+        }
+        else
+        {
+            results.RequiredRateToTarget = 0;
+            results.ProjectedTotalCount = totalCount;
+            results.RemainingTimeAtCurrentRate = "Not Running";
+        }
 
         // Target comparisons
         results.QualityVsTarget = results.Quality - _qualityTarget;
@@ -585,9 +754,9 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
 
         // System status
         results.SystemStatus = DetermineSystemStatus(results);
-        results.CalculationValid = true;
-        results.DataQualityScore = 100.0;
-        results.LastUpdateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        results.CalculationValid = _enableRealTimeCalc && runtimeSeconds >= _minimumRunTime;
+        results.DataQualityScore = CalculateDataQuality(results);
+        results.LastUpdateTime = now.ToString("yyyy-MM-dd HH:mm:ss");
 
         return results;
     }
@@ -723,12 +892,29 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
 
     private void WriteAllOutputs(CalculationResults results)
     {
+        WriteIfExists(TotalCountVar, results.TotalCount);
         WriteIfExists(QualityVar, results.Quality);
         WriteIfExists(PerformanceVar, results.Performance);
         WriteIfExists(AvailabilityVar, results.Availability);
         WriteIfExists(OEEVar, results.OEE);
+        WriteIfExists(AvgCycleTimeVar, results.AvgCycleTime);
         WriteIfExists(PartsPerHourVar, results.PartsPerHour);
         WriteIfExists(ExpectedPartCountVar, results.ExpectedPartCount);
+        WriteIfExists(HoursPerShiftVar, results.HoursPerShift);
+        WriteIfExists(DowntimeFormattedVar, results.DowntimeFormatted);
+        WriteIfExists(TotalRuntimeFormattedVar, results.TotalRuntimeFormatted);
+        WriteIfExists(CurrentShiftNumberVar, results.CurrentShiftNumber);
+        WriteIfExists(ShiftStartTimeOutputVar, results.ShiftStartTimeOutput);
+        WriteIfExists(ShiftEndTimeVar, results.ShiftEndTime);
+        WriteIfExists(TimeIntoShiftVar, results.TimeIntoShift);
+        WriteIfExists(TimeRemainingInShiftVar, results.TimeRemainingInShift);
+        WriteIfExists(ShiftChangeOccurredVar, results.ShiftChangeOccurred);
+        WriteIfExists(ShiftChangeImminentVar, results.ShiftChangeImminent);
+        WriteIfExists(ProjectedTotalCountVar, results.ProjectedTotalCount);
+        WriteIfExists(RemainingTimeAtCurrentRateVar, results.RemainingTimeAtCurrentRate);
+        WriteIfExists(ProductionBehindScheduleVar, results.ProductionBehindSchedule);
+        WriteIfExists(RequiredRateToTargetVar, results.RequiredRateToTarget);
+        WriteIfExists(TargetVsActualPartsVar, results.TargetVsActualParts);
         WriteIfExists(SystemStatusVar, results.SystemStatus);
         WriteIfExists(CalculationValidVar, results.CalculationValid);
         WriteIfExists(DataQualityScoreVar, results.DataQualityScore);
@@ -825,6 +1011,17 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
         return fallback;
     }
 
+    private bool ReadBoolVar(IUAVariable var, bool fallback)
+    {
+        var o = GetUnderlyingValue(var);
+        if (o == null) return fallback;
+        if (o is bool b) return b;
+        if (o is int i) return i != 0;
+        if (bool.TryParse(o.ToString(), out bool parsed))
+            return parsed;
+        return fallback;
+    }
+
     private bool TryGetSecondsFromRaw(object raw, out double seconds)
     {
         seconds = 0.0;
@@ -869,6 +1066,106 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
         return false;
     }
 
+    private void UpdateShiftInformation(DateTime now, CalculationResults results)
+    {
+        try
+        {
+            // Parse shift start time
+            if (TimeSpan.TryParse(_shiftStartTime, out TimeSpan shiftStartTime))
+            {
+                var today = now.Date;
+                _currentShiftStart = today.Add(shiftStartTime);
+                _currentShiftEnd = _currentShiftStart.AddHours(_calculatedHoursPerShift);
+                
+                // Determine current shift number
+                var hoursIntoDay = now.TimeOfDay.TotalHours;
+                var shiftStartHours = shiftStartTime.TotalHours;
+                
+                if (_numberOfShifts > 0)
+                {
+                    var shiftDuration = 24.0 / _numberOfShifts;
+                    var shiftIndex = (int)((hoursIntoDay - shiftStartHours + 24) % 24 / shiftDuration);
+                    _currentShiftNumber = (shiftIndex % _numberOfShifts) + 1;
+                    
+                    // Adjust shift start/end for current shift
+                    var currentShiftStartHours = shiftStartHours + (shiftIndex * shiftDuration);
+                    if (currentShiftStartHours >= 24) currentShiftStartHours -= 24;
+                    
+                    _currentShiftStart = today.AddHours(currentShiftStartHours);
+                    if (_currentShiftStart > now) _currentShiftStart = _currentShiftStart.AddDays(-1);
+                    
+                    _currentShiftEnd = _currentShiftStart.AddHours(shiftDuration);
+                }
+            }
+            
+            // Check for shift changes
+            var timeSinceLastCheck = now - _lastShiftCalculation;
+            if (timeSinceLastCheck.TotalMinutes > 1) // Check every minute
+            {
+                var timeToShiftEnd = (_currentShiftEnd - now).TotalMinutes;
+                _shiftChangeImminent = timeToShiftEnd <= 15 && timeToShiftEnd > 0; // 15 minutes warning
+                _shiftChangeOccurred = timeToShiftEnd <= 0 && timeSinceLastCheck.TotalMinutes < 5;
+                _lastShiftCalculation = now;
+            }
+            
+            // Update results
+            results.CurrentShiftNumber = _currentShiftNumber;
+            results.ShiftStartTimeOutput = _currentShiftStart.ToString("HH:mm:ss");
+            results.ShiftEndTime = _currentShiftEnd.ToString("HH:mm:ss");
+            results.TimeIntoShift = FormatTimeSpan(now - _currentShiftStart);
+            results.TimeRemainingInShift = FormatTimeSpan(_currentShiftEnd - now);
+            results.ShiftChangeOccurred = _shiftChangeOccurred;
+            results.ShiftChangeImminent = _shiftChangeImminent;
+        }
+        catch (Exception ex)
+        {
+            LogError($"Error updating shift information: {ex.Message}");
+            // Use defaults
+            results.CurrentShiftNumber = 1;
+            results.ShiftStartTimeOutput = "06:00:00";
+            results.ShiftEndTime = "14:00:00";
+            results.TimeIntoShift = "00:00:00";
+            results.TimeRemainingInShift = "08:00:00";
+            results.ShiftChangeOccurred = false;
+            results.ShiftChangeImminent = false;
+        }
+    }
+
+    private string FormatTimeSpan(TimeSpan timeSpan)
+    {
+        if (timeSpan.TotalDays >= 1)
+        {
+            return $"{(int)timeSpan.TotalDays}d {timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+        }
+        else if (timeSpan.TotalSeconds < 0)
+        {
+            return "00:00:00";
+        }
+        else
+        {
+            return $"{(int)timeSpan.TotalHours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+        }
+    }
+
+    private double CalculateDataQuality(CalculationResults results)
+    {
+        double score = 100.0;
+        
+        // Penalize if no parts produced
+        if (results.TotalCount == 0) score -= 30;
+        
+        // Penalize if no runtime
+        if (results.RuntimeSeconds <= 0) score -= 40;
+        
+        // Penalize if behind schedule
+        if (results.ProductionBehindSchedule) score -= 15;
+        
+        // Penalize if OEE is very low
+        if (results.OEE < _poorOEEThreshold) score -= 10;
+        
+        return Math.Max(0, Math.Min(100, score));
+    }
+
     private void LogError(string message)
     {
         Log.Error("ObjectTypeOEE_Calculator", message);
@@ -896,8 +1193,24 @@ public class ObjectTypeOEE_Calculator : BaseNetLogic
         public double Performance { get; set; }
         public double Availability { get; set; }
         public double OEE { get; set; }
+        public double AvgCycleTime { get; set; }
         public double PartsPerHour { get; set; }
         public double ExpectedPartCount { get; set; }
+        public double HoursPerShift { get; set; }
+        public string DowntimeFormatted { get; set; } = "00:00:00";
+        public string TotalRuntimeFormatted { get; set; } = "00:00:00";
+        public int CurrentShiftNumber { get; set; } = 1;
+        public string ShiftStartTimeOutput { get; set; } = "06:00:00";
+        public string ShiftEndTime { get; set; } = "14:00:00";
+        public string TimeIntoShift { get; set; } = "00:00:00";
+        public string TimeRemainingInShift { get; set; } = "08:00:00";
+        public bool ShiftChangeOccurred { get; set; } = false;
+        public bool ShiftChangeImminent { get; set; } = false;
+        public int ProjectedTotalCount { get; set; }
+        public string RemainingTimeAtCurrentRate { get; set; } = "00:00:00";
+        public bool ProductionBehindSchedule { get; set; } = false;
+        public double RequiredRateToTarget { get; set; }
+        public int TargetVsActualParts { get; set; }
         public string SystemStatus { get; set; } = "Starting";
         public bool CalculationValid { get; set; } = true;
         public double DataQualityScore { get; set; } = 100.0;

@@ -401,7 +401,7 @@ Children:
   - Name: LibraryItemVersion
     Type: BaseDataVariableType
     DataType: UInt32
-    Value: 5
+    Value: 7
   - Name: ObjectTypeOEE_Calculator
     Id: g=a64a0f2dd0a9bb7568ad5cb27dc23546
     Supertype: NetLogic
@@ -433,6 +433,8 @@ Children:
         ValueRank: OneDimension
         ArrayDimensions: [0]
         Value: [{"TypeId":{"Id":296},"Body":{"Name":"oeeInstanceNodeId","DataType":{"Id":17},"ValueRank":-1,"ArrayDimensions":[],"Description":{"NamespaceIndex":-1,"LocaleId":"","Text":""}}}]
+    - Class: Method
+      Name: ForceCalculation
 - Name: OEEType
   Type: ObjectLibraryItem
   Children:
@@ -443,7 +445,7 @@ Children:
   - Name: LibraryItemVersion
     Type: BaseDataVariableType
     DataType: UInt32
-    Value: 1
+    Value: 3
   - Name: OEEType
     Id: g=06b34fa69308a8aa3236bfd7579e7dfc
     Supertype: BaseObjectType
@@ -464,9 +466,6 @@ Children:
         Type: BaseDataVariableType
         DataType: Double
       - Name: PlannedProductionTimeHours
-        Type: BaseDataVariableType
-        DataType: Double
-      - Name: HoursPerShift
         Type: BaseDataVariableType
         DataType: Double
       - Name: NumberOfShifts
@@ -529,6 +528,9 @@ Children:
       - Name: TotalRuntimeFormatted
         Type: BaseDataVariableType
         DataType: String
+      - Name: HoursPerShift
+        Type: BaseDataVariableType
+        DataType: Double
       - Name: CurrentShiftNumber
         Type: BaseDataVariableType
         DataType: Int32
@@ -695,7 +697,7 @@ Children:
   - Name: LibraryItemVersion
     Type: BaseDataVariableType
     DataType: UInt32
-    Value: 2
+    Value: 5
   - Name: OEEUIGenerator
     Id: g=d8386ff01da74630d5807b5be6d22a07
     Supertype: NetLogic
@@ -703,8 +705,6 @@ Children:
     Children:
     - Class: Method
       Name: CreateOEEDashboard
-    - Class: Method
-      Name: Method1
     - Name: BehaviourStartPriority
       Type: BehaviourStartPriorityVariableType
       DataType: Byte
@@ -714,10 +714,16 @@ Children:
     - Class: Method
       Name: CreateOEEConfigurationScreen
     - Class: Method
-      Name: CreateOEETrendingScreen
-    - Class: Method
       Name: CreateReportsAnalyticsScreen
     - Class: Method
       Name: VerifyDataLinks
     - Class: Method
       Name: CreateOEEWidgetLibrary
+    - Class: Method
+      Name: VerifyPanelCreation
+    - Class: Method
+      Name: VerifyWidgetCreation
+    - Class: Method
+      Name: GenerateOEEUI
+    - Class: Method
+      Name: GenerateWidgetsOnly

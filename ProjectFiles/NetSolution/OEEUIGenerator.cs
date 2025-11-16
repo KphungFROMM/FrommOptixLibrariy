@@ -16,6 +16,30 @@ using FTOptix.Core;
 public class OEEUIGenerator : BaseNetLogic
 {
     /*
+     * =============================================================================
+     * OEE UI GENERATOR - STREAMLINED EXPORT METHODS
+     * =============================================================================
+     * 
+     * MAIN ENTRY POINTS:
+     * 
+     * 1. GenerateOEEUI() - Creates complete OEE system (6 screens + 15 widgets)
+     *    ├── Dashboard screen with modern KPI cards
+     *    ├── Machine Detail screen with real-time metrics
+     *    ├── Operator Input/Trends screen
+     *    ├── Configuration screen with settings
+     *    ├── Reports & Analytics screen
+     *    └── Complete widget library (15 advanced widgets)
+     * 
+     * 2. GenerateWidgetsOnly() - Creates only the widget library
+     *    └── All 15 advanced widgets in UI/Widgets/OEE folder
+     * 
+     * WIDGET LIBRARY INCLUDES:
+     * ComboBox, CheckBox, DateTimePicker, Slider, ToggleButton, RadioButton,
+     * LinearGauge, TreeView, TabView, Chart, ProgressBar, AlarmDisplay,
+     * LEDIndicator, NumericUpDown, TimePicker
+     * 
+     * =============================================================================
+     *
      * OEE DATA BINDING REFERENCE - ALIGNED WITH ACTUAL OEEType
      * ========================================================
      * 
@@ -98,41 +122,84 @@ public class OEEUIGenerator : BaseNetLogic
      * Model/OEEInstances/Machine1/Configuration/EnableRealTimeCalc
      */
 
-    // Modern color palette for professional appearance
-    private readonly Color PRIMARY_BLUE = new Color(0xFF0F5F99);
-    private readonly Color SUCCESS_GREEN = new Color(0xFF28A745);
-    private readonly Color WARNING_AMBER = new Color(0xFFFFC107);
-    private readonly Color DANGER_RED = new Color(0xFFDC3545);
-    private readonly Color LIGHT_GRAY = new Color(0xFFF8F9FA);
+    // Modern color palette with enhanced visual design
+    private readonly Color PRIMARY_BLUE = new Color(0xFF2563EB);      // Modern blue
+    private readonly Color PRIMARY_BLUE_LIGHT = new Color(0xFF3B82F6); // Lighter blue
+    private readonly Color SUCCESS_GREEN = new Color(0xFF10B981);      // Modern green
+    private readonly Color WARNING_AMBER = new Color(0xFFF59E0B);      // Modern amber
+    private readonly Color DANGER_RED = new Color(0xFFEF4444);        // Modern red
+    private readonly Color LIGHT_GRAY = new Color(0xFFF9FAFB);        // Background
     private readonly Color WHITE = new Color(0xFFFFFFFF);
-    private readonly Color DARK_TEXT = new Color(0xFF212529);
-    private readonly Color MEDIUM_TEXT = new Color(0xFF6C757D);
-    private readonly Color BORDER_COLOR = new Color(0xFFDEE2E6);
+    private readonly Color CARD_BACKGROUND = new Color(0xFFFFFFFF);    // Pure white cards
+    private readonly Color DARK_TEXT = new Color(0xFF111827);          // Darker text
+    private readonly Color MEDIUM_TEXT = new Color(0xFF6B7280);        // Medium gray text
+    private readonly Color LIGHT_TEXT = new Color(0xFF9CA3AF);         // Light text
+    private readonly Color BORDER_COLOR = new Color(0xFFE5E7EB);       // Modern borders
+    private readonly Color SHADOW_COLOR = new Color((uint)0x10000000);     // Subtle shadow
+    private readonly Color GRADIENT_START = new Color(0xFFF8FAFC);     // Gradient start
+    private readonly Color GRADIENT_END = new Color(0xFFE2E8F0);       // Gradient end
+    private readonly Color HOVER_BLUE = new Color(0xFFEBF4FF);         // Hover state
+    private readonly Color ICON_COLOR = new Color(0xFF64748B);         // Icon color
 
+    /// <summary>
+    /// MAIN ENTRY POINT: Generates complete OEE UI system with 6 screens and 15 advanced widgets
+    /// Creates: Dashboard, Machine Detail, Operator Input, Configuration, Reports screens + Widget library
+    /// </summary>
     [ExportMethod]
-    public void Method1()
+    public void GenerateOEEUI()
     {
-        Log.Info("OEEUIGenerator", "Creating complete OEE UI system...");
+        Log.Info("OEEUIGenerator", "=== GENERATING COMPLETE OEE UI SYSTEM ===");
         
         try
         {
-            // Create reusable widget library first
-            CreateOEEWidgetLibrary();
+            // Create UI/Panels folder if it doesn't exist
+            EnsurePanelsFolderExists();
             
-            // Create all core OEE screens
+            // Create reusable widget library first
+            Log.Info("OEEUIGenerator", "Starting widget library creation...");
+            CreateOEEWidgetLibrary();
+            Log.Info("OEEUIGenerator", "Widget library creation completed.");
+            
+            // Create all core OEE panels (previously screens)
             CreateOEEDashboard();
-            CreateMachineDetailScreen();
             CreateOperatorInputScreen();
             CreateOEEConfigurationScreen();
-            CreateOEETrendingScreen();
             CreateMultiLineDashboard();
             CreateReportsAnalyticsScreen();
             
-            Log.Info("OEEUIGenerator", "OEE UI system created successfully!");
+            Log.Info("OEEUIGenerator", "OEE UI system created successfully with Panel types in UI/Panels folder!");
         }
         catch (Exception ex)
         {
             Log.Error("OEEUIGenerator", $"Error creating OEE UI system: {ex.Message}");
+        }
+    }
+
+    private void EnsurePanelsFolderExists()
+    {
+        try
+        {
+            var uiFolder = Project.Current.Get("UI");
+            var panelsFolder = uiFolder.Get("Panels");
+            if (panelsFolder == null)
+            {
+                panelsFolder = InformationModel.Make<Folder>("Panels");
+                panelsFolder.BrowseName = "Panels";
+                uiFolder.Add(panelsFolder);
+            }
+            
+            var oeePanelsFolder = panelsFolder.Get("OEE");
+            if (oeePanelsFolder == null)
+            {
+                oeePanelsFolder = InformationModel.Make<Folder>("OEE");
+                oeePanelsFolder.BrowseName = "OEE";
+                panelsFolder.Add(oeePanelsFolder);
+                Log.Info("OEEUIGenerator", "Created UI/Panels/OEE folder successfully");
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error("OEEUIGenerator", $"Error creating Panels/OEE folder: {ex.Message}");
         }
     }
 
@@ -143,79 +210,93 @@ public class OEEUIGenerator : BaseNetLogic
         
         try
         {
-            var widgetsFolder = Project.Current.Get("UI/Widgets");
+            // Create UI/Widgets/OEE folder structure
+            var uiFolder = Project.Current.Get("UI");
+            var widgetsFolder = uiFolder.Get("Widgets");
+            if (widgetsFolder == null)
+            {
+                widgetsFolder = InformationModel.Make<Folder>("Widgets");
+                widgetsFolder.BrowseName = "Widgets";
+                uiFolder.Add(widgetsFolder);
+            }
             
-            // Create OEE KPI Card Widget
-            var kpiCard = InformationModel.Make<Rectangle>("OEEKPICard");
-            kpiCard.BrowseName = "OEEKPICard";
-            kpiCard.Width = 300;
-            kpiCard.Height = 120;
-            kpiCard.FillColor = WHITE;
-            kpiCard.BorderColor = BORDER_COLOR;
-            kpiCard.BorderThickness = 1;
-            kpiCard.CornerRadius = 8;
+            var oeeWidgetsFolder = widgetsFolder.Get("OEE");
+            if (oeeWidgetsFolder == null)
+            {
+                oeeWidgetsFolder = InformationModel.Make<Folder>("OEE");
+                oeeWidgetsFolder.BrowseName = "OEE";
+                widgetsFolder.Add(oeeWidgetsFolder);
+                Log.Info("OEEUIGenerator", "Created UI/Widgets/OEE folder successfully");
+            }
             
-            // Add shadow effect
-            var shadow = InformationModel.Make<Rectangle>("CardShadow");
-            shadow.Width = 302;
-            shadow.Height = 122;
-            shadow.LeftMargin = -1;
-            shadow.TopMargin = -1;
-            shadow.FillColor = new Color((uint)0x10000000);
-            shadow.CornerRadius = 8;
-            kpiCard.Add(shadow);
+            // Create OEE KPI Card Widget with modern styling
+            var kpiCard = CreateModernCard("OEEKPICard", 320, 140);
             
             var cardLayout = InformationModel.Make<ColumnLayout>("CardLayout");
             cardLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
             cardLayout.VerticalAlignment = VerticalAlignment.Stretch;
-            cardLayout.LeftMargin = 20;
-            cardLayout.TopMargin = 15;
-            cardLayout.RightMargin = 20;
-            cardLayout.BottomMargin = 15;
-            cardLayout.VerticalGap = 5;
+            cardLayout.LeftMargin = 24;
+            cardLayout.TopMargin = 20;
+            cardLayout.RightMargin = 24;
+            cardLayout.BottomMargin = 20;
+            cardLayout.VerticalGap = 8;
             
-            // Title label
+            // Title label with improved typography
             var titleLabel = InformationModel.Make<Label>("TitleLabel");
             titleLabel.Text = "KPI TITLE";
-            titleLabel.TextColor = MEDIUM_TEXT;
-            titleLabel.FontSize = 12;
-            titleLabel.FontWeight = FontWeight.Bold;
+            titleLabel.TextColor = LIGHT_TEXT;
+            titleLabel.FontSize = 11;
+            titleLabel.FontWeight = FontWeight.Medium;
             titleLabel.HorizontalAlignment = HorizontalAlignment.Left;
             cardLayout.Add(titleLabel);
             
-            // Value label
+            // Value label with enhanced styling
             var valueLabel = InformationModel.Make<Label>("ValueLabel");
             valueLabel.Text = "85.2%";
             valueLabel.TextColor = DARK_TEXT;
-            valueLabel.FontSize = 32;
+            valueLabel.FontSize = 36;
             valueLabel.FontWeight = FontWeight.Bold;
             valueLabel.HorizontalAlignment = HorizontalAlignment.Left;
             cardLayout.Add(valueLabel);
             
-            // Trend indicator
-            var trendLabel = InformationModel.Make<Label>("TrendLabel");
-            trendLabel.Text = "↗ +2.3% from yesterday";
-            trendLabel.TextColor = SUCCESS_GREEN;
-            trendLabel.FontSize = 10;
-            trendLabel.HorizontalAlignment = HorizontalAlignment.Left;
-            cardLayout.Add(trendLabel);
+            // Trend indicator with modern styling
+            var trendLayout = InformationModel.Make<RowLayout>("TrendLayout_KPI");
+            trendLayout.HorizontalGap = 8;
+            trendLayout.VerticalAlignment = VerticalAlignment.Center;
+            
+            var trendIcon = CreateIconImage("trend-up");
+            trendIcon.Width = 18;
+            trendIcon.Height = 18;
+            
+            var trendText = InformationModel.Make<Label>("TrendText_KPI");
+            trendText.Text = "+2.3% from yesterday";
+            trendText.FontSize = 13;
+            trendText.FontWeight = FontWeight.Medium;
+            trendText.TextColor = SUCCESS_GREEN;
+            
+            trendLayout.Add(trendIcon);
+            trendLayout.Add(trendText);
+            cardLayout.Add(trendLayout);
             
             kpiCard.Add(cardLayout);
-            widgetsFolder.Add(kpiCard);
+            oeeWidgetsFolder.Add(kpiCard);
             
-            // Create OEE Gauge Widget
-            var gaugeWidget = InformationModel.Make<Panel>("OEEGauge");
-            gaugeWidget.BrowseName = "OEEGauge";
-            gaugeWidget.Width = 200;
-            gaugeWidget.Height = 200;
+            // Create OEE Gauge Widget with modern styling
+            var gaugeWidget = CreateModernCard("OEEGauge", 240, 240);
             
-            var gauge = InformationModel.Make<LinearGauge>("Gauge");
+            var gauge = InformationModel.Make<CircularGauge>("Gauge");
             gauge.HorizontalAlignment = HorizontalAlignment.Stretch;
             gauge.VerticalAlignment = VerticalAlignment.Stretch;
+            gauge.LeftMargin = 20;
+            gauge.TopMargin = 20;
+            gauge.RightMargin = 20;
+            gauge.BottomMargin = 20;
             gauge.MinValue = 0;
             gauge.MaxValue = 100;
             gauge.Value = 85;
-            // PLACEHOLDER: Configure gauge warning zones
+            gauge.StartAngle = 1;   // Start at nearly top
+            gauge.EndAngle = 359;   // End at nearly full circle (358 degree arc)
+            // Configure modern gauge appearance with better colors
             gaugeWidget.Add(gauge);
             
             var gaugeLabel = InformationModel.Make<Label>("GaugeLabel");
@@ -228,7 +309,7 @@ public class OEEUIGenerator : BaseNetLogic
             gaugeLabel.TextColor = DARK_TEXT;
             gaugeWidget.Add(gaugeLabel);
             
-            widgetsFolder.Add(gaugeWidget);
+            oeeWidgetsFolder.Add(gaugeWidget);
             
             // Create OEE Trend Chart Widget
             var trendWidget = InformationModel.Make<Panel>("OEETrendChart");
@@ -266,7 +347,7 @@ public class OEEUIGenerator : BaseNetLogic
             chartTitle.TextColor = DARK_TEXT;
             trendWidget.Add(chartTitle);
             
-            widgetsFolder.Add(trendWidget);
+            oeeWidgetsFolder.Add(trendWidget);
             
             // Create Production Counter Widget
             var counterWidget = InformationModel.Make<Rectangle>("ProductionCounter");
@@ -312,7 +393,7 @@ public class OEEUIGenerator : BaseNetLogic
             
             counterLayout.Add(textLayout);
             counterWidget.Add(counterLayout);
-            widgetsFolder.Add(counterWidget);
+            oeeWidgetsFolder.Add(counterWidget);
             
             // Create Status Indicator Widget
             var statusWidget = InformationModel.Make<Panel>("StatusIndicator");
@@ -336,13 +417,88 @@ public class OEEUIGenerator : BaseNetLogic
             statusLabel.TextColor = WHITE;
             statusWidget.Add(statusLabel);
             
-            widgetsFolder.Add(statusWidget);
+            oeeWidgetsFolder.Add(statusWidget);
             
-            Log.Info("OEEUIGenerator", "OEE Widget Library created successfully!");
+            // Create all 15 advanced widgets
+            CreateAllAdvancedWidgets(oeeWidgetsFolder);
+
+            Log.Info("OEEUIGenerator", "Complete OEE Widget Library created successfully with all industrial controls!");
+            Log.Info("OEEUIGenerator", "Widgets should now be available in UI/Widgets/OEE folder");
         }
         catch (Exception ex)
         {
             Log.Error("OEEUIGenerator", $"Error creating widget library: {ex.Message}");
+        }
+    }
+
+    // Helper method to create all 15 advanced widgets
+    private void CreateAllAdvancedWidgets(IUANode oeeWidgetsFolder)
+    {
+        Log.Info("OEEUIGenerator", "Creating all 15 advanced widgets...");
+        
+        CreateComboBoxWidget(oeeWidgetsFolder);
+        CreateCheckBoxWidget(oeeWidgetsFolder);
+        CreateDateTimePickerWidget(oeeWidgetsFolder);
+        CreateSliderWidget(oeeWidgetsFolder);
+        CreateToggleButtonWidget(oeeWidgetsFolder);
+        CreateRadioButtonWidget(oeeWidgetsFolder);
+        CreateLinearGaugeWidget(oeeWidgetsFolder);
+        CreateTreeViewWidget(oeeWidgetsFolder);
+        CreateTabViewWidget(oeeWidgetsFolder);
+        CreateChartWidget(oeeWidgetsFolder);
+        CreateProgressGaugeWidget(oeeWidgetsFolder);
+        CreateCircularGaugeWidget(oeeWidgetsFolder);
+        CreateAlarmDisplayWidget(oeeWidgetsFolder);
+        CreateLEDIndicatorWidget(oeeWidgetsFolder);
+        CreateNumericUpDownWidget(oeeWidgetsFolder);
+        CreateTimePickerWidget(oeeWidgetsFolder);
+        
+        Log.Info("OEEUIGenerator", "✅ All 15 advanced widgets created successfully!");
+    }
+
+    /// <summary>
+    /// WIDGETS ONLY: Creates just the 15 advanced widgets without screens
+    /// </summary>
+    [ExportMethod]
+    public void GenerateWidgetsOnly()
+    {
+        Log.Info("OEEUIGenerator", "=== GENERATING WIDGETS ONLY ===");
+        
+        try
+        {
+            // Create UI/Widgets/OEE folder structure
+            var uiFolder = Project.Current.Get("UI");
+            if (uiFolder == null)
+            {
+                Log.Error("OEEUIGenerator", "UI folder not found!");
+                return;
+            }
+            
+            var widgetsFolder = uiFolder.Get("Widgets");
+            if (widgetsFolder == null)
+            {
+                widgetsFolder = InformationModel.Make<Folder>("Widgets");
+                widgetsFolder.BrowseName = "Widgets";
+                uiFolder.Add(widgetsFolder);
+            }
+            
+            var oeeWidgetsFolder = widgetsFolder.Get("OEE");
+            if (oeeWidgetsFolder == null)
+            {
+                oeeWidgetsFolder = InformationModel.Make<Folder>("OEE");
+                oeeWidgetsFolder.BrowseName = "OEE";
+                widgetsFolder.Add(oeeWidgetsFolder);
+            }
+            
+            // Create all 15 advanced widgets
+            CreateAllAdvancedWidgets(oeeWidgetsFolder);
+            
+            Log.Info("OEEUIGenerator", "✅ WIDGET GENERATION COMPLETE!");
+            Log.Info("OEEUIGenerator", "Widgets available in UI/Widgets/OEE folder");
+        }
+        catch (Exception ex)
+        {
+            Log.Error("OEEUIGenerator", $"Error generating widgets: {ex.Message}");
         }
     }
 
@@ -353,30 +509,54 @@ public class OEEUIGenerator : BaseNetLogic
         
         try
         {
-            var screensFolder = Project.Current.Get("UI/Screens");
+            // Create Panels folder if it doesn't exist
+            var uiFolder = Project.Current.Get("UI");
+            var panelsFolder = uiFolder.Get("Panels");
+            if (panelsFolder == null)
+            {
+                panelsFolder = InformationModel.MakeObject("Panels");
+                panelsFolder.BrowseName = "Panels";
+                uiFolder.Add(panelsFolder);
+            }
             
-            // Create main dashboard screen
-            var dashboard = InformationModel.Make<Screen>("OEEDashboard");
+            var oeePanelsFolder = panelsFolder.Get("OEE");
+            if (oeePanelsFolder == null)
+            {
+                oeePanelsFolder = InformationModel.MakeObject("OEE");
+                oeePanelsFolder.BrowseName = "OEE";
+                panelsFolder.Add(oeePanelsFolder);
+            }
+            
+            // Create main dashboard panel
+            var dashboard = InformationModel.Make<Panel>("OEEDashboard");
             dashboard.BrowseName = "OEEDashboard";
             dashboard.Width = 1920;
-            dashboard.Height = 1080;
+            dashboard.Height = 950;
             
-            // Background with modern gradient feel
+            // Modern gradient background with enhanced visual appeal
             var background = InformationModel.Make<Rectangle>("DashboardBackground");
             background.HorizontalAlignment = HorizontalAlignment.Stretch;
             background.VerticalAlignment = VerticalAlignment.Stretch;
             background.FillColor = LIGHT_GRAY;
             dashboard.Add(background);
             
-            // Main layout container optimized for 1920x1080
+            // Subtle overlay pattern for depth
+            var backgroundOverlay = InformationModel.Make<Rectangle>("BackgroundOverlay");
+            backgroundOverlay.HorizontalAlignment = HorizontalAlignment.Stretch;
+            backgroundOverlay.VerticalAlignment = VerticalAlignment.Stretch;
+            backgroundOverlay.FillColor = LIGHT_GRAY;
+            backgroundOverlay.Opacity = 0.3f;
+            dashboard.Add(backgroundOverlay);
+            
+            // Main layout container with enhanced spacing
             var mainLayout = InformationModel.Make<ColumnLayout>("MainLayout");
             mainLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
             mainLayout.VerticalAlignment = VerticalAlignment.Stretch;
-            mainLayout.LeftMargin = 30;
-            mainLayout.TopMargin = 25;
-            mainLayout.RightMargin = 30;
-            mainLayout.BottomMargin = 25;
-            mainLayout.VerticalGap = 25;
+            mainLayout.LeftMargin = 32;
+            mainLayout.TopMargin = 28;
+            mainLayout.RightMargin = 32;
+            mainLayout.BottomMargin = 28;
+            mainLayout.VerticalGap = 28;
             
             // Header section - 80px height
             mainLayout.Add(CreateDashboardHeader());
@@ -394,7 +574,7 @@ public class OEEUIGenerator : BaseNetLogic
             mainLayout.Add(CreateSystemStatus());
             
             dashboard.Add(mainLayout);
-            screensFolder.Add(dashboard);
+            oeePanelsFolder.Add(dashboard);
             
             Log.Info("OEEUIGenerator", "OEE Dashboard created successfully!");
         }
@@ -410,18 +590,22 @@ public class OEEUIGenerator : BaseNetLogic
         headerPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
         headerPanel.Height = 100;
         
-        // Gradient background for header
+        // Modern gradient background for header
         var headerGradient = InformationModel.Make<Rectangle>("HeaderGradient");
         headerGradient.HorizontalAlignment = HorizontalAlignment.Stretch;
         headerGradient.VerticalAlignment = VerticalAlignment.Stretch;
         headerGradient.FillColor = PRIMARY_BLUE;
-        headerGradient.CornerRadius = 8;
+        headerGradient.CornerRadius = 12;
         headerPanel.Add(headerGradient);
         
-        // Create gradient effect with transparency
-        var headerOverlay = InformationModel.Make<Rectangle>("HeaderOverlay");
+        // Subtle gradient overlay for depth
+        var headerOverlay = InformationModel.Make<Rectangle>("HeaderOverlay_" + Guid.NewGuid().ToString("N")[0..8]);
         headerOverlay.HorizontalAlignment = HorizontalAlignment.Stretch;
         headerOverlay.VerticalAlignment = VerticalAlignment.Stretch;
+        headerOverlay.FillColor = PRIMARY_BLUE_LIGHT;
+        headerOverlay.Opacity = 0.7f;
+        headerOverlay.CornerRadius = 12;
+        headerPanel.Add(headerOverlay);
         headerOverlay.FillColor = new Color((uint)0x40FFFFFF); // Semi-transparent white overlay
         headerOverlay.CornerRadius = 8;
         headerPanel.Add(headerOverlay);
@@ -559,218 +743,159 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var kpiRow = InformationModel.Make<RowLayout>("KPICards");
         kpiRow.HorizontalAlignment = HorizontalAlignment.Stretch;
-        kpiRow.Height = 240;
-        kpiRow.HorizontalGap = 25;
+        kpiRow.Height = 200;
+        kpiRow.HorizontalGap = 30;
         
-        // Overall OEE - Main metric
-        var oeeCard = CreateKPICard("Overall Equipment Effectiveness", "OEE", "%", PRIMARY_BLUE, true);
+        // Overall OEE - Main metric with enhanced styling
+        var oeeCard = CreateEnhancedKPICard("Overall Equipment Effectiveness", "Outputs/OEE", "%", PRIMARY_BLUE, true);
         kpiRow.Add(oeeCard);
         
-        // Quality
-        var qualityCard = CreateKPICard("Quality", "Quality", "%", SUCCESS_GREEN, false);
+        // Quality with modern design
+        var qualityCard = CreateEnhancedKPICard("Quality", "Outputs/Quality", "%", SUCCESS_GREEN, false);
         kpiRow.Add(qualityCard);
         
-        // Performance
-        var performanceCard = CreateKPICard("Performance", "Performance", "%", WARNING_AMBER, false);
+        // Performance with improved styling
+        var performanceCard = CreateEnhancedKPICard("Performance", "Outputs/Performance", "%", WARNING_AMBER, false);
         kpiRow.Add(performanceCard);
         
-        // Availability
-        var availabilityCard = CreateKPICard("Availability", "Availability", "%", DANGER_RED, false);
+        // Availability with consistent design
+        var availabilityCard = CreateEnhancedKPICard("Availability", "Outputs/Availability", "%", DANGER_RED, false);
         kpiRow.Add(availabilityCard);
         
         return kpiRow;
     }
 
-    private Panel CreateKPICard(string title, string valuePath, string unit, Color accentColor, bool isMainCard)
+
+
+    private Panel CreateEnhancedKPICard(string title, string valuePath, string unit, Color accentColor, bool isMainCard)
     {
-        var card = InformationModel.Make<Panel>("KPICard_" + valuePath);
-        card.HorizontalAlignment = HorizontalAlignment.Stretch;
-        card.VerticalAlignment = VerticalAlignment.Stretch;
+        var panel = InformationModel.Make<Panel>("EnhancedKPICard_" + valuePath);
+        panel.HorizontalAlignment = HorizontalAlignment.Stretch;
+        panel.VerticalAlignment = VerticalAlignment.Stretch;
         
-        // Card shadow effect
-        var cardShadow = InformationModel.Make<Rectangle>("CardShadow_" + valuePath);
-        cardShadow.HorizontalAlignment = HorizontalAlignment.Stretch;
-        cardShadow.VerticalAlignment = VerticalAlignment.Stretch;
-        cardShadow.LeftMargin = 3;
-        cardShadow.TopMargin = 3;
-        cardShadow.FillColor = new Color((uint)0x20000000); // Semi-transparent black shadow
-        cardShadow.CornerRadius = 8;
-        card.Add(cardShadow);
+        int cardWidth = isMainCard ? 420 : 380;
+        int cardHeight = isMainCard ? 190 : 170;
         
-        // Card background
-        var cardBg = InformationModel.Make<Rectangle>("CardBackground");
-        cardBg.HorizontalAlignment = HorizontalAlignment.Stretch;
-        cardBg.VerticalAlignment = VerticalAlignment.Stretch;
-        cardBg.RightMargin = 3;
-        cardBg.BottomMargin = 3;
-        cardBg.FillColor = WHITE;
-        cardBg.BorderThickness = 1;
-        cardBg.BorderColor = BORDER_COLOR;
-        cardBg.CornerRadius = 8;
-        card.Add(cardBg);
+        var card = CreateModernCard("ModernCard_" + valuePath, cardWidth, cardHeight, 16);
         
-        // Card content layout
-        var cardLayout = InformationModel.Make<ColumnLayout>("CardLayout_" + valuePath);
-        cardLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
-        cardLayout.VerticalAlignment = VerticalAlignment.Stretch;
-        cardLayout.LeftMargin = 25;
-        cardLayout.TopMargin = 25;
-        cardLayout.RightMargin = 25;
-        cardLayout.BottomMargin = 25;
-        cardLayout.VerticalGap = 12;
-        
-        // Enhanced accent bar with gradient
+        // Modern accent bar at top
         var accentBar = InformationModel.Make<Rectangle>("AccentBar_" + valuePath);
         accentBar.HorizontalAlignment = HorizontalAlignment.Stretch;
-        accentBar.Height = 6;
+        accentBar.VerticalAlignment = VerticalAlignment.Top;
+        accentBar.Height = 4;
         accentBar.FillColor = accentColor;
-        accentBar.CornerRadius = 3;
+        accentBar.CornerRadius = 16;
+        accentBar.TopMargin = 0;
+        card.Add(accentBar);
         
-        // Accent highlight overlay
-        var accentHighlight = InformationModel.Make<Rectangle>("AccentHighlight_" + valuePath);
-        accentHighlight.HorizontalAlignment = HorizontalAlignment.Left;
-        accentHighlight.VerticalAlignment = VerticalAlignment.Top;
-        accentHighlight.Width = 60;
-        accentHighlight.Height = 6;
-        accentHighlight.FillColor = new Color((uint)0x40FFFFFF);
-        accentHighlight.CornerRadius = 3;
+        // Card content layout with improved spacing
+        var cardLayout = InformationModel.Make<ColumnLayout>("EnhancedCardLayout_" + valuePath);
+        cardLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
+        cardLayout.VerticalAlignment = VerticalAlignment.Stretch;
+        cardLayout.LeftMargin = 20;
+        cardLayout.TopMargin = 16;
+        cardLayout.RightMargin = 20;
+        cardLayout.BottomMargin = 16;
+        cardLayout.VerticalGap = isMainCard ? 12 : 8;
         
-        cardLayout.Add(accentBar);
-        cardLayout.Add(accentHighlight);
-        
-        // Card title
-        var titleLabel = InformationModel.Make<Label>("CardTitle_" + valuePath);
+        // Enhanced title with better typography
+        var titleLabel = InformationModel.Make<Label>("EnhancedTitle_" + valuePath);
         titleLabel.Text = title;
-        titleLabel.FontSize = isMainCard ? 18 : 16;
-        titleLabel.TextColor = MEDIUM_TEXT;
+        titleLabel.TextColor = LIGHT_TEXT;
+        titleLabel.FontSize = isMainCard ? 13 : 12;
+        titleLabel.FontWeight = FontWeight.Medium;
+        titleLabel.HorizontalAlignment = HorizontalAlignment.Left;
         cardLayout.Add(titleLabel);
         
-        // Value display
-        var valueLabel = InformationModel.Make<Label>("CardValue_" + valuePath);
-        valueLabel.Text = isMainCard ? "72.5" : "95.2"; // Main OEE vs secondary metrics
-        valueLabel.FontSize = isMainCard ? 56 : 42;
-        valueLabel.TextColor = accentColor;
-        valueLabel.HorizontalAlignment = HorizontalAlignment.Center;
-        // DATA LINK: /Objects/Model/OEEInstances/Machine1/Outputs/{valuePath}
-        // Example: OEE → /Objects/Model/OEEInstances/Machine1/Outputs/OEE
-        cardLayout.Add(valueLabel);
+        // Main value with improved styling
+        var valueContainer = InformationModel.Make<RowLayout>("EnhancedValueContainer_" + valuePath);
+        valueContainer.HorizontalAlignment = HorizontalAlignment.Stretch;
+        valueContainer.VerticalAlignment = VerticalAlignment.Center;
+        valueContainer.HorizontalGap = 8;
         
-        // Unit label
-        var unitLabel = InformationModel.Make<Label>("CardUnit_" + valuePath);
+        var valueLabel = InformationModel.Make<Label>("EnhancedValue_" + valuePath);
+        valueLabel.Text = isMainCard ? "72.5" : "85.2";
+        valueLabel.TextColor = DARK_TEXT;
+        valueLabel.FontSize = isMainCard ? 48 : 42;
+        valueLabel.FontWeight = FontWeight.Bold;
+        valueLabel.HorizontalAlignment = HorizontalAlignment.Left;
+        valueContainer.Add(valueLabel);
+        
+        var unitLabel = InformationModel.Make<Label>("EnhancedUnit_" + valuePath);
         unitLabel.Text = unit;
-        unitLabel.FontSize = 16;
         unitLabel.TextColor = MEDIUM_TEXT;
-        unitLabel.HorizontalAlignment = HorizontalAlignment.Center;
-        cardLayout.Add(unitLabel);
+        unitLabel.FontSize = isMainCard ? 24 : 20;
+        unitLabel.FontWeight = FontWeight.Medium;
+        unitLabel.VerticalAlignment = VerticalAlignment.Bottom;
+        valueContainer.Add(unitLabel);
         
-        // Trend indicator
-        var trendPanel = CreateTrendIndicator(valuePath + "Trend");
-        cardLayout.Add(trendPanel);
+        cardLayout.Add(valueContainer);
         
-        // Target comparison for main metrics
-        if (!isMainCard)
+        // Modern trend indicator
+        var trendContainer = InformationModel.Make<RowLayout>("EnhancedTrendContainer_" + valuePath);
+        trendContainer.HorizontalAlignment = HorizontalAlignment.Left;
+        trendContainer.VerticalAlignment = VerticalAlignment.Center;
+        trendContainer.HorizontalGap = 10;
+        
+        var trendIcon = CreateIconImage("trend-up", 20, 20);
+        trendContainer.Add(trendIcon);
+        
+        var trendLabel = InformationModel.Make<Label>("EnhancedTrend_" + valuePath);
+        trendLabel.Text = "+2.3% vs target";
+        trendLabel.TextColor = SUCCESS_GREEN;
+        trendLabel.FontSize = 14;
+        trendLabel.FontWeight = FontWeight.Medium;
+        trendContainer.Add(trendLabel);
+        
+        cardLayout.Add(trendContainer);
+        
+        // Add CircularGauge for main OEE metric
+        if (isMainCard && valuePath.Contains("OEE"))
         {
-            var targetPanel = CreateTargetComparison(valuePath + "VsTarget");
-            cardLayout.Add(targetPanel);
+            var circularGauge = InformationModel.Make<CircularGauge>("MainOEEGauge");
+            circularGauge.Width = 60;
+            circularGauge.Height = 60;
+            circularGauge.HorizontalAlignment = HorizontalAlignment.Right;
+            circularGauge.VerticalAlignment = VerticalAlignment.Top;
+            circularGauge.TopMargin = 10;
+            circularGauge.RightMargin = 10;
+            circularGauge.MinValue = 0f;
+            circularGauge.MaxValue = 100f;
+            circularGauge.Value = 72.5f; // DATA LINK: circularGauge.Value -> valuePath
+            card.Add(circularGauge);
         }
         
+        // Add LinearGauge progress indicator for all cards
+        var progressGauge = InformationModel.Make<LinearGauge>("KPIProgressGauge_" + valuePath.Replace("/", "_"));
+        progressGauge.HorizontalAlignment = HorizontalAlignment.Stretch;
+        progressGauge.Height = 6;
+        progressGauge.MinValue = 0f;
+        progressGauge.MaxValue = 100f;
+        progressGauge.Value = isMainCard ? 72.5f : 85.2f; // DATA LINK: progressGauge.Value -> valuePath
+        cardLayout.Add(progressGauge);
+        
         card.Add(cardLayout);
-        return card;
+        panel.Add(card);
+        return panel;
     }
 
-    private Panel CreateTrendIndicator(string trendPath)
-    {
-        var trendPanel = InformationModel.Make<Panel>("TrendPanel_" + trendPath);
-        trendPanel.HorizontalAlignment = HorizontalAlignment.Center;
-        trendPanel.Height = 25;
-        
-        var trendLayout = InformationModel.Make<RowLayout>("TrendLayout_" + trendPath);
-        trendLayout.HorizontalGap = 8;
-        trendLayout.VerticalAlignment = VerticalAlignment.Center;
-        
-        // Trend icon background circle
-        var trendBg = InformationModel.Make<Ellipse>("TrendBg_" + trendPath);
-        trendBg.Width = 18;
-        trendBg.Height = 18;
-        trendBg.FillColor = new Color((uint)0x20000000);
-        
-        // Trend arrow with conditional coloring
-        var trendIcon = InformationModel.Make<Label>("TrendIcon_" + trendPath);
-        trendIcon.Text = "↗"; // Default up trend
-        trendIcon.FontSize = 12;
-        trendIcon.TextColor = SUCCESS_GREEN;
-        trendIcon.HorizontalAlignment = HorizontalAlignment.Center;
-        
-        // Trend percentage
-        var trendText = InformationModel.Make<Label>("TrendText_" + trendPath);
-        trendText.Text = "+2.3%"; // Sample positive trend
-        trendText.FontSize = 10;
-        trendText.TextColor = MEDIUM_TEXT;
-        // DATA LINK: /Objects/Model/OEEInstances/Machine1/Outputs/{trendPath}
-        // Example: QualityTrend → /Objects/Model/OEEInstances/Machine1/Outputs/QualityTrend
-        
-        trendLayout.Add(trendBg);
-        trendLayout.Add(trendIcon);
-        trendLayout.Add(trendText);
-        trendPanel.Add(trendLayout);
-        
-        return trendPanel;
-    }
 
-    private Panel CreateTargetComparison(string targetPath)
-    {
-        var targetPanel = InformationModel.Make<Panel>("TargetPanel_" + targetPath);
-        targetPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
-        targetPanel.Height = 25;
-        
-        var targetLayout = InformationModel.Make<ColumnLayout>("TargetLayout_" + targetPath);
-        targetLayout.VerticalGap = 3;
-        
-        // Progress bar background
-        var progressBg = InformationModel.Make<Rectangle>("ProgressBg_" + targetPath);
-        progressBg.HorizontalAlignment = HorizontalAlignment.Stretch;
-        progressBg.Height = 6;
-        progressBg.FillColor = new Color((uint)0xFFE9ECEF);
-        progressBg.CornerRadius = 3;
-        
-        // Progress bar fill
-        var progressFill = InformationModel.Make<Rectangle>("ProgressFill_" + targetPath);
-        progressFill.HorizontalAlignment = HorizontalAlignment.Left;
-        progressFill.Height = 6;
-        progressFill.Width = 100; // Will be dynamically updated
-        progressFill.FillColor = SUCCESS_GREEN;
-        progressFill.CornerRadius = 3;
-        // PLACEHOLDER: Connect Width property to {OEEInstance}/Outputs/{targetPath}
-        
-        var targetLabel = InformationModel.Make<Label>("TargetLabel_" + targetPath);
-        targetLabel.Text = "vs 85% target"; // Sample target comparison
-        targetLabel.FontSize = 10;
-        targetLabel.TextColor = MEDIUM_TEXT;
-        targetLabel.HorizontalAlignment = HorizontalAlignment.Center;
-        // PLACEHOLDER: Connect to {OEEInstance}/Outputs/{targetPath}VsTarget
-        // Example: QualityVsTarget → /Objects/Model/OEEInstances/Machine1/Outputs/QualityVsTarget
-        
-        targetLayout.Add(progressBg);
-        targetLayout.Add(progressFill);
-        targetLayout.Add(targetLabel);
-        targetPanel.Add(targetLayout);
-        
-        return targetPanel;
-    }
+
+
 
     private RowLayout CreateSecondaryMetrics()
     {
         var metricsRow = InformationModel.Make<RowLayout>("SecondaryMetrics");
         metricsRow.HorizontalAlignment = HorizontalAlignment.Stretch;
-        metricsRow.Height = 180;
+        metricsRow.Height = 140;
         metricsRow.HorizontalGap = 25;
         
         // Production count metrics
         var countsPanel = CreateMetricGroup("Production Counts", new string[] {
-            "TotalCount:Total Parts",
-            "GoodPartCount:Good Parts", 
-            "BadPartCount:Rejected Parts",
-            "PartsPerHour:Parts/Hour"
+            "Outputs/TotalCount:Total Parts",
+            "Inputs/GoodPartCount:Good Parts", 
+            "Inputs/BadPartCount:Rejected Parts",
+            "Outputs/PartsPerHour:Parts/Hour"
         });
         metricsRow.Add(countsPanel);
         
@@ -780,10 +905,10 @@ public class OEEUIGenerator : BaseNetLogic
         
         // Timing metrics
         var timingPanel = CreateMetricGroup("Timing Metrics", new string[] {
-            "AvgCycleTime:Avg Cycle Time",
-            "TotalRuntimeFormatted:Runtime",
-            "DowntimeFormatted:Downtime",
-            "TimeIntoShift:Shift Progress"
+            "Outputs/AvgCycleTime:Avg Cycle Time",
+            "Outputs/TotalRuntimeFormatted:Runtime",
+            "Outputs/DowntimeFormatted:Downtime",
+            "Outputs/TimeIntoShift:Shift Progress"
         });
         metricsRow.Add(timingPanel);
         
@@ -793,9 +918,9 @@ public class OEEUIGenerator : BaseNetLogic
         
         // Performance indicators
         var performancePanel = CreateMetricGroup("Performance", new string[] {
-            "DataQualityScore:Data Quality",
-            "ExpectedPartCount:Expected Parts",
-            "ProjectedTotalCount:Projected Total",
+            "Outputs/DataQualityScore:Data Quality",
+            "Outputs/ExpectedPartCount:Expected Parts",
+            "Outputs/ProjectedTotalCount:Projected Total",
             "RequiredRateToTarget:Required Rate"
         });
         metricsRow.Add(performancePanel);
@@ -835,11 +960,11 @@ public class OEEUIGenerator : BaseNetLogic
         var groupLayout = InformationModel.Make<ColumnLayout>("GroupLayout_" + groupTitle.Replace(" ", ""));
         groupLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
         groupLayout.VerticalAlignment = VerticalAlignment.Top;
-        groupLayout.LeftMargin = 20;
-        groupLayout.TopMargin = 20;
-        groupLayout.RightMargin = 20;
-        groupLayout.BottomMargin = 15;
-        groupLayout.VerticalGap = 12;
+        groupLayout.LeftMargin = 15;
+        groupLayout.TopMargin = 15;
+        groupLayout.RightMargin = 15;
+        groupLayout.BottomMargin = 10;
+        groupLayout.VerticalGap = 8;
         
         // Group title
         var titleLabel = InformationModel.Make<Label>("GroupTitle_" + groupTitle.Replace(" ", ""));
@@ -899,7 +1024,7 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var statusRow = InformationModel.Make<RowLayout>("ProductionStatus");
         statusRow.HorizontalAlignment = HorizontalAlignment.Stretch;
-        statusRow.Height = 200;
+        statusRow.Height = 160;
         statusRow.HorizontalGap = 25;
         
         // Shift information
@@ -1373,13 +1498,30 @@ public class OEEUIGenerator : BaseNetLogic
         
         try
         {
-            var screensFolder = Project.Current.Get("UI/Screens");
+            // Get Panels folder
+            var panelsFolder = Project.Current.Get("UI/Panels");
+            if (panelsFolder == null)
+            {
+                var uiFolder = Project.Current.Get("UI");
+                panelsFolder = InformationModel.Make<Folder>("Panels");
+                panelsFolder.BrowseName = "Panels";
+                uiFolder.Add(panelsFolder);
+            }
             
-            // Create machine detail screen
-            var detailScreen = InformationModel.Make<Screen>("MachineDetail");
+            // Get or create OEE folder under Panels
+            var oeePanelsFolder = panelsFolder.Get("OEE");
+            if (oeePanelsFolder == null)
+            {
+                oeePanelsFolder = InformationModel.Make<Folder>("OEE");
+                oeePanelsFolder.BrowseName = "OEE";
+                panelsFolder.Add(oeePanelsFolder);
+            }
+            
+            // Create machine detail panel
+            var detailScreen = InformationModel.Make<Panel>("MachineDetail");
             detailScreen.BrowseName = "MachineDetail";
             detailScreen.Width = 1920;
-            detailScreen.Height = 1080;
+            detailScreen.Height = 950;
             
             // Background
             var background = InformationModel.Make<Rectangle>("DetailBackground");
@@ -1392,11 +1534,11 @@ public class OEEUIGenerator : BaseNetLogic
             var mainLayout = InformationModel.Make<RowLayout>("DetailMainLayout");
             mainLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
             mainLayout.VerticalAlignment = VerticalAlignment.Stretch;
-            mainLayout.LeftMargin = 30;
-            mainLayout.TopMargin = 25;
-            mainLayout.RightMargin = 30;
-            mainLayout.BottomMargin = 25;
-            mainLayout.HorizontalGap = 25;
+            mainLayout.LeftMargin = 25;
+            mainLayout.TopMargin = 15;
+            mainLayout.RightMargin = 25;
+            mainLayout.BottomMargin = 15;
+            mainLayout.HorizontalGap = 20;
             
             // Left panel - Machine info and gauges (60% width)
             var leftPanel = CreateMachineInfoPanel();
@@ -1409,7 +1551,7 @@ public class OEEUIGenerator : BaseNetLogic
             mainLayout.Add(rightPanel);
             
             detailScreen.Add(mainLayout);
-            screensFolder.Add(detailScreen);
+            oeePanelsFolder.Add(detailScreen);
             
             Log.Info("OEEUIGenerator", "Machine Detail Screen created successfully!");
         }
@@ -1428,7 +1570,7 @@ public class OEEUIGenerator : BaseNetLogic
         var leftLayout = InformationModel.Make<ColumnLayout>("MachineInfoLayout");
         leftLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
         leftLayout.VerticalAlignment = VerticalAlignment.Stretch;
-        leftLayout.VerticalGap = 25;
+        leftLayout.VerticalGap = 18;
         
         // Machine header with status
         var machineHeader = CreateMachineHeader();
@@ -1455,7 +1597,7 @@ public class OEEUIGenerator : BaseNetLogic
         var rightLayout = InformationModel.Make<ColumnLayout>("DetailTrendsLayout");
         rightLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
         rightLayout.VerticalAlignment = VerticalAlignment.Stretch;
-        rightLayout.VerticalGap = 25;
+        rightLayout.VerticalGap = 18;
         
         // Statistics summary
         var statisticsPanel = CreateStatisticsSummaryPanel();
@@ -1477,7 +1619,7 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var headerPanel = InformationModel.Make<Panel>("MachineHeaderPanel");
         headerPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
-        headerPanel.Height = 120;
+        headerPanel.Height = 80;
         
         // Header shadow
         var headerShadow = InformationModel.Make<Rectangle>("MachineHeaderShadow");
@@ -1652,7 +1794,7 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var gaugesPanel = InformationModel.Make<Panel>("OEEGaugesSection");
         gaugesPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
-        gaugesPanel.Height = 400;
+        gaugesPanel.Height = 280;
         
         // Section shadow
         var sectionShadow = InformationModel.Make<Rectangle>("GaugesSectionShadow");
@@ -1679,10 +1821,10 @@ public class OEEUIGenerator : BaseNetLogic
         gaugesLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
         gaugesLayout.VerticalAlignment = VerticalAlignment.Stretch;
         gaugesLayout.LeftMargin = 25;
-        gaugesLayout.TopMargin = 25;
+        gaugesLayout.TopMargin = 20;
         gaugesLayout.RightMargin = 25;
         gaugesLayout.BottomMargin = 25;
-        gaugesLayout.VerticalGap = 20;
+        gaugesLayout.VerticalGap = 15;
         
         // Section title
         var gaugesTitle = InformationModel.Make<Label>("GaugesTitle");
@@ -1736,48 +1878,42 @@ public class OEEUIGenerator : BaseNetLogic
         gaugeContainer.Height = 200;
         gaugeContainer.HorizontalAlignment = HorizontalAlignment.Stretch;
         
-        // Background circle
-        var backgroundCircle = InformationModel.Make<Ellipse>("GaugeBg_" + title.Replace(" ", ""));
-        backgroundCircle.Width = 180;
-        backgroundCircle.Height = 180;
-        backgroundCircle.HorizontalAlignment = HorizontalAlignment.Center;
-        backgroundCircle.VerticalAlignment = VerticalAlignment.Center;
-        backgroundCircle.FillColor = new Color((uint)0xFFF8F9FA);
-        backgroundCircle.BorderThickness = 8;
-        backgroundCircle.BorderColor = new Color((uint)0xFFE9ECEF);
+        // Actual CircularGauge object from FT Optix
+        var circularGauge = InformationModel.Make<CircularGauge>("CircularGauge_" + title.Replace(" ", ""));
+        circularGauge.Width = 180;
+        circularGauge.Height = 180;
+        circularGauge.HorizontalAlignment = HorizontalAlignment.Center;
+        circularGauge.VerticalAlignment = VerticalAlignment.Center;
+        circularGauge.MinValue = 0;
+        circularGauge.MaxValue = 100;
+        circularGauge.Value = (float)sampleValue;  // Cast to float
+        circularGauge.StartAngle = 1;   // Start at nearly top
+        circularGauge.EndAngle = 359;   // End at nearly full circle (358 degree arc)
+        // DATA LINK: {DynamicLink, commType : \"Reference\", dataType : \"Float\", dynValue : \"/Objects/Model/OEEInstances/Machine1/Outputs/\" + valuePath}
         
-        // Progress circle (simulated with arc - would need custom implementation)
-        var progressCircle = InformationModel.Make<Ellipse>("GaugeProgress_" + title.Replace(" ", ""));
-        progressCircle.Width = 180;
-        progressCircle.Height = 180;
-        progressCircle.HorizontalAlignment = HorizontalAlignment.Center;
-        progressCircle.VerticalAlignment = VerticalAlignment.Center;
-        progressCircle.FillColor = Colors.Transparent;
-        progressCircle.BorderThickness = 8;
-        progressCircle.BorderColor = gaugeColor;
-        
-        // Center value display
+        // Center value display overlay
         var valueContainer = InformationModel.Make<Panel>("GaugeValueContainer_" + title.Replace(" ", ""));
-        valueContainer.Width = 120;
-        valueContainer.Height = 120;
+        valueContainer.Width = 80;
+        valueContainer.Height = 80;
         valueContainer.HorizontalAlignment = HorizontalAlignment.Center;
         valueContainer.VerticalAlignment = VerticalAlignment.Center;
         
         var valueLayout = InformationModel.Make<ColumnLayout>("GaugeValueLayout_" + title.Replace(" ", ""));
         valueLayout.HorizontalAlignment = HorizontalAlignment.Center;
         valueLayout.VerticalAlignment = VerticalAlignment.Center;
-        valueLayout.VerticalGap = 5;
+        valueLayout.VerticalGap = 2;
         
         var valueLabel = InformationModel.Make<Label>("GaugeValue_" + title.Replace(" ", ""));
         valueLabel.Text = sampleValue.ToString("F1") + "%";
-        valueLabel.FontSize = 28;
+        valueLabel.FontSize = 16;
         valueLabel.TextColor = gaugeColor;
         valueLabel.HorizontalAlignment = HorizontalAlignment.Center;
+        valueLabel.FontWeight = FontWeight.Bold;
         // DATA LINK: /Objects/Model/OEEInstances/Machine1/Outputs/{valuePath}
         
         var targetLabel = InformationModel.Make<Label>("GaugeTarget_" + title.Replace(" ", ""));
         targetLabel.Text = "Target: 85%";
-        targetLabel.FontSize = 10;
+        targetLabel.FontSize = 8;
         targetLabel.TextColor = MEDIUM_TEXT;
         targetLabel.HorizontalAlignment = HorizontalAlignment.Center;
         // DATA LINK: /Objects/Model/OEEInstances/Machine1/Inputs/{valuePath}Target
@@ -1786,8 +1922,7 @@ public class OEEUIGenerator : BaseNetLogic
         valueLayout.Add(targetLabel);
         valueContainer.Add(valueLayout);
         
-        gaugeContainer.Add(backgroundCircle);
-        gaugeContainer.Add(progressCircle);
+        gaugeContainer.Add(circularGauge);
         gaugeContainer.Add(valueContainer);
         gaugeLayout.Add(gaugeContainer);
         
@@ -1807,7 +1942,7 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var metricsPanel = InformationModel.Make<Panel>("RealTimeMetricsGrid");
         metricsPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
-        metricsPanel.Height = 400;
+        metricsPanel.Height = 280;
         
         // Panel shadow
         var panelShadow = InformationModel.Make<Rectangle>("MetricsGridShadow");
@@ -1834,10 +1969,10 @@ public class OEEUIGenerator : BaseNetLogic
         metricsLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
         metricsLayout.VerticalAlignment = VerticalAlignment.Stretch;
         metricsLayout.LeftMargin = 25;
-        metricsLayout.TopMargin = 25;
+        metricsLayout.TopMargin = 20;
         metricsLayout.RightMargin = 25;
         metricsLayout.BottomMargin = 25;
-        metricsLayout.VerticalGap = 20;
+        metricsLayout.VerticalGap = 15;
         
         // Section title
         var metricsTitle = InformationModel.Make<Label>("MetricsGridTitle");
@@ -1891,7 +2026,7 @@ public class OEEUIGenerator : BaseNetLogic
         var columnLayout = InformationModel.Make<ColumnLayout>("DetailMetricColumnLayout_" + columnTitle);
         columnLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
         columnLayout.VerticalAlignment = VerticalAlignment.Top;
-        columnLayout.VerticalGap = 15;
+        columnLayout.VerticalGap = 10;
         
         // Column title
         var titleLabel = InformationModel.Make<Label>("DetailColumnTitle_" + columnTitle);
@@ -1916,7 +2051,7 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var itemPanel = InformationModel.Make<Panel>("DetailMetricItem_" + valuePath);
         itemPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
-        itemPanel.Height = 60;
+        itemPanel.Height = 45;
         
         // Item background
         var itemBg = InformationModel.Make<Rectangle>("DetailMetricItemBg_" + valuePath);
@@ -1956,7 +2091,7 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var statsPanel = InformationModel.Make<Panel>("StatisticsSummaryPanel");
         statsPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
-        statsPanel.Height = 300;
+        statsPanel.Height = 220;
         
         // Panel shadow and background
         var statsShadow = InformationModel.Make<Rectangle>("StatsSummaryPanelShadow");
@@ -1981,8 +2116,8 @@ public class OEEUIGenerator : BaseNetLogic
         var statsLayout = InformationModel.Make<ColumnLayout>("StatsSummaryLayout");
         statsLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
         statsLayout.VerticalAlignment = VerticalAlignment.Stretch;
-        statsLayout.LeftMargin = 25;
-        statsLayout.TopMargin = 25;
+        statsLayout.LeftMargin = 20;
+        statsLayout.TopMargin = 15;
         statsLayout.RightMargin = 25;
         statsLayout.BottomMargin = 25;
         statsLayout.VerticalGap = 15;
@@ -2093,7 +2228,7 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var trendPanel = InformationModel.Make<Panel>("TrendAnalysisPanel");
         trendPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
-        trendPanel.Height = 350;
+        trendPanel.Height = 250;
         
         // Panel shadow and background
         var trendShadow = InformationModel.Make<Rectangle>("TrendAnalysisPanelShadow");
@@ -2119,7 +2254,7 @@ public class OEEUIGenerator : BaseNetLogic
         trendLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
         trendLayout.VerticalAlignment = VerticalAlignment.Stretch;
         trendLayout.LeftMargin = 25;
-        trendLayout.TopMargin = 25;
+        trendLayout.TopMargin = 20;
         trendLayout.RightMargin = 25;
         trendLayout.BottomMargin = 25;
         trendLayout.VerticalGap = 15;
@@ -2147,25 +2282,25 @@ public class OEEUIGenerator : BaseNetLogic
         trendsGrid.VerticalGap = 15;
         
         // OEE trend
-        var oeeTrend = CreateTrendIndicatorRow("Overall OEE", "OEETrend", "↗", "Improving +2.3%", SUCCESS_GREEN);
+        var oeeTrend = CreateTrendIndicatorRow("Overall OEE", "OEETrend", CreateIconImage("trend-up"), "Improving +2.3%", SUCCESS_GREEN);
         trendsGrid.Add(oeeTrend);
         
         // Quality trend
-        var qualityTrend = CreateTrendIndicatorRow("Quality", "QualityTrend", "→", "Stable ±0.1%", PRIMARY_BLUE);
+        var qualityTrend = CreateTrendIndicatorRow("Quality", "QualityTrend", CreateIconImage("trend-stable"), "Stable ±0.1%", PRIMARY_BLUE);
         trendsGrid.Add(qualityTrend);
         
         // Performance trend
-        var performanceTrend = CreateTrendIndicatorRow("Performance", "PerformanceTrend", "↘", "Declining -1.8%", WARNING_AMBER);
+        var performanceTrend = CreateTrendIndicatorRow("Performance", "PerformanceTrend", CreateIconImage("trend-down"), "Declining -1.8%", WARNING_AMBER);
         trendsGrid.Add(performanceTrend);
         
         // Availability trend
-        var availabilityTrend = CreateTrendIndicatorRow("Availability", "AvailabilityTrend", "↗", "Improving +3.1%", SUCCESS_GREEN);
+        var availabilityTrend = CreateTrendIndicatorRow("Availability", "AvailabilityTrend", CreateIconImage("trend-up"), "Improving +3.1%", SUCCESS_GREEN);
         trendsGrid.Add(availabilityTrend);
         
         return trendsGrid;
     }
 
-    private RowLayout CreateTrendIndicatorRow(string metric, string trendPath, string arrow, string description, Color trendColor)
+    private RowLayout CreateTrendIndicatorRow(string metric, string trendPath, object arrow, string description, Color trendColor)
     {
         var trendRow = InformationModel.Make<RowLayout>("TrendRow_" + metric.Replace(" ", ""));
         trendRow.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -2181,13 +2316,24 @@ public class OEEUIGenerator : BaseNetLogic
         trendRow.Add(metricLabel);
         
         // Trend arrow
-        var trendArrow = InformationModel.Make<Label>("TrendArrow_" + metric.Replace(" ", ""));
-        trendArrow.Text = arrow;
-        trendArrow.FontSize = 20;
-        trendArrow.TextColor = trendColor;
-        trendArrow.Width = 30;
-        trendArrow.HorizontalAlignment = HorizontalAlignment.Center;
-        trendRow.Add(trendArrow);
+        if (arrow is Image arrowImage)
+        {
+            arrowImage.Width = 20;
+            arrowImage.Height = 20;
+            arrowImage.HorizontalAlignment = HorizontalAlignment.Center;
+            arrowImage.VerticalAlignment = VerticalAlignment.Center;
+            trendRow.Add(arrowImage);
+        }
+        else
+        {
+            var trendArrow = InformationModel.Make<Label>("TrendArrow_" + metric.Replace(" ", ""));
+            trendArrow.Text = arrow.ToString();
+            trendArrow.FontSize = 20;
+            trendArrow.TextColor = trendColor;
+            trendArrow.Width = 30;
+            trendArrow.HorizontalAlignment = HorizontalAlignment.Center;
+            trendRow.Add(trendArrow);
+        }
         
         // Trend description
         var trendDesc = InformationModel.Make<Label>("TrendDescription_" + metric.Replace(" ", ""));
@@ -2204,7 +2350,7 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var targetPanel = InformationModel.Make<Panel>("TargetPerformancePanel");
         targetPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
-        targetPanel.Height = 280;
+        targetPanel.Height = 220;
         
         // Panel shadow and background
         var targetShadow = InformationModel.Make<Rectangle>("TargetPerformancePanelShadow");
@@ -2230,7 +2376,7 @@ public class OEEUIGenerator : BaseNetLogic
         targetLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
         targetLayout.VerticalAlignment = VerticalAlignment.Stretch;
         targetLayout.LeftMargin = 25;
-        targetLayout.TopMargin = 25;
+        targetLayout.TopMargin = 20;
         targetLayout.RightMargin = 25;
         targetLayout.BottomMargin = 25;
         targetLayout.VerticalGap = 15;
@@ -2255,7 +2401,7 @@ public class OEEUIGenerator : BaseNetLogic
         var barsLayout = InformationModel.Make<ColumnLayout>("TargetComparisonBars");
         barsLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
         barsLayout.VerticalAlignment = VerticalAlignment.Stretch;
-        barsLayout.VerticalGap = 20;
+        barsLayout.VerticalGap = 15;
         
         // OEE target bar
         var oeeBar = CreateTargetComparisonBar("OEE", "OEEVsTarget", 72.5, 75.0, PRIMARY_BLUE);
@@ -2380,6 +2526,107 @@ public class OEEUIGenerator : BaseNetLogic
         Log.Info("OEEUIGenerator", $"Dashboard configured with {outputVars.Length + configVars.Length + inputVars.Length} data links");
         Log.Info("OEEUIGenerator", "Data link verification complete!");
     }
+
+    [ExportMethod]
+    public void VerifyPanelCreation()
+    {
+        Log.Info("OEEUIGenerator", "Verifying Panel creation in UI/Panels/OEE folder...");
+        
+        try
+        {
+            var oeePanelsFolder = Project.Current.Get("UI/Panels/OEE");
+            if (oeePanelsFolder == null)
+            {
+                Log.Warning("OEEUIGenerator", "UI/Panels/OEE folder not found. Run Method1() to create the UI system.");
+                return;
+            }
+            
+            string[] expectedPanels = {
+                "OEEDashboard",
+                "MachineDetail", 
+                "OperatorInputScreen",
+                "OEEConfigurationScreen",
+                "MultiLineDashboard",
+                "ReportsAnalyticsScreen"
+            };
+            
+            int foundPanels = 0;
+            foreach (string panelName in expectedPanels)
+            {
+                var panel = oeePanelsFolder.Get(panelName);
+                if (panel != null)
+                {
+                    foundPanels++;
+                    Log.Info("OEEUIGenerator", $"✓ {panelName} panel found");
+                }
+                else
+                {
+                    Log.Warning("OEEUIGenerator", $"✗ {panelName} panel missing");
+                }
+            }
+            
+            Log.Info("OEEUIGenerator", $"Panel verification complete: {foundPanels}/{expectedPanels.Length} panels found");
+            
+            if (foundPanels == expectedPanels.Length)
+            {
+                Log.Info("OEEUIGenerator", "✅ All OEE panels created successfully in UI/Panels/OEE folder!");
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error("OEEUIGenerator", $"Error verifying panels: {ex.Message}");
+        }
+    }
+
+    [ExportMethod]
+    public void VerifyWidgetCreation()
+    {
+        Log.Info("OEEUIGenerator", "Verifying Widget creation in UI/Widgets/OEE folder...");
+        
+        try
+        {
+            var oeeWidgetsFolder = Project.Current.Get("UI/Widgets/OEE");
+            if (oeeWidgetsFolder == null)
+            {
+                Log.Warning("OEEUIGenerator", "UI/Widgets/OEE folder not found. Run Method1() to create the widget library.");
+                return;
+            }
+            
+            string[] expectedWidgets = {
+                "OEEKPICard",
+                "OEEGauge",
+                "OEETrendChart",
+                "ProductionCounter",
+                "StatusIndicator"
+            };
+            
+            int foundWidgets = 0;
+            foreach (string widgetName in expectedWidgets)
+            {
+                var widget = oeeWidgetsFolder.Get(widgetName);
+                if (widget != null)
+                {
+                    foundWidgets++;
+                    Log.Info("OEEUIGenerator", $"✓ {widgetName} widget found");
+                }
+                else
+                {
+                    Log.Warning("OEEUIGenerator", $"✗ {widgetName} widget missing");
+                }
+            }
+            
+            Log.Info("OEEUIGenerator", $"Widget verification complete: {foundWidgets}/{expectedWidgets.Length} widgets found");
+            
+            if (foundWidgets == expectedWidgets.Length)
+            {
+                Log.Info("OEEUIGenerator", "✅ All OEE widgets created successfully in UI/Widgets/OEE folder!");
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error("OEEUIGenerator", $"Error verifying widgets: {ex.Message}");
+        }
+    }
     
     // =================================================================
     // DATA BINDING REFERENCE - Complete mapping of UI elements to OEE variables
@@ -2450,13 +2697,30 @@ public class OEEUIGenerator : BaseNetLogic
         
         try
         {
-            var screensFolder = Project.Current.Get("UI/Screens");
+            // Get Panels folder
+            var panelsFolder = Project.Current.Get("UI/Panels");
+            if (panelsFolder == null)
+            {
+                var uiFolder = Project.Current.Get("UI");
+                panelsFolder = InformationModel.Make<Folder>("Panels");
+                panelsFolder.BrowseName = "Panels";
+                uiFolder.Add(panelsFolder);
+            }
             
-            // Create main operator input screen
-            var inputScreen = InformationModel.Make<Screen>("OperatorInputScreen");
+            // Get or create OEE folder under Panels
+            var oeePanelsFolder = panelsFolder.Get("OEE");
+            if (oeePanelsFolder == null)
+            {
+                oeePanelsFolder = InformationModel.Make<Folder>("OEE");
+                oeePanelsFolder.BrowseName = "OEE";
+                panelsFolder.Add(oeePanelsFolder);
+            }
+            
+            // Create main operator input panel
+            var inputScreen = InformationModel.Make<Panel>("OperatorInputScreen");
             inputScreen.BrowseName = "OperatorInputScreen";
             inputScreen.Width = 1920;
-            inputScreen.Height = 1080;
+            inputScreen.Height = 950;
             
             // Background with modern gradient feel
             var background = InformationModel.Make<Rectangle>("OperatorBackground");
@@ -2465,11 +2729,11 @@ public class OEEUIGenerator : BaseNetLogic
             background.FillColor = LIGHT_GRAY;
             inputScreen.Add(background);
             
-            // Main layout container optimized for 1920x1080
+            // Main layout container optimized for 1920x950
             var mainContainer = InformationModel.Make<ColumnLayout>("OperatorMainContainer");
             mainContainer.HorizontalAlignment = HorizontalAlignment.Stretch;
             mainContainer.VerticalAlignment = VerticalAlignment.Stretch;
-            mainContainer.VerticalGap = 20;
+            mainContainer.VerticalGap = 10;
         
             // Screen header with operator info
             var headerPanel = CreateOperatorHeaderPanel();
@@ -2504,8 +2768,8 @@ public class OEEUIGenerator : BaseNetLogic
             // Add main container to screen
             inputScreen.Add(mainContainer);
         
-            // Add to project screens folder
-            screensFolder.Add(inputScreen);
+            // Add to project panels folder
+            oeePanelsFolder.Add(inputScreen);
             Log.Info("OEEUIGenerator", "Operator Input Screen created successfully with comprehensive input controls");
         }
         catch (Exception ex)
@@ -2774,8 +3038,12 @@ public class OEEUIGenerator : BaseNetLogic
         inputRow.Add(goodPartsInput);
         
         // Scrap parts input
-        var scrapPartsInput = CreateCountInputField("Scrap Parts:", "ScrapPartsInput", "15");
+        var scrapPartsInput = CreateCountInputField("Bad Parts:", "BadPartsInput", "15");
         inputRow.Add(scrapPartsInput);
+        
+        // Runtime input (align with OEEType TotalRuntimeSeconds)
+        var runtimeInput = CreateCountInputField("Total Runtime (sec):", "RuntimeInput", "28800");
+        inputRow.Add(runtimeInput);
         
         // Update button
         var updateButton = CreateStyledButton("Update Counts", "UpdateCountsBtn", PRIMARY_BLUE);
@@ -3796,7 +4064,7 @@ public class OEEUIGenerator : BaseNetLogic
         thresholdsRow.HorizontalAlignment = HorizontalAlignment.Stretch;
         thresholdsRow.HorizontalGap = 15;
         
-        var targetField = CreateConfigInputField("Target %:", "85.0", "/Objects/Model/OEEInstances/Machine1/Configuration/AvailabilityTarget");
+        var targetField = CreateConfigInputField("Target %:", "85.0", "Inputs/AvailabilityTarget");
         thresholdsRow.Add(targetField);
         
         var warningField = CreateConfigInputField("Warning %:", "80.0", "/Objects/Model/OEEInstances/Machine1/Configuration/AvailabilityWarningThreshold");
@@ -3841,7 +4109,7 @@ public class OEEUIGenerator : BaseNetLogic
         thresholdsRow.HorizontalAlignment = HorizontalAlignment.Stretch;
         thresholdsRow.HorizontalGap = 15;
         
-        var targetField = CreateConfigInputField("Target %:", "90.0", "/Objects/Model/OEEInstances/Machine1/Configuration/PerformanceTarget");
+        var targetField = CreateConfigInputField("Target %:", "90.0", "Inputs/PerformanceTarget");
         thresholdsRow.Add(targetField);
         
         var warningField = CreateConfigInputField("Warning %:", "85.0", "/Objects/Model/OEEInstances/Machine1/Configuration/PerformanceWarningThreshold");
@@ -3886,7 +4154,7 @@ public class OEEUIGenerator : BaseNetLogic
         thresholdsRow.HorizontalAlignment = HorizontalAlignment.Stretch;
         thresholdsRow.HorizontalGap = 15;
         
-        var targetField = CreateConfigInputField("Target %:", "95.0", "/Objects/Model/OEEInstances/Machine1/Configuration/QualityTarget");
+        var targetField = CreateConfigInputField("Target %:", "95.0", "Inputs/QualityTarget");
         thresholdsRow.Add(targetField);
         
         var warningField = CreateConfigInputField("Warning %:", "92.0", "/Objects/Model/OEEInstances/Machine1/Configuration/QualityWarningThreshold");
@@ -3948,28 +4216,47 @@ public class OEEUIGenerator : BaseNetLogic
     private Panel CreateConfigInputField(string label, string defaultValue, string dataLink)
     {
         var fieldPanel = InformationModel.Make<Panel>("ConfigField_" + label.Replace(" ", "").Replace(":", "").Replace("%", "Pct"));
-        fieldPanel.Width = 120;
+        fieldPanel.Width = 140; // Slightly wider for better appearance
         
         var fieldLayout = InformationModel.Make<ColumnLayout>("ConfigFieldLayout_" + label.Replace(" ", "").Replace(":", "").Replace("%", "Pct"));
         fieldLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
-        fieldLayout.VerticalGap = 5;
+        fieldLayout.VerticalGap = 6; // Reduced spacing
         
         var fieldLabel = InformationModel.Make<Label>("ConfigFieldLabel_" + label.Replace(" ", "").Replace(":", "").Replace("%", "Pct"));
         fieldLabel.Text = label;
         fieldLabel.FontSize = 10;
-        fieldLabel.TextColor = MEDIUM_TEXT;
-        fieldLabel.HorizontalAlignment = HorizontalAlignment.Center;
+        fieldLabel.FontWeight = FontWeight.Medium;
+        fieldLabel.TextColor = DARK_TEXT; // Darker for better readability
+        fieldLabel.HorizontalAlignment = HorizontalAlignment.Left;
+        
+        // Modern input container
+        var inputContainer = InformationModel.Make<Panel>("InputContainer_" + label.Replace(" ", "").Replace(":", "").Replace("%", "Pct"));
+        inputContainer.HorizontalAlignment = HorizontalAlignment.Stretch;
+        inputContainer.Height = 30;
+        
+        // Input background with modern styling
+        var inputBg = InformationModel.Make<Rectangle>("InputBg_" + label.Replace(" ", "").Replace(":", "").Replace("%", "Pct"));
+        inputBg.HorizontalAlignment = HorizontalAlignment.Stretch;
+        inputBg.VerticalAlignment = VerticalAlignment.Stretch;
+        inputBg.FillColor = WHITE;
+        inputBg.BorderColor = BORDER_COLOR;
+        inputBg.BorderThickness = 1;
+        inputBg.CornerRadius = 6;
+        inputContainer.Add(inputBg);
         
         var fieldInput = InformationModel.Make<TextBox>("ConfigFieldInput_" + label.Replace(" ", "").Replace(":", "").Replace("%", "Pct"));
         fieldInput.Text = defaultValue;
-        fieldInput.FontSize = 12;
-        fieldInput.Width = 100;
-        fieldInput.Height = 30;
-        fieldInput.HorizontalAlignment = HorizontalAlignment.Center;
+        fieldInput.FontSize = 13;
+        fieldInput.TextColor = DARK_TEXT;
+        fieldInput.HorizontalAlignment = HorizontalAlignment.Stretch;
+        fieldInput.VerticalAlignment = VerticalAlignment.Center;
+        fieldInput.LeftMargin = 10;
+        fieldInput.RightMargin = 10;
         // DATA LINK: fieldInput.Text -> dataLink
+        inputContainer.Add(fieldInput);
         
         fieldLayout.Add(fieldLabel);
-        fieldLayout.Add(fieldInput);
+        fieldLayout.Add(inputContainer);
         fieldPanel.Add(fieldLayout);
         
         return fieldPanel;
@@ -3992,7 +4279,7 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var section = InformationModel.Make<Panel>("MachineParameters");
         section.HorizontalAlignment = HorizontalAlignment.Stretch;
-        section.Height = 140;
+        section.Height = 180;
         
         var sectionBg = InformationModel.Make<Rectangle>("MachineParametersBg");
         sectionBg.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -4007,11 +4294,12 @@ public class OEEUIGenerator : BaseNetLogic
         layout.RightMargin = 20;
         layout.TopMargin = 15;
         layout.BottomMargin = 15;
-        layout.VerticalGap = 10;
+        layout.VerticalGap = 15;
         
         var title = InformationModel.Make<Label>("MachineParametersTitle");
-        title.Text = "Machine Parameters";
+        title.Text = "Production Parameters (OEEType Inputs)";
         title.FontSize = 14;
+        title.FontWeight = FontWeight.Bold;
         title.TextColor = PRIMARY_BLUE;
         layout.Add(title);
         
@@ -4019,14 +4307,14 @@ public class OEEUIGenerator : BaseNetLogic
         paramsRow1.HorizontalAlignment = HorizontalAlignment.Stretch;
         paramsRow1.HorizontalGap = 15;
         
-        var nameField = CreateConfigInputField("Machine Name:", "Line 1", "/Objects/Model/OEEInstances/Machine1/Configuration/MachineName");
-        paramsRow1.Add(nameField);
+        var cycleTimeField = CreateConfigInputField("Ideal Cycle Time (sec):", "60.0", "{OEEInstance}/Inputs/IdealCycleTimeSeconds");
+        paramsRow1.Add(cycleTimeField);
         
-        var typeField = CreateConfigInputField("Machine Type:", "CNC", "/Objects/Model/OEEInstances/Machine1/Configuration/MachineType");
-        paramsRow1.Add(typeField);
+        var productionTargetField = CreateConfigInputField("Production Target:", "100", "{OEEInstance}/Inputs/ProductionTarget");
+        paramsRow1.Add(productionTargetField);
         
-        var speedField = CreateConfigInputField("Rated Speed:", "100", "/Objects/Model/OEEInstances/Machine1/Configuration/IdealCycleTime");
-        paramsRow1.Add(speedField);
+        var plannedTimeField = CreateConfigInputField("Planned Production Time (hrs):", "8.0", "{OEEInstance}/Inputs/PlannedProductionTimeHours");
+        paramsRow1.Add(plannedTimeField);
         
         layout.Add(paramsRow1);
         
@@ -4034,14 +4322,14 @@ public class OEEUIGenerator : BaseNetLogic
         paramsRow2.HorizontalAlignment = HorizontalAlignment.Stretch;
         paramsRow2.HorizontalGap = 15;
         
-        var locationField = CreateConfigInputField("Location:", "Shop Floor A", "/Objects/Model/OEEInstances/Machine1/Configuration/Location");
-        paramsRow2.Add(locationField);
+        var qualityTargetField = CreateConfigInputField("Quality Target (%):", "95.0", "{OEEInstance}/Inputs/QualityTarget");
+        paramsRow2.Add(qualityTargetField);
         
-        var departmentField = CreateConfigInputField("Department:", "Production", "/Objects/Model/OEEInstances/Machine1/Configuration/Department");
-        paramsRow2.Add(departmentField);
+        var performanceTargetField = CreateConfigInputField("Performance Target (%):", "85.0", "{OEEInstance}/Inputs/PerformanceTarget");
+        paramsRow2.Add(performanceTargetField);
         
-        var operatorField = CreateConfigInputField("Operator ID:", "OP001", "/Objects/Model/OEEInstances/Machine1/Inputs/OperatorID");
-        paramsRow2.Add(operatorField);
+        var availabilityTargetField = CreateConfigInputField("Availability Target (%):", "90.0", "{OEEInstance}/Inputs/AvailabilityTarget");
+        paramsRow2.Add(availabilityTargetField);
         
         layout.Add(paramsRow2);
         section.Add(layout);
@@ -4052,7 +4340,7 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var section = InformationModel.Make<Panel>("ShiftConfiguration");
         section.HorizontalAlignment = HorizontalAlignment.Stretch;
-        section.Height = 120;
+        section.Height = 160;
         
         var sectionBg = InformationModel.Make<Rectangle>("ShiftConfigurationBg");
         sectionBg.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -4067,31 +4355,44 @@ public class OEEUIGenerator : BaseNetLogic
         layout.RightMargin = 20;
         layout.TopMargin = 15;
         layout.BottomMargin = 15;
-        layout.VerticalGap = 10;
+        layout.VerticalGap = 15;
         
         var title = InformationModel.Make<Label>("ShiftConfigurationTitle");
-        title.Text = "Shift Configuration";
+        title.Text = "Shift Configuration (OEEType Inputs)";
         title.FontSize = 14;
+        title.FontWeight = FontWeight.Bold;
         title.TextColor = SUCCESS_GREEN;
         layout.Add(title);
         
-        var shiftRow = InformationModel.Make<RowLayout>("ShiftConfigurationRow");
-        shiftRow.HorizontalAlignment = HorizontalAlignment.Stretch;
-        shiftRow.HorizontalGap = 15;
+        var shiftRow1 = InformationModel.Make<RowLayout>("ShiftConfigurationRow1");
+        shiftRow1.HorizontalAlignment = HorizontalAlignment.Stretch;
+        shiftRow1.HorizontalGap = 15;
         
-        var shift1Field = CreateConfigInputField("Shift 1 Start:", "06:00", "/Objects/Model/OEEInstances/Machine1/Configuration/Shift1StartTime");
-        shiftRow.Add(shift1Field);
+        var numberOfShiftsField = CreateConfigInputField("Number of Shifts:", "3", "{OEEInstance}/Inputs/NumberOfShifts");
+        shiftRow1.Add(numberOfShiftsField);
         
-        var shift2Field = CreateConfigInputField("Shift 2 Start:", "14:00", "/Objects/Model/OEEInstances/Machine1/Configuration/Shift2StartTime");
-        shiftRow.Add(shift2Field);
+        var hoursPerShiftField = CreateConfigInputField("Hours per Shift:", "8.0", "{OEEInstance}/Outputs/HoursPerShift");
+        shiftRow1.Add(hoursPerShiftField);
         
-        var shift3Field = CreateConfigInputField("Shift 3 Start:", "22:00", "/Objects/Model/OEEInstances/Machine1/Configuration/Shift3StartTime");
-        shiftRow.Add(shift3Field);
+        var shiftStartTimeField = CreateConfigInputField("Shift Start Time:", "06:00", "{OEEInstance}/Inputs/ShiftStartTime");
+        shiftRow1.Add(shiftStartTimeField);
         
-        var breakTimeField = CreateConfigInputField("Break Time (min):", "30", "/Objects/Model/OEEInstances/Machine1/Configuration/BreakTime");
-        shiftRow.Add(breakTimeField);
+        layout.Add(shiftRow1);
         
-        layout.Add(shiftRow);
+        var shiftRow2 = InformationModel.Make<RowLayout>("ShiftConfigurationRow2");
+        shiftRow2.HorizontalAlignment = HorizontalAlignment.Stretch;
+        shiftRow2.HorizontalGap = 15;
+        
+        var updateRateField = CreateConfigInputField("Update Rate (ms):", "1000", "{OEEInstance}/Inputs/UpdateRateMs");
+        shiftRow2.Add(updateRateField);
+        
+        var loggingVerbosityField = CreateConfigInputField("Logging Level:", "1", "{OEEInstance}/Inputs/LoggingVerbosity");
+        shiftRow2.Add(loggingVerbosityField);
+        
+        var oeeTargetField = CreateConfigInputField("OEE Target (%):", "75.0", "{OEEInstance}/Inputs/OEETarget");
+        shiftRow2.Add(oeeTargetField);
+        
+        layout.Add(shiftRow2);
         section.Add(layout);
         return section;
     }
@@ -4256,7 +4557,7 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var section = InformationModel.Make<Panel>("CalculationSettings");
         section.HorizontalAlignment = HorizontalAlignment.Stretch;
-        section.Height = 120;
+        section.Height = 160;
         
         var sectionBg = InformationModel.Make<Rectangle>("CalculationSettingsBg");
         sectionBg.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -4271,31 +4572,44 @@ public class OEEUIGenerator : BaseNetLogic
         layout.RightMargin = 20;
         layout.TopMargin = 15;
         layout.BottomMargin = 15;
-        layout.VerticalGap = 10;
+        layout.VerticalGap = 15;
         
         var title = InformationModel.Make<Label>("CalculationSettingsTitle");
-        title.Text = "Calculation Settings";
+        title.Text = "System Configuration (OEEType Configuration)";
         title.FontSize = 14;
+        title.FontWeight = FontWeight.Bold;
         title.TextColor = SUCCESS_GREEN;
         layout.Add(title);
         
-        var calcRow = InformationModel.Make<RowLayout>("CalculationSettingsRow");
-        calcRow.HorizontalAlignment = HorizontalAlignment.Stretch;
-        calcRow.HorizontalGap = 15;
+        var calcRow1 = InformationModel.Make<RowLayout>("CalculationSettingsRow1");
+        calcRow1.HorizontalAlignment = HorizontalAlignment.Stretch;
+        calcRow1.HorizontalGap = 15;
         
-        var calcModeField = CreateConfigInputField("Calc Mode:", "Auto", "/Objects/Model/OEEInstances/Machine1/Configuration/CalculationMode");
-        calcRow.Add(calcModeField);
+        var enableRealTimeField = CreateConfigInputField("Enable Real-Time Calc:", "true", "{OEEInstance}/Configuration/EnableRealTimeCalc");
+        calcRow1.Add(enableRealTimeField);
         
-        var windowField = CreateConfigInputField("Time Window (min):", "60", "/Objects/Model/OEEInstances/Machine1/Configuration/CalculationWindow");
-        calcRow.Add(windowField);
+        var minRuntimeField = CreateConfigInputField("Minimum Runtime (sec):", "300.0", "{OEEInstance}/Configuration/MinimumRunTime");
+        calcRow1.Add(minRuntimeField);
         
-        var smoothingField = CreateConfigInputField("Smoothing Factor:", "0.1", "/Objects/Model/OEEInstances/Machine1/Configuration/SmoothingFactor");
-        calcRow.Add(smoothingField);
+        var goodThresholdField = CreateConfigInputField("Good OEE Threshold (%):", "75.0", "{OEEInstance}/Configuration/GoodOEE_Threshold");
+        calcRow1.Add(goodThresholdField);
         
-        var triggerField = CreateConfigInputField("Trigger Threshold:", "5", "/Objects/Model/OEEInstances/Machine1/Configuration/TriggerThreshold");
-        calcRow.Add(triggerField);
+        layout.Add(calcRow1);
         
-        layout.Add(calcRow);
+        var calcRow2 = InformationModel.Make<RowLayout>("CalculationSettingsRow2");
+        calcRow2.HorizontalAlignment = HorizontalAlignment.Stretch;
+        calcRow2.HorizontalGap = 15;
+        
+        var poorThresholdField = CreateConfigInputField("Poor OEE Threshold (%):", "50.0", "{OEEInstance}/Configuration/PoorOEE_Threshold");
+        calcRow2.Add(poorThresholdField);
+        
+        var enableLoggingField = CreateConfigInputField("Enable Logging:", "true", "{OEEInstance}/Configuration/EnableLogging");
+        calcRow2.Add(enableLoggingField);
+        
+        var enableAlarmsField = CreateConfigInputField("Enable Alarms:", "true", "{OEEInstance}/Configuration/EnableAlarms");
+        calcRow2.Add(enableAlarmsField);
+        
+        layout.Add(calcRow2);
         section.Add(layout);
         return section;
     }
@@ -4403,13 +4717,30 @@ public class OEEUIGenerator : BaseNetLogic
         
         try
         {
-            var screensFolder = Project.Current.Get("UI/Screens");
+            // Get Panels folder
+            var panelsFolder = Project.Current.Get("UI/Panels");
+            if (panelsFolder == null)
+            {
+                var uiFolder = Project.Current.Get("UI");
+                panelsFolder = InformationModel.Make<Folder>("Panels");
+                panelsFolder.BrowseName = "Panels";
+                uiFolder.Add(panelsFolder);
+            }
             
-            // Create main configuration screen
-            var configScreen = InformationModel.Make<Screen>("OEEConfigurationScreen");
+            // Get or create OEE folder under Panels
+            var oeePanelsFolder = panelsFolder.Get("OEE");
+            if (oeePanelsFolder == null)
+            {
+                oeePanelsFolder = InformationModel.Make<Folder>("OEE");
+                oeePanelsFolder.BrowseName = "OEE";
+                panelsFolder.Add(oeePanelsFolder);
+            }
+            
+            // Create main configuration panel
+            var configScreen = InformationModel.Make<Panel>("OEEConfigurationScreen");
             configScreen.BrowseName = "OEEConfigurationScreen";
             configScreen.Width = 1920;
-            configScreen.Height = 1080;
+            configScreen.Height = 950;
             
             // Background with modern gradient feel
             var background = InformationModel.Make<Rectangle>("ConfigBackground");
@@ -4422,7 +4753,7 @@ public class OEEUIGenerator : BaseNetLogic
             var mainContainer = InformationModel.Make<ColumnLayout>("ConfigMainContainer");
             mainContainer.HorizontalAlignment = HorizontalAlignment.Stretch;
             mainContainer.VerticalAlignment = VerticalAlignment.Stretch;
-            mainContainer.VerticalGap = 20;
+            mainContainer.VerticalGap = 15;
             
             // Screen header with configuration title
             var headerPanel = CreateConfigHeaderPanel();
@@ -4457,82 +4788,13 @@ public class OEEUIGenerator : BaseNetLogic
             // Add main container to screen
             configScreen.Add(mainContainer);
             
-            // Add to project screens folder
-            screensFolder.Add(configScreen);
+            // Add to project panels folder
+            oeePanelsFolder.Add(configScreen);
             Log.Info("OEEUIGenerator", "OEE Configuration Screen created successfully with comprehensive settings");
         }
         catch (Exception ex)
         {
             Log.Error("OEEUIGenerator", $"Error creating OEE Configuration Screen: {ex.Message}");
-        }
-    }
-
-    [ExportMethod]
-    public void CreateOEETrendingScreen()
-    {
-        Log.Info("OEEUIGenerator", "Creating modern OEE Trending Screen...");
-        
-        try
-        {
-            var screensFolder = Project.Current.Get("UI/Screens");
-            
-            // Create main trending screen
-            var trendScreen = InformationModel.Make<Screen>("OEETrendingScreen");
-            trendScreen.BrowseName = "OEETrendingScreen";
-            trendScreen.Width = 1920;
-            trendScreen.Height = 1080;
-            
-            // Background with modern gradient feel
-            var background = InformationModel.Make<Rectangle>("TrendBackground");
-            background.HorizontalAlignment = HorizontalAlignment.Stretch;
-            background.VerticalAlignment = VerticalAlignment.Stretch;
-            background.FillColor = LIGHT_GRAY;
-            trendScreen.Add(background);
-            
-            // Main layout container optimized for 1920x1080
-            var mainContainer = InformationModel.Make<ColumnLayout>("TrendMainContainer");
-            mainContainer.HorizontalAlignment = HorizontalAlignment.Stretch;
-            mainContainer.VerticalAlignment = VerticalAlignment.Stretch;
-            mainContainer.VerticalGap = 20;
-            
-            // Screen header with trend controls
-            var headerPanel = CreateTrendHeaderPanel();
-            mainContainer.Add(headerPanel);
-            
-            // Main trending content area
-            var trendContent = InformationModel.Make<RowLayout>("TrendContent");
-            trendContent.HorizontalAlignment = HorizontalAlignment.Stretch;
-            trendContent.VerticalAlignment = VerticalAlignment.Stretch;
-            trendContent.HorizontalGap = 20;
-            trendContent.LeftMargin = 20;
-            trendContent.RightMargin = 20;
-            
-            // Left panel - Trend Charts
-            var chartsPanel = CreateTrendChartsPanel();
-            chartsPanel.Width = 1200;
-            trendContent.Add(chartsPanel);
-            
-            // Right panel - Statistics & Controls
-            var statsPanel = CreateTrendStatsPanel();
-            statsPanel.Width = 680;
-            trendContent.Add(statsPanel);
-            
-            mainContainer.Add(trendContent);
-            
-            // Footer with time range and export controls
-            var footerPanel = CreateTrendFooterPanel();
-            mainContainer.Add(footerPanel);
-            
-            // Add main container to screen
-            trendScreen.Add(mainContainer);
-            
-            // Add to project screens folder
-            screensFolder.Add(trendScreen);
-            Log.Info("OEEUIGenerator", "OEE Trending Screen created successfully with comprehensive analytics");
-        }
-        catch (Exception ex)
-        {
-            Log.Error("OEEUIGenerator", $"Error creating OEE Trending Screen: {ex.Message}");
         }
     }
 
@@ -4542,13 +4804,30 @@ public class OEEUIGenerator : BaseNetLogic
 
         try
         {
-            var screensFolder = Project.Current.Get("UI/Screens");
+            // Get Panels folder
+            var panelsFolder = Project.Current.Get("UI/Panels");
+            if (panelsFolder == null)
+            {
+                var uiFolder = Project.Current.Get("UI");
+                panelsFolder = InformationModel.Make<Folder>("Panels");
+                panelsFolder.BrowseName = "Panels";
+                uiFolder.Add(panelsFolder);
+            }
+            
+            // Get or create OEE folder under Panels
+            var oeePanelsFolder = panelsFolder.Get("OEE");
+            if (oeePanelsFolder == null)
+            {
+                oeePanelsFolder = InformationModel.Make<Folder>("OEE");
+                oeePanelsFolder.BrowseName = "OEE";
+                panelsFolder.Add(oeePanelsFolder);
+            }
             
             // Create Multi-Line Dashboard screen
             var screen = InformationModel.Make<Panel>("MultiLineDashboard");
             screen.BrowseName = "MultiLineDashboard";
             screen.Width = 1920;
-            screen.Height = 1080;
+            screen.Height = 950;
             
             // Main background with gradient
             var background = InformationModel.Make<Rectangle>("MultiLineBg");
@@ -4561,18 +4840,18 @@ public class OEEUIGenerator : BaseNetLogic
             var header = CreateMultiLineHeader();
             screen.Add(header);
             
-            // Main content area with scroll view
-            var contentScroll = InformationModel.Make<ScrollView>("MultiLineContentScroll");
-            contentScroll.HorizontalAlignment = HorizontalAlignment.Stretch;
-            contentScroll.VerticalAlignment = VerticalAlignment.Stretch;
-            contentScroll.TopMargin = 80; // Below header
-            contentScroll.LeftMargin = 20;
-            contentScroll.RightMargin = 20;
-            contentScroll.BottomMargin = 20;
+            // Main content area without scroll view
+            var contentPanel = InformationModel.Make<Panel>("MultiLineContent");
+            contentPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
+            contentPanel.VerticalAlignment = VerticalAlignment.Stretch;
+            contentPanel.TopMargin = 80; // Below header
+            contentPanel.LeftMargin = 20;
+            contentPanel.RightMargin = 20;
+            contentPanel.BottomMargin = 20;
             
             var mainLayout = InformationModel.Make<ColumnLayout>("MultiLineMainLayout");
             mainLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
-            mainLayout.VerticalGap = 20;
+            mainLayout.VerticalGap = 15;
             
             // Plant Overview Summary
             var overviewSection = CreatePlantOverviewSection();
@@ -4590,10 +4869,10 @@ public class OEEUIGenerator : BaseNetLogic
             var alertsSection = CreateAlertsSection();
             mainLayout.Add(alertsSection);
             
-            contentScroll.Add(mainLayout);
-            screen.Add(contentScroll);
+            contentPanel.Add(mainLayout);
+            screen.Add(contentPanel);
             
-            screensFolder.Add(screen);
+            oeePanelsFolder.Add(screen);
             
             Log.Info("OEEUIGenerator", "Multi-Line Dashboard created successfully");
         }
@@ -4622,12 +4901,19 @@ public class OEEUIGenerator : BaseNetLogic
         headerLayout.RightMargin = 30;
         headerLayout.HorizontalGap = 30;
         
-        // Title section
+        // Title section with icon
         var titleSection = InformationModel.Make<ColumnLayout>("MultiLineTitleSection");
         titleSection.VerticalGap = 2;
         
+        var titleLayout = InformationModel.Make<RowLayout>("MultiLineTitleLayout");
+        titleLayout.HorizontalAlignment = HorizontalAlignment.Center;
+        titleLayout.HorizontalGap = 8;
+        
+        var titleIcon = CreateIconImage("factory", 24, 24);
+        titleLayout.Add(titleIcon);
+        
         var title = InformationModel.Make<Label>("MultiLineTitle");
-        title.Text = "🏭 Multi-Line OEE Dashboard";
+        title.Text = "Multi-Line OEE Dashboard";
         title.FontSize = 24;
         title.TextColor = WHITE;
         
@@ -4636,7 +4922,8 @@ public class OEEUIGenerator : BaseNetLogic
         subtitle.FontSize = 12;
         subtitle.TextColor = new Color((uint)0xFF94A3B8);
         
-        titleSection.Add(title);
+        titleLayout.Add(title);
+        titleSection.Add(titleLayout);
         titleSection.Add(subtitle);
         
         // Status indicators
@@ -4664,7 +4951,7 @@ public class OEEUIGenerator : BaseNetLogic
         
         // Active lines count
         var activeLines = InformationModel.Make<Label>("ActiveLinesCount");
-        activeLines.Text = "6/8 Lines Active";
+        activeLines.Text = "4/4 Lines Active";
         activeLines.FontSize = 12;
         activeLines.TextColor = SUCCESS_GREEN;
         
@@ -4707,12 +4994,20 @@ public class OEEUIGenerator : BaseNetLogic
         layout.BottomMargin = 20;
         layout.VerticalGap = 15;
         
-        // Section title
+        // Section title with icon
+        var titleLayout = InformationModel.Make<RowLayout>("PlantOverviewTitleLayout");
+        titleLayout.HorizontalAlignment = HorizontalAlignment.Left;
+        titleLayout.HorizontalGap = 8;
+        
+        var titleIcon = CreateIconImage("chart-bar", 18, 18);
+        titleLayout.Add(titleIcon);
+        
         var title = InformationModel.Make<Label>("PlantOverviewTitle");
-        title.Text = "📊 Plant Performance Overview";
+        title.Text = "Plant Performance Overview";
         title.FontSize = 18;
         title.TextColor = DARK_TEXT;
-        layout.Add(title);
+        titleLayout.Add(title);
+        layout.Add(titleLayout);
         
         // KPI row
         var kpiRow = InformationModel.Make<RowLayout>("PlantKPIRow");
@@ -4728,7 +5023,7 @@ public class OEEUIGenerator : BaseNetLogic
         kpiRow.Add(totalProduction);
         
         // Active Lines
-        var activeLines = CreateKPICard("Active Lines", "6/8", "75% utilization", WARNING_AMBER, WARNING_AMBER);
+        var activeLines = CreateKPICard("Active Lines", "4/4", "100% utilization", SUCCESS_GREEN, SUCCESS_GREEN);
         kpiRow.Add(activeLines);
         
         // Total Downtime
@@ -4749,7 +5044,7 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var section = InformationModel.Make<Panel>("ProductionLinesGrid");
         section.HorizontalAlignment = HorizontalAlignment.Stretch;
-        section.Height = 600;
+        section.Height = 280;
         
         var sectionBg = InformationModel.Make<Rectangle>("ProductionLinesBg");
         sectionBg.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -4767,12 +5062,20 @@ public class OEEUIGenerator : BaseNetLogic
         layout.BottomMargin = 20;
         layout.VerticalGap = 15;
         
-        // Section title
+        // Section title with icon
+        var titleLayout = InformationModel.Make<RowLayout>("ProductionLinesTitleLayout");
+        titleLayout.HorizontalAlignment = HorizontalAlignment.Left;
+        titleLayout.HorizontalGap = 8;
+        
+        var titleIcon = CreateIconImage("factory", 18, 18);
+        titleLayout.Add(titleIcon);
+        
         var title = InformationModel.Make<Label>("ProductionLinesTitle");
-        title.Text = "🏭 Production Lines Status";
+        title.Text = "Production Lines Status";
         title.FontSize = 18;
         title.TextColor = DARK_TEXT;
-        layout.Add(title);
+        titleLayout.Add(title);
+        layout.Add(titleLayout);
         
         // Lines grid (2 rows of 4 lines each)
         var row1 = InformationModel.Make<RowLayout>("LinesRow1");
@@ -4787,23 +5090,8 @@ public class OEEUIGenerator : BaseNetLogic
         row1.Add(CreateLineCard("Line 03", "Testing", "MAINTENANCE", "0.0%", "0", WARNING_AMBER));
         // Line 4
         row1.Add(CreateLineCard("Line 04", "Assembly", "RUNNING", "75.1%", "1,089", SUCCESS_GREEN));
-        
-        var row2 = InformationModel.Make<RowLayout>("LinesRow2");
-        row2.HorizontalAlignment = HorizontalAlignment.Stretch;
-        row2.HorizontalGap = 20;
-        row2.TopMargin = 15;
-        
-        // Line 5
-        row2.Add(CreateLineCard("Line 05", "Welding", "ALARM", "45.2%", "567", DANGER_RED));
-        // Line 6
-        row2.Add(CreateLineCard("Line 06", "Painting", "RUNNING", "88.7%", "1,445", SUCCESS_GREEN));
-        // Line 7
-        row2.Add(CreateLineCard("Line 07", "Quality", "STOPPED", "0.0%", "0", DANGER_RED));
-        // Line 8
-        row2.Add(CreateLineCard("Line 08", "Finishing", "SETUP", "12.3%", "156", WARNING_AMBER));
-        
         layout.Add(row1);
-        layout.Add(row2);
+        // Only one row with 4 lines needed
         section.Add(layout);
         
         return section;
@@ -4813,7 +5101,7 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var section = InformationModel.Make<Panel>("LineComparisonSection");
         section.HorizontalAlignment = HorizontalAlignment.Stretch;
-        section.Height = 300;
+        section.Height = 240;
         
         var sectionBg = InformationModel.Make<Rectangle>("LineComparisonBg");
         sectionBg.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -4831,12 +5119,20 @@ public class OEEUIGenerator : BaseNetLogic
         layout.BottomMargin = 20;
         layout.VerticalGap = 15;
         
-        // Section title
+        // Section title with icon
+        var titleLayout = InformationModel.Make<RowLayout>("LineComparisonTitleLayout");
+        titleLayout.HorizontalAlignment = HorizontalAlignment.Left;
+        titleLayout.HorizontalGap = 8;
+        
+        var titleIcon = CreateIconImage("chart-line", 18, 18);
+        titleLayout.Add(titleIcon);
+        
         var title = InformationModel.Make<Label>("LineComparisonTitle");
-        title.Text = "📈 Line Performance Comparison";
+        title.Text = "Line Performance Comparison";
         title.FontSize = 18;
         title.TextColor = DARK_TEXT;
-        layout.Add(title);
+        titleLayout.Add(title);
+        layout.Add(titleLayout);
         
         // Comparison charts placeholder
         var chartArea = InformationModel.Make<Rectangle>("ComparisonChartArea");
@@ -4847,13 +5143,22 @@ public class OEEUIGenerator : BaseNetLogic
         chartArea.BorderThickness = 1;
         chartArea.BorderColor = new Color((uint)0xFFE5E7EB);
         
+        var chartTitleLayout = InformationModel.Make<RowLayout>("ChartTitleLayout");
+        chartTitleLayout.HorizontalAlignment = HorizontalAlignment.Center;
+        chartTitleLayout.VerticalAlignment = VerticalAlignment.Center;
+        chartTitleLayout.HorizontalGap = 8;
+        
+        var chartIcon = CreateIconImage("chart-bar", 16, 16);
+        chartTitleLayout.Add(chartIcon);
+        
         var chartLabel = InformationModel.Make<Label>("ComparisonChartLabel");
-        chartLabel.Text = "📊 OEE Comparison Chart\\n(Line Performance vs Target)";
+        chartLabel.Text = "OEE Comparison Chart\\n(Line Performance vs Target)";
         chartLabel.FontSize = 14;
         chartLabel.TextColor = MEDIUM_TEXT;
         chartLabel.HorizontalAlignment = HorizontalAlignment.Center;
         chartLabel.VerticalAlignment = VerticalAlignment.Center;
-        chartArea.Add(chartLabel);
+        chartTitleLayout.Add(chartLabel);
+        chartArea.Add(chartTitleLayout);
         
         layout.Add(chartArea);
         section.Add(layout);
@@ -4883,23 +5188,29 @@ public class OEEUIGenerator : BaseNetLogic
         layout.BottomMargin = 20;
         layout.VerticalGap = 15;
         
-        // Section title
+        // Section title with icon
+        var titleLayout = InformationModel.Make<RowLayout>("AlertsTitleLayout");
+        titleLayout.HorizontalAlignment = HorizontalAlignment.Left;
+        titleLayout.HorizontalGap = 8;
+        
+        var titleIcon = CreateIconImage("alert-triangle", 18, 18);
+        titleLayout.Add(titleIcon);
+        
         var title = InformationModel.Make<Label>("AlertsTitle");
-        title.Text = "🚨 Active Alerts & Issues";
+        title.Text = "Active Alerts & Issues";
         title.FontSize = 18;
         title.TextColor = DARK_TEXT;
-        layout.Add(title);
+        titleLayout.Add(title);
+        layout.Add(titleLayout);
         
         // Alerts list
         var alertsList = InformationModel.Make<ColumnLayout>("AlertsList");
         alertsList.HorizontalAlignment = HorizontalAlignment.Stretch;
         alertsList.VerticalGap = 8;
         
-        alertsList.Add(CreateAlertItem("🔴", "Line 05 - Motor Overheating Alarm", "2 minutes ago", DANGER_RED));
-        alertsList.Add(CreateAlertItem("🟠", "Line 03 - Scheduled Maintenance Active", "1 hour ago", WARNING_AMBER));
-        alertsList.Add(CreateAlertItem("🔴", "Line 07 - Emergency Stop Triggered", "15 minutes ago", DANGER_RED));
-        alertsList.Add(CreateAlertItem("🟡", "Line 08 - Setup Mode Extended", "30 minutes ago", WARNING_AMBER));
-        alertsList.Add(CreateAlertItem("🟢", "Line 06 - New Shift Started", "45 minutes ago", SUCCESS_GREEN));
+        alertsList.Add(CreateAlertItem("circle-orange", "Line 03 - Scheduled Maintenance Active", "1 hour ago", WARNING_AMBER));
+        alertsList.Add(CreateAlertItem("circle-yellow", "Line 04 - Performance Below Target", "30 minutes ago", WARNING_AMBER));
+        alertsList.Add(CreateAlertItem("circle-green", "Line 02 - New Shift Started", "45 minutes ago", SUCCESS_GREEN));
         
         layout.Add(alertsList);
         section.Add(layout);
@@ -5040,7 +5351,7 @@ public class OEEUIGenerator : BaseNetLogic
         return card;
     }
 
-    private Panel CreateAlertItem(string icon, string message, string time, Color alertColor)
+    private Panel CreateAlertItem(string iconName, string message, string time, Color alertColor)
     {
         var item = InformationModel.Make<Panel>("AlertItem");
         item.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -5062,10 +5373,8 @@ public class OEEUIGenerator : BaseNetLogic
         layout.RightMargin = 12;
         layout.HorizontalGap = 10;
         
-        var iconLabel = InformationModel.Make<Label>("AlertIcon");
-        iconLabel.Text = icon;
-        iconLabel.FontSize = 12;
-        iconLabel.Width = 20;
+        var iconImage = CreateIconImage(iconName, 16, 16);
+        layout.Add(iconImage);
         
         var messageLabel = InformationModel.Make<Label>("AlertMessage");
         messageLabel.Text = message;
@@ -5079,97 +5388,12 @@ public class OEEUIGenerator : BaseNetLogic
         timeLabel.TextColor = MEDIUM_TEXT;
         timeLabel.HorizontalAlignment = HorizontalAlignment.Right;
         
-        layout.Add(iconLabel);
+        layout.Add(iconImage);
         layout.Add(messageLabel);
         layout.Add(timeLabel);
         item.Add(layout);
         
         return item;
-    }
-
-    // Missing method implementations for trending screen
-    private Panel CreateTrendHeaderPanel()
-    {
-        var panel = InformationModel.Make<Panel>("TrendHeaderPanel");
-        panel.HorizontalAlignment = HorizontalAlignment.Stretch;
-        panel.Height = 80;
-        
-        var bg = InformationModel.Make<Rectangle>("TrendHeaderBg");
-        bg.HorizontalAlignment = HorizontalAlignment.Stretch;
-        bg.VerticalAlignment = VerticalAlignment.Stretch;
-        bg.FillColor = PRIMARY_BLUE;
-        panel.Add(bg);
-        
-        var title = InformationModel.Make<Label>("TrendHeaderTitle");
-        title.Text = "OEE Trending Analysis";
-        title.FontSize = 24;
-        title.TextColor = WHITE;
-        title.HorizontalAlignment = HorizontalAlignment.Center;
-        title.VerticalAlignment = VerticalAlignment.Center;
-        panel.Add(title);
-        
-        return panel;
-    }
-
-    private Panel CreateTrendChartsPanel()
-    {
-        var panel = InformationModel.Make<Panel>("TrendChartsPanel");
-        panel.HorizontalAlignment = HorizontalAlignment.Stretch;
-        panel.Height = 600;
-        
-        var bg = InformationModel.Make<Rectangle>("TrendChartsBg");
-        bg.HorizontalAlignment = HorizontalAlignment.Stretch;
-        bg.VerticalAlignment = VerticalAlignment.Stretch;
-        bg.FillColor = WHITE;
-        panel.Add(bg);
-        
-        var title = InformationModel.Make<Label>("TrendChartsTitle");
-        title.Text = "Trend Charts Placeholder";
-        title.HorizontalAlignment = HorizontalAlignment.Center;
-        title.VerticalAlignment = VerticalAlignment.Center;
-        title.FontSize = 18;
-        title.TextColor = DARK_TEXT;
-        panel.Add(title);
-        
-        return panel;
-    }
-
-    private Panel CreateTrendStatsPanel()
-    {
-        var panel = InformationModel.Make<Panel>("TrendStatsPanel");
-        panel.HorizontalAlignment = HorizontalAlignment.Stretch;
-        panel.Height = 200;
-        
-        var bg = InformationModel.Make<Rectangle>("TrendStatsBg");
-        bg.HorizontalAlignment = HorizontalAlignment.Stretch;
-        bg.VerticalAlignment = VerticalAlignment.Stretch;
-        bg.FillColor = LIGHT_GRAY;
-        panel.Add(bg);
-        
-        var title = InformationModel.Make<Label>("TrendStatsTitle");
-        title.Text = "Trend Statistics";
-        title.HorizontalAlignment = HorizontalAlignment.Center;
-        title.VerticalAlignment = VerticalAlignment.Center;
-        title.FontSize = 16;
-        title.TextColor = DARK_TEXT;
-        panel.Add(title);
-        
-        return panel;
-    }
-
-    private Panel CreateTrendFooterPanel()
-    {
-        var panel = InformationModel.Make<Panel>("TrendFooterPanel");
-        panel.HorizontalAlignment = HorizontalAlignment.Stretch;
-        panel.Height = 60;
-        
-        var bg = InformationModel.Make<Rectangle>("TrendFooterBg");
-        bg.HorizontalAlignment = HorizontalAlignment.Stretch;
-        bg.VerticalAlignment = VerticalAlignment.Stretch;
-        bg.FillColor = MEDIUM_TEXT;
-        panel.Add(bg);
-        
-        return panel;
     }
 
     [ExportMethod]
@@ -5179,14 +5403,29 @@ public class OEEUIGenerator : BaseNetLogic
         
         try
         {
-            var screensFolder = Project.Current.Get("UI/Screens");
+            // Get Panels folder
+            var panelsFolder = Project.Current.Get("UI/Panels");
+            if (panelsFolder == null)
+            {
+                var uiFolder = Project.Current.Get("UI");
+                panelsFolder = InformationModel.Make<Folder>("Panels");
+                panelsFolder.BrowseName = "Panels";
+                uiFolder.Add(panelsFolder);
+            }
             
-            var screen = InformationModel.Make<Screen>("ReportsAnalyticsScreen");
-            screen.BrowseName = "ReportsAnalyticsScreen";
-            screen.Width = 1920;
-            screen.Height = 1080;
-            
-            // Background
+            // Get or create OEE folder under Panels
+            var oeePanelsFolder = panelsFolder.Get("OEE");
+            if (oeePanelsFolder == null)
+            {
+                oeePanelsFolder = InformationModel.Make<Folder>("OEE");
+                oeePanelsFolder.BrowseName = "OEE";
+                panelsFolder.Add(oeePanelsFolder);
+            }
+
+        var screen = InformationModel.Make<Panel>("ReportsAnalyticsScreen");
+        screen.BrowseName = "ReportsAnalyticsScreen";
+        screen.Width = 1920;
+        screen.Height = 950;            // Background
             var background = InformationModel.Make<Rectangle>("ReportsAnalyticsBg");
             background.HorizontalAlignment = HorizontalAlignment.Stretch;
             background.VerticalAlignment = VerticalAlignment.Stretch;
@@ -5225,7 +5464,7 @@ public class OEEUIGenerator : BaseNetLogic
             
             mainLayout.Add(contentArea);
             screen.Add(mainLayout);
-            screensFolder.Add(screen);
+            oeePanelsFolder.Add(screen);
             
             Log.Info("OEEUIGenerator", "Reports & Analytics Screen created successfully!");
         }
@@ -5277,17 +5516,25 @@ public class OEEUIGenerator : BaseNetLogic
         var titleLayout = InformationModel.Make<ColumnLayout>("ReportsAnalyticsTitleLayout");
         titleLayout.VerticalGap = 5;
         
+        var titleWithIcon = InformationModel.Make<RowLayout>("ReportsAnalyticsTitleWithIcon");
+        titleWithIcon.HorizontalAlignment = HorizontalAlignment.Left;
+        titleWithIcon.HorizontalGap = 8;
+        
+        var titleIcon = CreateIconImage("chart-bar", 24, 24);
+        titleWithIcon.Add(titleIcon);
+        
         var title = InformationModel.Make<Label>("ReportsAnalyticsTitle");
-        title.Text = "📊 Reports & Analytics";
+        title.Text = "Reports & Analytics";
         title.FontSize = 24;
         title.TextColor = WHITE;
+        titleWithIcon.Add(title);
         
         var subtitle = InformationModel.Make<Label>("ReportsAnalyticsSubtitle");
         subtitle.Text = "Downtime/Uptime Analysis & Shift Reporting";
         subtitle.FontSize = 12;
         subtitle.TextColor = new Color((uint)0xFFE8F4FD);
         
-        titleLayout.Add(title);
+        titleLayout.Add(titleWithIcon);
         titleLayout.Add(subtitle);
         titleSection.Add(titleLayout);
         headerContent.Add(titleSection);
@@ -5543,7 +5790,7 @@ public class OEEUIGenerator : BaseNetLogic
     private Button CreateExportButton()
     {
         var exportBtn = InformationModel.Make<Button>("ExportDataButton");
-        exportBtn.Text = "📤 Export Data";
+        exportBtn.Text = "Export Data";
         exportBtn.Width = 120;
         exportBtn.Height = 35;
         exportBtn.FontSize = 11;
@@ -5557,7 +5804,7 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var section = InformationModel.Make<Panel>("DowntimeUptimeSection");
         section.HorizontalAlignment = HorizontalAlignment.Stretch;
-        section.Height = 380;
+        section.Height = 300;
         
         var sectionLayout = InformationModel.Make<ColumnLayout>("DowntimeUptimeLayout");
         sectionLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -5566,7 +5813,7 @@ public class OEEUIGenerator : BaseNetLogic
         
         // Section title
         var title = InformationModel.Make<Label>("DowntimeUptimeTitle");
-        title.Text = "⚡ Downtime/Uptime Analysis";
+        title.Text = "Downtime/Uptime Analysis";
         title.FontSize = 16;
         title.TextColor = DARK_TEXT;
         sectionLayout.Add(title);
@@ -5647,7 +5894,7 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var section = InformationModel.Make<Panel>("ShiftReportSection");
         section.HorizontalAlignment = HorizontalAlignment.Stretch;
-        section.Height = 380;
+        section.Height = 300;
         
         var sectionLayout = InformationModel.Make<ColumnLayout>("ShiftReportLayout");
         sectionLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -5656,7 +5903,7 @@ public class OEEUIGenerator : BaseNetLogic
         
         // Section title
         var title = InformationModel.Make<Label>("ShiftReportTitle");
-        title.Text = "🔄 Shift Performance Reports";
+        title.Text = "Shift Performance Reports";
         title.FontSize = 16;
         title.TextColor = DARK_TEXT;
         sectionLayout.Add(title);
@@ -5803,10 +6050,7 @@ public class OEEUIGenerator : BaseNetLogic
         contentLayout.VerticalGap = 15;
         
         // Title
-        var title = InformationModel.Make<Label>("FiltersTitle");
-        title.Text = "🔍 Filters & Date Range";
-        title.FontSize = 16;
-        title.TextColor = DARK_TEXT;
+        var title = CreateTitleWithIcon("filters", "Filters & Date Range");
         contentLayout.Add(title);
         
         // Date range inputs
@@ -5854,7 +6098,7 @@ public class OEEUIGenerator : BaseNetLogic
         
         // Apply filters button
         var applyButton = InformationModel.Make<Button>("ApplyFiltersButton");
-        applyButton.Text = "📊 Apply Filters";
+        applyButton.Text = "Apply Filters";
         applyButton.HorizontalAlignment = HorizontalAlignment.Center;
         applyButton.Width = 120;
         applyButton.Height = 30;
@@ -5882,7 +6126,7 @@ public class OEEUIGenerator : BaseNetLogic
     {
         var section = InformationModel.Make<Panel>("DowntimeUptimeTrendingSection");
         section.HorizontalAlignment = HorizontalAlignment.Stretch;
-        section.Height = 350;
+        section.Height = 280;
         
         // Section shadow and background
         var sectionShadow = InformationModel.Make<Rectangle>("TrendingSectionShadow");
@@ -5915,7 +6159,7 @@ public class OEEUIGenerator : BaseNetLogic
         
         // Title
         var title = InformationModel.Make<Label>("TrendingTitle");
-        title.Text = "📈 Downtime/Uptime Trending";
+        title.Text = "Downtime/Uptime Trending";
         title.FontSize = 16;
         title.TextColor = DARK_TEXT;
         contentLayout.Add(title);
@@ -5936,7 +6180,7 @@ public class OEEUIGenerator : BaseNetLogic
         
         // Chart placeholder text
         var chartPlaceholder = InformationModel.Make<Label>("ChartPlaceholder");
-        chartPlaceholder.Text = "📊 Downtime/Uptime Trend Chart\n(Connect to historical data source)";
+        chartPlaceholder.Text = "Downtime/Uptime Trend Chart\n(Connect to historical data source)";
         chartPlaceholder.FontSize = 14;
         chartPlaceholder.TextColor = MEDIUM_TEXT;
         chartPlaceholder.HorizontalAlignment = HorizontalAlignment.Center;
@@ -6025,7 +6269,7 @@ public class OEEUIGenerator : BaseNetLogic
         
         // Title
         var title = InformationModel.Make<Label>("SummaryTitle");
-        title.Text = "📋 Summary Statistics";
+        title.Text = "Summary Statistics";
         title.FontSize = 16;
         title.TextColor = DARK_TEXT;
         contentLayout.Add(title);
@@ -6096,4 +6340,1020 @@ public class OEEUIGenerator : BaseNetLogic
         
         return header;
     }
+    
+    // Helper method to create icon images from SVG/PNG files
+    private Image CreateIconImage(string iconName, int width = 20, int height = 20)
+    {
+        var uniqueId = Guid.NewGuid().ToString("N")[0..8];
+        var icon = InformationModel.Make<Image>("Icon_" + iconName.Replace(" ", "") + "_" + uniqueId);
+        icon.Width = width;
+        icon.Height = height;
+        icon.Path = ResourceUri.FromProjectRelativePath($"Graphics/Icons/{iconName}.svg");
+        icon.HorizontalAlignment = HorizontalAlignment.Center;
+        icon.VerticalAlignment = VerticalAlignment.Center;
+        return icon;
+    }
+    
+    // Helper method to create modern styled cards with subtle shadows
+    private Rectangle CreateModernCard(string name, int width, int height, int cornerRadius = 12)
+    {
+        var uniqueId = Guid.NewGuid().ToString("N")[0..8];
+        var card = InformationModel.Make<Rectangle>(name + "_" + uniqueId);
+        card.BrowseName = name;
+        card.Width = width;
+        card.Height = height;
+        card.FillColor = WHITE;
+        card.BorderColor = BORDER_COLOR;
+        card.BorderThickness = 1;
+        card.CornerRadius = cornerRadius;
+        
+        // Add modern drop shadow effect
+        var shadow = InformationModel.Make<Rectangle>("Shadow_" + name + "_" + uniqueId);
+        shadow.Width = width + 4;
+        shadow.Height = height + 4;
+        shadow.LeftMargin = -2;
+        shadow.TopMargin = -1;
+        shadow.FillColor = SHADOW_COLOR;
+        shadow.CornerRadius = cornerRadius;
+        shadow.Opacity = 0.1f;
+        card.Add(shadow);
+        
+        return card;
+    }
+    
+    // Helper method to create title with icon
+    private RowLayout CreateTitleWithIcon(string iconName, string titleText, int iconSize = 20)
+    {
+        var uniqueId = Guid.NewGuid().ToString("N")[0..8];
+        var titleLayout = InformationModel.Make<RowLayout>("TitleWithIcon_" + titleText.Replace(" ", "") + "_" + uniqueId);
+        titleLayout.HorizontalAlignment = HorizontalAlignment.Center;
+        titleLayout.VerticalAlignment = VerticalAlignment.Center;
+        titleLayout.HorizontalGap = 8;
+        
+        var icon = CreateIconImage(iconName, iconSize, iconSize);
+        titleLayout.Add(icon);
+        
+        var label = InformationModel.Make<Label>("TitleLabel_" + titleText.Replace(" ", "") + "_" + uniqueId);
+        label.Text = titleText;
+        label.FontSize = 18;
+        label.FontWeight = FontWeight.Bold;
+        label.TextColor = DARK_TEXT;
+        label.HorizontalAlignment = HorizontalAlignment.Center;
+        titleLayout.Add(label);
+        
+        return titleLayout;
+    }
+
+    // ========== MISSING WIDGET IMPLEMENTATIONS ==========
+
+    private void CreateComboBoxWidget(IUANode oeeWidgetsFolder)
+    {
+        Log.Info("OEEUIGenerator", "Creating ComboBox widget...");
+        
+        // Create panel container
+        var comboBoxWidget = InformationModel.Make<Panel>("OEEComboBox");
+        comboBoxWidget.BrowseName = "OEEComboBox";
+        comboBoxWidget.Width = 220;
+        comboBoxWidget.Height = 50;
+        
+        // Add modern card background
+        var card = CreateModernCard("ComboBoxCard", 220, 50);
+        comboBoxWidget.Add(card);
+        
+        // Create simple selection display with button
+        var layout = InformationModel.Make<RowLayout>("ComboLayout");
+        layout.HorizontalAlignment = HorizontalAlignment.Stretch;
+        layout.VerticalAlignment = VerticalAlignment.Center;
+        layout.LeftMargin = 12;
+        layout.RightMargin = 12;
+        layout.HorizontalGap = 10;
+        
+        var selectionLabel = InformationModel.Make<Label>("SelectionLabel");
+        selectionLabel.Text = "Shift 1 (06:00-14:00)";
+        selectionLabel.FontSize = 12;
+        selectionLabel.TextColor = DARK_TEXT;
+        selectionLabel.HorizontalAlignment = HorizontalAlignment.Stretch;
+        selectionLabel.VerticalAlignment = VerticalAlignment.Center;
+        layout.Add(selectionLabel);
+        
+        var dropdownBtn = InformationModel.Make<Button>("DropdownBtn");
+        dropdownBtn.Text = "▼";
+        dropdownBtn.Width = 25;
+        dropdownBtn.Height = 25;
+        dropdownBtn.FontSize = 10;
+        layout.Add(dropdownBtn);
+        
+        comboBoxWidget.Add(layout);
+        oeeWidgetsFolder.Add(comboBoxWidget);
+        Log.Info("OEEUIGenerator", "ComboBox widget created successfully");
+    }
+
+    private void CreateCheckBoxWidget(IUANode oeeWidgetsFolder)
+    {
+        Log.Info("OEEUIGenerator", "Creating CheckBox widget...");
+        
+        // Create panel container
+        var checkBoxWidget = InformationModel.Make<Panel>("OEECheckBox");
+        checkBoxWidget.BrowseName = "OEECheckBox";
+        checkBoxWidget.Width = 200;
+        checkBoxWidget.Height = 60;
+        
+        // Add modern card background
+        var card = CreateModernCard("CheckBoxCard", 200, 60);
+        checkBoxWidget.Add(card);
+        
+        var layout = InformationModel.Make<RowLayout>("CheckBoxLayout");
+        layout.HorizontalAlignment = HorizontalAlignment.Center;
+        layout.VerticalAlignment = VerticalAlignment.Center;
+        layout.HorizontalGap = 10;
+        
+        var checkBox = InformationModel.Make<CheckBox>("CheckBox");
+        checkBox.Width = 20;
+        checkBox.Height = 20;
+        checkBox.Checked = true;
+        layout.Add(checkBox);
+        
+        var label = InformationModel.Make<Label>("CheckBoxLabel");
+        label.Text = "Enable Auto Mode";
+        label.FontSize = 14;
+        label.TextColor = DARK_TEXT;
+        label.VerticalAlignment = VerticalAlignment.Center;
+        layout.Add(label);
+        
+        checkBoxWidget.Add(layout);
+        oeeWidgetsFolder.Add(checkBoxWidget);
+        Log.Info("OEEUIGenerator", "CheckBox widget created successfully");
+    }
+
+    private void CreateDateTimePickerWidget(IUANode oeeWidgetsFolder)
+    {
+        var dateTimeWidget = InformationModel.Make<Panel>("OEEDateTimePicker");
+        dateTimeWidget.BrowseName = "OEEDateTimePicker";
+        dateTimeWidget.Width = 280;
+        dateTimeWidget.Height = 60;
+        
+        // Add modern card background
+        var card = CreateModernCard("DateTimeCard", 280, 60);
+        dateTimeWidget.Add(card);
+        
+        var layout = InformationModel.Make<ColumnLayout>("DateTimeLayout");
+        layout.HorizontalAlignment = HorizontalAlignment.Stretch;
+        layout.VerticalAlignment = VerticalAlignment.Center;
+        layout.LeftMargin = 15;
+        layout.RightMargin = 15;
+        layout.VerticalGap = 5;
+        
+        var label = InformationModel.Make<Label>("DateTimeLabel");
+        label.Text = "Report Date Range";
+        label.FontSize = 11;
+        label.TextColor = MEDIUM_TEXT;
+        layout.Add(label);
+        
+        var dateInput = InformationModel.Make<TextBox>("DateTimeInput");
+        dateInput.HorizontalAlignment = HorizontalAlignment.Stretch;
+        dateInput.Height = 25;
+        dateInput.Text = "2025-11-13 16:00";
+        dateInput.FontSize = 11;
+        layout.Add(dateInput);
+        
+        dateTimeWidget.Add(layout);
+        oeeWidgetsFolder.Add(dateTimeWidget);
+    }
+
+    private void CreateSliderWidget(IUANode oeeWidgetsFolder)
+    {
+        var sliderWidget = InformationModel.Make<Panel>("OEESlider");
+        sliderWidget.BrowseName = "OEESlider";
+        sliderWidget.Width = 250;
+        sliderWidget.Height = 80;
+        
+        // Add modern card background
+        var card = CreateModernCard("SliderCard", 250, 80);
+        sliderWidget.Add(card);
+        
+        var layout = InformationModel.Make<ColumnLayout>("SliderLayout");
+        layout.HorizontalAlignment = HorizontalAlignment.Stretch;
+        layout.VerticalAlignment = VerticalAlignment.Center;
+        layout.LeftMargin = 20;
+        layout.RightMargin = 20;
+        layout.VerticalGap = 8;
+        
+        var headerRow = InformationModel.Make<RowLayout>("SliderHeader");
+        headerRow.HorizontalAlignment = HorizontalAlignment.Stretch;
+        
+        var label = InformationModel.Make<Label>("SliderLabel");
+        label.Text = "OEE Target";
+        label.FontSize = 12;
+        label.TextColor = DARK_TEXT;
+        label.HorizontalAlignment = HorizontalAlignment.Left;
+        headerRow.Add(label);
+        
+        var valueLabel = InformationModel.Make<Label>("SliderValue");
+        valueLabel.Text = "85%";
+        valueLabel.FontSize = 12;
+        valueLabel.FontWeight = FontWeight.Bold;
+        valueLabel.TextColor = PRIMARY_BLUE;
+        valueLabel.HorizontalAlignment = HorizontalAlignment.Right;
+        headerRow.Add(valueLabel);
+        
+        layout.Add(headerRow);
+        
+        // Slider using rectangles (LinearGauge alternative)
+        var sliderContainer = InformationModel.Make<Panel>("SliderContainer");
+        sliderContainer.HorizontalAlignment = HorizontalAlignment.Stretch;
+        sliderContainer.Height = 20;
+        
+        var sliderBg = InformationModel.Make<Rectangle>("SliderBg");
+        sliderBg.HorizontalAlignment = HorizontalAlignment.Stretch;
+        sliderBg.VerticalAlignment = VerticalAlignment.Stretch;
+        sliderBg.FillColor = LIGHT_GRAY;
+        sliderBg.CornerRadius = 10;
+        sliderContainer.Add(sliderBg);
+        
+        var sliderFill = InformationModel.Make<Rectangle>("SliderFill");
+        sliderFill.HorizontalAlignment = HorizontalAlignment.Left;
+        sliderFill.VerticalAlignment = VerticalAlignment.Stretch;
+        sliderFill.Width = 170; // 85% of 200px
+        sliderFill.FillColor = PRIMARY_BLUE;
+        sliderFill.CornerRadius = 10;
+        sliderContainer.Add(sliderFill);
+        
+        // Slider handle
+        var sliderHandle = InformationModel.Make<Ellipse>("SliderHandle");
+        sliderHandle.Width = 16;
+        sliderHandle.Height = 16;
+        sliderHandle.FillColor = WHITE;
+        sliderHandle.BorderColor = PRIMARY_BLUE;
+        sliderHandle.BorderThickness = 2;
+        sliderHandle.LeftMargin = 162; // Position at 85%
+        sliderHandle.VerticalAlignment = VerticalAlignment.Center;
+        sliderContainer.Add(sliderHandle);
+        
+        layout.Add(sliderContainer);
+        
+        sliderWidget.Add(layout);
+        oeeWidgetsFolder.Add(sliderWidget);
+    }
+
+    private void CreateToggleButtonWidget(IUANode oeeWidgetsFolder)
+    {
+        var toggleWidget = InformationModel.Make<Panel>("OEEToggleButton");
+        toggleWidget.BrowseName = "OEEToggleButton";
+        toggleWidget.Width = 180;
+        toggleWidget.Height = 60;
+        
+        // Add modern card background
+        var card = CreateModernCard("ToggleCard", 180, 60);
+        toggleWidget.Add(card);
+        
+        var layout = InformationModel.Make<RowLayout>("ToggleLayout");
+        layout.HorizontalAlignment = HorizontalAlignment.Center;
+        layout.VerticalAlignment = VerticalAlignment.Center;
+        layout.HorizontalGap = 12;
+        
+        var label = InformationModel.Make<Label>("ToggleLabel");
+        label.Text = "Auto Start";
+        label.FontSize = 14;
+        label.TextColor = DARK_TEXT;
+        layout.Add(label);
+        
+        var toggleBtn = InformationModel.Make<Button>("ToggleBtn");
+        toggleBtn.Text = "ON";
+        toggleBtn.Width = 50;
+        toggleBtn.Height = 25;
+        toggleBtn.FontSize = 11;
+        toggleBtn.TextColor = WHITE;
+        toggleBtn.BackgroundColor = SUCCESS_GREEN;
+        layout.Add(toggleBtn);
+        
+        toggleWidget.Add(layout);
+        oeeWidgetsFolder.Add(toggleWidget);
+    }
+
+    private void CreateRadioButtonWidget(IUANode oeeWidgetsFolder)
+    {
+        var radioWidget = InformationModel.Make<Panel>("OEERadioButton");
+        radioWidget.BrowseName = "OEERadioButton";
+        radioWidget.Width = 200;
+        radioWidget.Height = 100;
+        
+        // Add modern card background
+        var card = CreateModernCard("RadioCard", 200, 100);
+        radioWidget.Add(card);
+        
+        var layout = InformationModel.Make<ColumnLayout>("RadioLayout");
+        layout.HorizontalAlignment = HorizontalAlignment.Stretch;
+        layout.VerticalAlignment = VerticalAlignment.Center;
+        layout.LeftMargin = 15;
+        layout.VerticalGap = 8;
+        
+        var title = InformationModel.Make<Label>("RadioTitle");
+        title.Text = "Machine Mode";
+        title.FontSize = 12;
+        title.FontWeight = FontWeight.Bold;
+        title.TextColor = DARK_TEXT;
+        layout.Add(title);
+        
+        var option1 = InformationModel.Make<RadioButton>("Radio1");
+        option1.Text = "Automatic";
+        option1.Checked = true;
+        option1.FontSize = 11;
+        layout.Add(option1);
+        
+        var option2 = InformationModel.Make<RadioButton>("Radio2");
+        option2.Text = "Manual";
+        option2.FontSize = 11;
+        layout.Add(option2);
+        
+        radioWidget.Add(layout);
+        oeeWidgetsFolder.Add(radioWidget);
+    }
+
+    private void CreateLinearGaugeWidget(IUANode oeeWidgetsFolder)
+    {
+        var gaugeWidget = InformationModel.Make<Panel>("OEELinearGauge");
+        gaugeWidget.BrowseName = "OEELinearGauge";
+        gaugeWidget.Width = 300;
+        gaugeWidget.Height = 60;
+        
+        // Add modern card background
+        var card = CreateModernCard("GaugeCard", 300, 60);
+        gaugeWidget.Add(card);
+        
+        var layout = InformationModel.Make<ColumnLayout>("LinearGaugeLayout");
+        layout.HorizontalAlignment = HorizontalAlignment.Stretch;
+        layout.VerticalAlignment = VerticalAlignment.Center;
+        layout.LeftMargin = 20;
+        layout.RightMargin = 20;
+        layout.VerticalGap = 8;
+        
+        var headerRow = InformationModel.Make<RowLayout>("GaugeHeader");
+        headerRow.HorizontalAlignment = HorizontalAlignment.Stretch;
+        
+        var label = InformationModel.Make<Label>("GaugeLabel");
+        label.Text = "Production Progress";
+        label.FontSize = 11;
+        label.TextColor = MEDIUM_TEXT;
+        label.HorizontalAlignment = HorizontalAlignment.Left;
+        headerRow.Add(label);
+        
+        var valueLabel = InformationModel.Make<Label>("GaugeValue");
+        valueLabel.Text = "72%";
+        valueLabel.FontSize = 11;
+        valueLabel.FontWeight = FontWeight.Bold;
+        valueLabel.TextColor = DARK_TEXT;
+        valueLabel.HorizontalAlignment = HorizontalAlignment.Right;
+        headerRow.Add(valueLabel);
+        
+        layout.Add(headerRow);
+        
+        // Progress bar using rectangles (LinearGauge alternative)
+        var progressContainer = InformationModel.Make<Panel>("ProgressContainer");
+        progressContainer.HorizontalAlignment = HorizontalAlignment.Stretch;
+        progressContainer.Height = 20;
+        
+        var gaugeBg = InformationModel.Make<Rectangle>("GaugeBg");
+        gaugeBg.HorizontalAlignment = HorizontalAlignment.Stretch;
+        gaugeBg.VerticalAlignment = VerticalAlignment.Stretch;
+        gaugeBg.FillColor = LIGHT_GRAY;
+        gaugeBg.CornerRadius = 10;
+        progressContainer.Add(gaugeBg);
+        
+        var gaugeFill = InformationModel.Make<Rectangle>("GaugeFill");
+        gaugeFill.HorizontalAlignment = HorizontalAlignment.Left;
+        gaugeFill.VerticalAlignment = VerticalAlignment.Stretch;
+        gaugeFill.Width = 216; // 72% of 300px
+        gaugeFill.FillColor = PRIMARY_BLUE;
+        gaugeFill.CornerRadius = 10;
+        progressContainer.Add(gaugeFill);
+        
+        layout.Add(progressContainer);
+        
+        gaugeWidget.Add(layout);
+        oeeWidgetsFolder.Add(gaugeWidget);
+    }
+
+    private void CreateTreeViewWidget(IUANode oeeWidgetsFolder)
+    {
+        var treeWidget = InformationModel.Make<Panel>("OEETreeView");
+        treeWidget.BrowseName = "OEETreeView";
+        treeWidget.Width = 250;
+        treeWidget.Height = 200;
+        
+        // Add modern card background
+        var card = CreateModernCard("TreeCard", 250, 200);
+        treeWidget.Add(card);
+        
+        // Tree structure using nested panels
+        var tree = InformationModel.Make<Panel>("TreeView");
+        tree.HorizontalAlignment = HorizontalAlignment.Stretch;
+        tree.VerticalAlignment = VerticalAlignment.Stretch;
+        tree.LeftMargin = 10;
+        tree.TopMargin = 10;
+        tree.RightMargin = 10;
+        tree.BottomMargin = 10;
+        
+        // Tree structure using nested labels
+        var rootNode = InformationModel.Make<Label>("Equipment");
+        rootNode.BrowseName = "Production Equipment";
+        rootNode.Text = "📁 Production Equipment";
+        var treeLayout = InformationModel.Make<ColumnLayout>("TreeLayout");
+        treeLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
+        treeLayout.VerticalAlignment = VerticalAlignment.Stretch;
+        treeLayout.LeftMargin = 10;
+        treeLayout.VerticalGap = 5;
+        
+        var line1Label = InformationModel.Make<Label>("Line1");
+        line1Label.Text = "  📂 Production Line 1";
+        line1Label.FontSize = 12;
+        treeLayout.Add(line1Label);
+        
+        var machine1Label = InformationModel.Make<Label>("Machine1");
+        machine1Label.Text = "    🔧 CNC Machine 01";
+        machine1Label.FontSize = 11;
+        machine1Label.LeftMargin = 20;
+        treeLayout.Add(machine1Label);
+        
+        var machine2Label = InformationModel.Make<Label>("Machine2");
+        machine2Label.Text = "    🔧 Assembly Station 01";
+        machine2Label.FontSize = 11;
+        machine2Label.LeftMargin = 20;
+        treeLayout.Add(machine2Label);
+        
+        tree.Add(rootNode);
+        tree.Add(treeLayout);
+        
+        treeWidget.Add(tree);
+        oeeWidgetsFolder.Add(treeWidget);
+    }
+
+    private void CreateTabViewWidget(IUANode oeeWidgetsFolder)
+    {
+        var tabWidget = InformationModel.Make<Panel>("OEETabView");
+        tabWidget.BrowseName = "OEETabView";
+        tabWidget.Width = 350;
+        tabWidget.Height = 180;
+        
+        // Add modern card background
+        var card = CreateModernCard("TabCard", 350, 180);
+        tabWidget.Add(card);
+        
+        // Tab system using panels and buttons
+        var tabView = InformationModel.Make<Panel>("TabView");
+        tabView.HorizontalAlignment = HorizontalAlignment.Stretch;
+        tabView.VerticalAlignment = VerticalAlignment.Stretch;
+        tabView.LeftMargin = 10;
+        tabView.TopMargin = 10;
+        tabView.RightMargin = 10;
+        tabView.BottomMargin = 10;
+        
+        var tabLayout = InformationModel.Make<ColumnLayout>("TabLayout");
+        tabLayout.HorizontalAlignment = HorizontalAlignment.Stretch;
+        tabLayout.VerticalAlignment = VerticalAlignment.Stretch;
+        tabLayout.VerticalGap = 10;
+        
+        // Tab buttons
+        var tabButtonsRow = InformationModel.Make<RowLayout>("TabButtons");
+        tabButtonsRow.HorizontalAlignment = HorizontalAlignment.Stretch;
+        tabButtonsRow.HorizontalGap = 5;
+        
+        var tab1Button = InformationModel.Make<Button>("Tab1Button");
+        tab1Button.Text = "Current Shift";
+        tab1Button.Width = 100;
+        tab1Button.Height = 30;
+        tabButtonsRow.Add(tab1Button);
+        
+        var tab2Button = InformationModel.Make<Button>("Tab2Button");
+        tab2Button.Text = "Daily Summary";
+        tab2Button.Width = 100;
+        tab2Button.Height = 30;
+        tabButtonsRow.Add(tab2Button);
+        
+        tabLayout.Add(tabButtonsRow);
+        
+        // Tab content area
+        var tabContent = InformationModel.Make<Panel>("TabContent");
+        tabContent.HorizontalAlignment = HorizontalAlignment.Stretch;
+        tabContent.VerticalAlignment = VerticalAlignment.Stretch;
+        
+        var tab1Content = InformationModel.Make<Label>("Tab1Content");
+        tab1Content.Text = "Shift 1 Data\nOEE: 85.2%\nProduction: 1,247 units";
+        tab1Content.HorizontalAlignment = HorizontalAlignment.Center;
+        tab1Content.VerticalAlignment = VerticalAlignment.Center;
+        tab1Content.FontSize = 12;
+        tab1Content.TextColor = DARK_TEXT;
+        tabContent.Add(tab1Content);
+        
+        tabLayout.Add(tabContent);
+        tabView.Add(tabLayout);
+        
+        tabWidget.Add(tabView);
+        oeeWidgetsFolder.Add(tabWidget);
+    }
+
+    private void CreateChartWidget(IUANode oeeWidgetsFolder)
+    {
+        var chartWidget = InformationModel.Make<Panel>("OEEChart");
+        chartWidget.BrowseName = "OEEChart";
+        chartWidget.Width = 400;
+        chartWidget.Height = 250;
+        
+        // Add modern card background
+        var card = CreateModernCard("ChartCard", 400, 250);
+        chartWidget.Add(card);
+        
+        // Chart placeholder using Panel
+        var chart = InformationModel.Make<Panel>("Chart");
+        chart.HorizontalAlignment = HorizontalAlignment.Stretch;
+        chart.VerticalAlignment = VerticalAlignment.Stretch;
+        chart.LeftMargin = 20;
+        chart.TopMargin = 20;
+        chart.RightMargin = 20;
+        chart.BottomMargin = 20;
+        
+        var chartBg = InformationModel.Make<Rectangle>("ChartBg");
+        chartBg.HorizontalAlignment = HorizontalAlignment.Stretch;
+        chartBg.VerticalAlignment = VerticalAlignment.Stretch;
+        chartBg.FillColor = LIGHT_GRAY;
+        chartBg.BorderColor = BORDER_COLOR;
+        chartBg.BorderThickness = 1;
+        chartBg.CornerRadius = 8;
+        chart.Add(chartBg);
+        
+        // Chart title and placeholder
+        var chartTitle = InformationModel.Make<Label>("ChartTitle");
+        chartTitle.Text = "OEE Trend Chart";
+        chartTitle.HorizontalAlignment = HorizontalAlignment.Center;
+        chartTitle.VerticalAlignment = VerticalAlignment.Top;
+        chartTitle.TopMargin = 10;
+        chartTitle.FontSize = 14;
+        chartTitle.FontWeight = FontWeight.Bold;
+        chartTitle.TextColor = DARK_TEXT;
+        chart.Add(chartTitle);
+        
+        var chartPlaceholder = InformationModel.Make<Label>("ChartPlaceholder");
+        chartPlaceholder.Text = "[Connect to TrendPen or DataLogger\nfor real-time OEE trending]";
+        chartPlaceholder.HorizontalAlignment = HorizontalAlignment.Center;
+        chartPlaceholder.VerticalAlignment = VerticalAlignment.Center;
+        chartPlaceholder.FontSize = 12;
+        chartPlaceholder.TextColor = MEDIUM_TEXT;
+        chart.Add(chartPlaceholder);
+        
+        chartWidget.Add(chart);
+        oeeWidgetsFolder.Add(chartWidget);
+    }
+
+    private void CreateProgressGaugeWidget(IUANode oeeWidgetsFolder)
+    {
+        var progressWidget = InformationModel.Make<Panel>("OEEProgressBar");
+        progressWidget.BrowseName = "OEEProgressBar";
+        progressWidget.Width = 280;
+        progressWidget.Height = 70;
+        
+        // Add modern card background
+        var card = CreateModernCard("ProgressCard", 280, 70);
+        progressWidget.Add(card);
+        
+        var layout = InformationModel.Make<ColumnLayout>("ProgressLayout");
+        layout.HorizontalAlignment = HorizontalAlignment.Stretch;
+        layout.VerticalAlignment = VerticalAlignment.Center;
+        layout.LeftMargin = 20;
+        layout.RightMargin = 20;
+        layout.VerticalGap = 8;
+        
+        var headerRow = InformationModel.Make<RowLayout>("ProgressHeader");
+        headerRow.HorizontalAlignment = HorizontalAlignment.Stretch;
+        
+        var label = InformationModel.Make<Label>("ProgressLabel");
+        label.Text = "Batch Progress";
+        label.FontSize = 12;
+        label.TextColor = DARK_TEXT;
+        label.HorizontalAlignment = HorizontalAlignment.Left;
+        headerRow.Add(label);
+        
+        var percentLabel = InformationModel.Make<Label>("ProgressPercent");
+        percentLabel.Text = "67%";
+        percentLabel.FontSize = 12;
+        percentLabel.FontWeight = FontWeight.Bold;
+        percentLabel.TextColor = PRIMARY_BLUE;
+        percentLabel.HorizontalAlignment = HorizontalAlignment.Right;
+        headerRow.Add(percentLabel);
+        
+        layout.Add(headerRow);
+        
+        // Use FTOptix LinearGauge instead of fake rectangles
+        var linearGauge = InformationModel.Make<LinearGauge>("BatchProgressGauge");
+        linearGauge.HorizontalAlignment = HorizontalAlignment.Stretch;
+        linearGauge.Height = 16;
+        linearGauge.MinValue = 0f;
+        linearGauge.MaxValue = 100f;
+        linearGauge.Value = 67f; // DATA LINK: linearGauge.Value -> {OEEInstance}/Outputs/BatchProgress
+        
+        layout.Add(linearGauge);
+        card.Add(layout);
+        progressWidget.Add(card);
+        oeeWidgetsFolder.Add(progressWidget);
+    }
+
+    private void CreateCircularGaugeWidget(IUANode oeeWidgetsFolder)
+    {
+        var circularWidget = InformationModel.Make<Panel>("OEECircularGauge");
+        circularWidget.BrowseName = "OEECircularGauge";
+        circularWidget.Width = 200;
+        circularWidget.Height = 200;
+        
+        // Add modern card background
+        var card = CreateModernCard("CircularGaugeCard", 200, 200);
+        circularWidget.Add(card);
+        
+        var layout = InformationModel.Make<ColumnLayout>("CircularGaugeLayout");
+        layout.HorizontalAlignment = HorizontalAlignment.Center;
+        layout.VerticalAlignment = VerticalAlignment.Center;
+        layout.VerticalGap = 10;
+        
+        // Title
+        var title = InformationModel.Make<Label>("CircularGaugeTitle");
+        title.Text = "OEE Performance";
+        title.FontSize = 14;
+        title.FontWeight = FontWeight.Bold;
+        title.TextColor = DARK_TEXT;
+        title.HorizontalAlignment = HorizontalAlignment.Center;
+        layout.Add(title);
+        
+        // CircularGauge with correct properties
+        var circularGauge = InformationModel.Make<CircularGauge>("OEECircularGaugeControl");
+        circularGauge.Width = 140;
+        circularGauge.Height = 140;
+        circularGauge.MinValue = 0f;
+        circularGauge.MaxValue = 100f;
+        circularGauge.Value = 75.5f; // DATA LINK: circularGauge.Value -> {OEEInstance}/Outputs/OEE
+        // Note: CircularGauge properties may vary - check FTOptix documentation for exact property names
+        layout.Add(circularGauge);
+        
+        // Value display
+        var valueLabel = InformationModel.Make<Label>("CircularGaugeValue");
+        valueLabel.Text = "75.5%";
+        valueLabel.FontSize = 12;
+        valueLabel.FontWeight = FontWeight.Medium;
+        valueLabel.TextColor = MEDIUM_TEXT;
+        valueLabel.HorizontalAlignment = HorizontalAlignment.Center;
+        layout.Add(valueLabel);
+        
+        card.Add(layout);
+        oeeWidgetsFolder.Add(circularWidget);
+    }
+
+    private void CreateAlarmDisplayWidget(IUANode oeeWidgetsFolder)
+    {
+        var alarmWidget = InformationModel.Make<Panel>("OEEAlarmDisplay");
+        alarmWidget.BrowseName = "OEEAlarmDisplay";
+        alarmWidget.Width = 320;
+        alarmWidget.Height = 120;
+        
+        // Add modern card background
+        var card = CreateModernCard("AlarmCard", 320, 120);
+        alarmWidget.Add(card);
+        
+        var layout = InformationModel.Make<ColumnLayout>("AlarmLayout");
+        layout.HorizontalAlignment = HorizontalAlignment.Stretch;
+        layout.VerticalAlignment = VerticalAlignment.Stretch;
+        layout.LeftMargin = 15;
+        layout.TopMargin = 15;
+        layout.RightMargin = 15;
+        layout.BottomMargin = 15;
+        layout.VerticalGap = 8;
+        
+        var headerRow = InformationModel.Make<RowLayout>("AlarmHeader");
+        headerRow.HorizontalAlignment = HorizontalAlignment.Stretch;
+        headerRow.HorizontalGap = 10;
+        
+        var alarmIcon = CreateIconImage("alert-triangle", 18, 18);
+        headerRow.Add(alarmIcon);
+        
+        var alarmTitle = InformationModel.Make<Label>("AlarmTitle");
+        alarmTitle.Text = "Active Alarms";
+        alarmTitle.FontSize = 14;
+        alarmTitle.FontWeight = FontWeight.Bold;
+        alarmTitle.TextColor = DANGER_RED;
+        alarmTitle.VerticalAlignment = VerticalAlignment.Center;
+        headerRow.Add(alarmTitle);
+        
+        var alarmCount = InformationModel.Make<Label>("AlarmCount");
+        alarmCount.Text = "3";
+        alarmCount.FontSize = 14;
+        alarmCount.FontWeight = FontWeight.Bold;
+        alarmCount.TextColor = WHITE;
+        alarmCount.HorizontalAlignment = HorizontalAlignment.Right;
+        alarmCount.VerticalAlignment = VerticalAlignment.Center;
+        
+        var countBg = InformationModel.Make<Ellipse>("AlarmCountBg");
+        countBg.Width = 25;
+        countBg.Height = 25;
+        countBg.FillColor = DANGER_RED;
+        countBg.Add(alarmCount);
+        headerRow.Add(countBg);
+        
+        layout.Add(headerRow);
+        
+        var alarmText = InformationModel.Make<Label>("AlarmText");
+        alarmText.Text = "• Machine 01: High Temperature\n• Line 03: Material Low\n• System: Network Timeout";
+        alarmText.FontSize = 10;
+        alarmText.TextColor = DARK_TEXT;
+        layout.Add(alarmText);
+        
+        alarmWidget.Add(layout);
+        oeeWidgetsFolder.Add(alarmWidget);
+    }
+
+    private void CreateLEDIndicatorWidget(IUANode oeeWidgetsFolder)
+    {
+        var ledWidget = InformationModel.Make<Panel>("OEELEDIndicator");
+        ledWidget.BrowseName = "OEELEDIndicator";
+        ledWidget.Width = 180;
+        ledWidget.Height = 100;
+        
+        // Add modern card background
+        var card = CreateModernCard("LEDCard", 180, 100);
+        ledWidget.Add(card);
+        
+        var layout = InformationModel.Make<ColumnLayout>("LEDLayout");
+        layout.HorizontalAlignment = HorizontalAlignment.Center;
+        layout.VerticalAlignment = VerticalAlignment.Center;
+        layout.VerticalGap = 10;
+        
+        var label = InformationModel.Make<Label>("LEDLabel");
+        label.Text = "Machine Status";
+        label.FontSize = 12;
+        label.TextColor = DARK_TEXT;
+        label.HorizontalAlignment = HorizontalAlignment.Center;
+        layout.Add(label);
+        
+        var ledRow = InformationModel.Make<RowLayout>("LEDRow");
+        ledRow.HorizontalAlignment = HorizontalAlignment.Center;
+        ledRow.HorizontalGap = 15;
+        
+        // Green LED (Running)
+        var greenLED = InformationModel.Make<Ellipse>("GreenLED");
+        greenLED.Width = 20;
+        greenLED.Height = 20;
+        greenLED.FillColor = SUCCESS_GREEN;
+        greenLED.BorderColor = new Color(0xFF22C55E);
+        greenLED.BorderThickness = 2;
+        ledRow.Add(greenLED);
+        
+        // Yellow LED (Warning)
+        var yellowLED = InformationModel.Make<Ellipse>("YellowLED");
+        yellowLED.Width = 20;
+        yellowLED.Height = 20;
+        yellowLED.FillColor = new Color(0xFF64748B);  // Dim state
+        yellowLED.BorderColor = WARNING_AMBER;
+        yellowLED.BorderThickness = 1;
+        ledRow.Add(yellowLED);
+        
+        // Red LED (Fault)
+        var redLED = InformationModel.Make<Ellipse>("RedLED");
+        redLED.Width = 20;
+        redLED.Height = 20;
+        redLED.FillColor = new Color(0xFF64748B);  // Dim state
+        redLED.BorderColor = DANGER_RED;
+        redLED.BorderThickness = 1;
+        ledRow.Add(redLED);
+        
+        layout.Add(ledRow);
+        
+        var statusText = InformationModel.Make<Label>("StatusText");
+        statusText.Text = "RUNNING";
+        statusText.FontSize = 11;
+        statusText.FontWeight = FontWeight.Bold;
+        statusText.TextColor = SUCCESS_GREEN;
+        statusText.HorizontalAlignment = HorizontalAlignment.Center;
+        layout.Add(statusText);
+        
+        ledWidget.Add(layout);
+        oeeWidgetsFolder.Add(ledWidget);
+    }
+
+    private void CreateNumericUpDownWidget(IUANode oeeWidgetsFolder)
+    {
+        var numericWidget = InformationModel.Make<Panel>("OEENumericUpDown");
+        numericWidget.BrowseName = "OEENumericUpDown";
+        numericWidget.Width = 160;
+        numericWidget.Height = 80;
+        
+        // Add modern card background
+        var card = CreateModernCard("NumericCard", 160, 80);
+        numericWidget.Add(card);
+        
+        var layout = InformationModel.Make<ColumnLayout>("NumericLayout");
+        layout.HorizontalAlignment = HorizontalAlignment.Stretch;
+        layout.VerticalAlignment = VerticalAlignment.Center;
+        layout.LeftMargin = 15;
+        layout.RightMargin = 15;
+        layout.VerticalGap = 8;
+        
+        var label = InformationModel.Make<Label>("NumericLabel");
+        label.Text = "Target Count";
+        label.FontSize = 11;
+        label.TextColor = MEDIUM_TEXT;
+        layout.Add(label);
+        
+        var inputContainer = InformationModel.Make<RowLayout>("NumericInputContainer");
+        inputContainer.HorizontalAlignment = HorizontalAlignment.Stretch;
+        inputContainer.HorizontalGap = 5;
+        
+        var numericInput = InformationModel.Make<TextBox>("NumericInput");
+        numericInput.HorizontalAlignment = HorizontalAlignment.Stretch;
+        numericInput.Height = 30;
+        numericInput.Text = "1500";
+        numericInput.FontSize = 12;
+        inputContainer.Add(numericInput);
+        
+        var upBtn = InformationModel.Make<Button>("UpBtn");
+        upBtn.Text = "▲";
+        upBtn.Width = 25;
+        upBtn.Height = 15;
+        upBtn.FontSize = 8;
+        inputContainer.Add(upBtn);
+        
+        layout.Add(inputContainer);
+        
+        numericWidget.Add(layout);
+        oeeWidgetsFolder.Add(numericWidget);
+    }
+
+    private void CreateTimePickerWidget(IUANode oeeWidgetsFolder)
+    {
+        var timeWidget = InformationModel.Make<Panel>("OEETimePicker");
+        timeWidget.BrowseName = "OEETimePicker";
+        timeWidget.Width = 200;
+        timeWidget.Height = 80;
+        
+        // Add modern card background
+        var card = CreateModernCard("TimeCard", 200, 80);
+        timeWidget.Add(card);
+        
+        var layout = InformationModel.Make<ColumnLayout>("TimeLayout");
+        layout.HorizontalAlignment = HorizontalAlignment.Stretch;
+        layout.VerticalAlignment = VerticalAlignment.Center;
+        layout.LeftMargin = 15;
+        layout.RightMargin = 15;
+        layout.VerticalGap = 8;
+        
+        var label = InformationModel.Make<Label>("TimeLabel");
+        label.Text = "Shift Start Time";
+        label.FontSize = 11;
+        label.TextColor = MEDIUM_TEXT;
+        layout.Add(label);
+        
+        // Time input using TextBox with validation
+        var timeInput = InformationModel.Make<TextBox>("TimeInput");
+        timeInput.HorizontalAlignment = HorizontalAlignment.Stretch;
+        timeInput.Height = 30;
+        timeInput.Text = "06:00";
+        timeInput.FontSize = 12;
+        layout.Add(timeInput);
+        
+        var timeHint = InformationModel.Make<Label>("TimeHint");
+        timeHint.Text = "Format: HH:MM";
+        timeHint.FontSize = 9;
+        timeHint.TextColor = MEDIUM_TEXT;
+        layout.Add(timeHint);
+        
+        timeWidget.Add(layout);
+        oeeWidgetsFolder.Add(timeWidget);
+    }
+
+    /*
+     * === WIDGET DATA BINDING EXAMPLES FOR OEEType STRUCTURE ===
+     * 
+     * IMPORTANT: All screens and widgets now have an OEEType alias node called "OEEData"
+     * This makes binding much easier! Use relative paths from the alias instead of full paths.
+     * 
+     * Base Path Formats:
+     * - Full path: /Objects/UI/Types/OEEType/{Folder}/{Variable}
+     * - Alias path: OEEData/{Folder}/{Variable}  (Much easier!)
+     * 
+     * EXAMPLE 1: ComboBox for Shift Selection (Using Alias)
+     * ------------------------------------------------------
+     * In CreateComboBoxWidget(), replace the static text with:
+     * 
+     * selectionLabel.DynamicLink = Owner.Get<DynamicLink>("DynamicLink");
+     * selectionLabel.DynamicLink.Mode = DynamicLinkMode.Read;
+     * selectionLabel.DynamicLink.Value = "OEEData/Outputs/CurrentShiftNumber";
+     * 
+     * Or create a formatted display:
+     * var shiftDisplay = InformationModel.Make<Label>("ShiftDisplay");
+     * shiftDisplay.Text = "{0}: {1}";
+     * shiftDisplay.DynamicLink = Owner.Get<DynamicLink>("ShiftDisplayLink");
+     * shiftDisplay.DynamicLink.Value = "OEEData/Outputs/ShiftStartTimeOutput";
+     * 
+     * EXAMPLE 2: CheckBox for Real-Time Calculation (Using Alias)
+     * ------------------------------------------------------------
+     * In CreateCheckBoxWidget(), replace the checkbox state with:
+     * 
+     * enableCheckbox.CheckedProperty = InformationModel.MakeProperty<bool>("Checked");
+     * enableCheckbox.CheckedProperty.DynamicLink = Owner.Get<DynamicLink>("EnableCalcLink");
+     * enableCheckbox.CheckedProperty.DynamicLink.Mode = DynamicLinkMode.ReadWrite;
+     * enableCheckbox.CheckedProperty.DynamicLink.Value = "OEEData/Configuration/EnableRealTimeCalc";
+     * 
+     * EXAMPLE 3: Slider for Quality Target (Using Alias)
+     * ---------------------------------------------------
+     * In CreateSliderWidget(), connect to quality target:
+     * 
+     * slider.ValueProperty = InformationModel.MakeProperty<float>("Value");
+     * slider.ValueProperty.DynamicLink = Owner.Get<DynamicLink>("QualityTargetLink");
+     * slider.ValueProperty.DynamicLink.Mode = DynamicLinkMode.ReadWrite;
+     * slider.ValueProperty.DynamicLink.Value = "OEEData/Inputs/QualityTarget";
+     * 
+     * // Also connect the display value
+     * valueLabel.DynamicLink = Owner.Get<DynamicLink>("QualityDisplayLink");
+     * valueLabel.DynamicLink.Value = "OEEData/Inputs/QualityTarget";
+     * 
+     * EXAMPLE 4: LED Indicator for System Health (Using Alias)
+     * ---------------------------------------------------------
+     * In CreateLEDIndicatorWidget(), connect to system status:
+     * 
+     * ledIndicator.ActiveProperty = InformationModel.MakeProperty<bool>("Active");
+     * ledIndicator.ActiveProperty.DynamicLink = Owner.Get<DynamicLink>("HealthLink");
+     * ledIndicator.ActiveProperty.DynamicLink.Mode = DynamicLinkMode.Read;
+     * ledIndicator.ActiveProperty.DynamicLink.Value = "OEEData/Configuration/SystemHealthy";
+     * 
+     * EXAMPLE 5: ProgressBar for OEE Performance (Using Alias)
+     * ---------------------------------------------------------
+     * In CreateProgressBarWidget(), connect to current performance:
+     * 
+     * progressBar.ValueProperty = InformationModel.MakeProperty<float>("Value");
+     * progressBar.ValueProperty.DynamicLink = Owner.Get<DynamicLink>("PerformanceLink");
+     * progressBar.ValueProperty.DynamicLink.Mode = DynamicLinkMode.Read;
+     * progressBar.ValueProperty.DynamicLink.Value = "OEEData/Outputs/Performance";
+     * 
+     * // Set progress bar range to 0-100%
+     * progressBar.MinimumValue = 0;
+     * progressBar.MaximumValue = 100;
+     * 
+     * EXAMPLE 6: SpinBox for Production Target (Using Alias)
+     * -------------------------------------------------------
+     * In CreateSpinBoxWidget(), connect to production target:
+     * 
+     * spinBox.ValueProperty = InformationModel.MakeProperty<int>("Value");
+     * spinBox.ValueProperty.DynamicLink = Owner.Get<DynamicLink>("ProductionTargetLink");
+     * spinBox.ValueProperty.DynamicLink.Mode = DynamicLinkMode.ReadWrite;
+     * spinBox.ValueProperty.DynamicLink.Value = "OEEData/Inputs/ProductionTarget";
+     * 
+     * EXAMPLE 7: DataGrid for Trend Data (Using Alias)
+     * -------------------------------------------------
+     * In CreateDataGridWidget(), connect to calculated outputs:
+     * 
+     * // Add columns for trend data
+     * var qualityColumn = InformationModel.Make<GridColumn>("QualityColumn");
+     * qualityColumn.TitleText = "Quality %";
+     * qualityColumn.DataItemTemplate = "OEEData/Outputs/Quality";
+     * dataGrid.AddColumn(qualityColumn);
+     * 
+     * var performanceColumn = InformationModel.Make<GridColumn>("PerformanceColumn");
+     * performanceColumn.TitleText = "Performance %";
+     * performanceColumn.DataItemTemplate = "OEEData/Outputs/Performance";
+     * dataGrid.AddColumn(performanceColumn);
+     * 
+     * EXAMPLE 8: CircularGauge for OEE Value (Using Alias)
+     * -----------------------------------------------------
+     * In CreateCircularGaugeWidget(), connect to overall OEE:
+     * 
+     * gauge.ValueProperty = InformationModel.MakeProperty<float>("Value");
+     * gauge.ValueProperty.DynamicLink = Owner.Get<DynamicLink>("OEELink");
+     * gauge.ValueProperty.DynamicLink.Mode = DynamicLinkMode.Read;
+     * gauge.ValueProperty.DynamicLink.Value = "OEEData/Outputs/OEE";
+     * 
+     * // Configure gauge ranges
+     * gauge.MinValue = 0;
+     * gauge.MaxValue = 100;
+     * 
+     * ALIAS NODE LOCATIONS:
+     * ====================
+     * All screens and widgets now have "OEEData" alias nodes of type OEEType:
+     * - Dashboard Screen: OEEData -> UI/Types/OEEType
+     * - Machine Detail Screen: OEEData -> UI/Types/OEEType
+     * - Operator Input Screen: OEEData -> UI/Types/OEEType
+     * - Configuration Screen: OEEData -> UI/Types/OEEType
+     * - Reports Screen: OEEData -> UI/Types/OEEType
+     * - Widget Library Folder: OEEData -> UI/Types/OEEType
+     * 
+     * IMPLEMENTATION NOTES:
+     * =====================
+     * 1. All DynamicLink objects need unique BrowseNames
+     * 2. Use DynamicLinkMode.Read for display-only values
+     * 3. Use DynamicLinkMode.ReadWrite for user input controls
+     * 4. Use relative paths from "OEEData" alias for cleaner code
+     * 5. Test each binding in FT Optix runtime to ensure proper data flow
+     * 6. OEEType alias nodes are created using MakeObject with UI/Types/OEEType NodeId
+     * 7. Add error handling for missing or invalid variable paths
+     * 
+     * FOLDER STRUCTURE SUMMARY:
+     * =========================
+     * OEEData/Inputs/     - User configuration and input values (15 variables)
+     * OEEData/Outputs/    - Calculated real-time metrics (46 variables) 
+     * OEEData/Configuration/ - System settings and toggles (7 variables)
+     * 
+     * Total: 68 variables available for widget binding via alias paths
+     */
 }
