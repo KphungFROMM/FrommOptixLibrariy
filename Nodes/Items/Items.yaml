@@ -739,7 +739,7 @@ Children:
   - Name: LibraryItemVersion
     Type: BaseDataVariableType
     DataType: UInt32
-    Value: 1
+    Value: 2
   - Name: OEE_Calculator
     Id: g=c75237ebbbffb4e77f1379285a13cd4b
     Supertype: NetLogic
@@ -748,6 +748,7 @@ Children:
     - Name: OEEDataSource
       Type: NodePointer
       DataType: NodeId
+      Value: {"IdType":2,"Id":"86a20079d8d59b36bd88adbe26b3033b","Namespace":4}
       Children:
       - Name: Kind
         Type: PropertyType

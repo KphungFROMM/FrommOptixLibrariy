@@ -152,6 +152,7 @@ public class OEE_Calculator : BaseNetLogic
     private bool _shiftChangeOccurred = false;
     private bool _shiftChangeImminent = false;
     private double _calculatedHoursPerShift = 8.0;
+    private int _lastNumberOfShifts = 3; // Track previous value to detect changes
 
     // Configuration
     private bool _enableRealTimeCalc = true;
@@ -178,6 +179,7 @@ public class OEE_Calculator : BaseNetLogic
         InitializeVariables();
         CachePresenceFlags();
         InitializeDefaultValues();
+        InitializeInputDefaults();
         ReadConfiguration();
 
         _cts = new CancellationTokenSource();
@@ -543,6 +545,105 @@ public class OEE_Calculator : BaseNetLogic
         _defaultsInitialized = true;
     }
 
+    private void InitializeInputDefaults()
+    {
+        // Initialize all input variables with fallback defaults to ensure consistent behavior
+        LogInfo("Initializing input variables with default fallback values...");
+        
+        // Core input variables with their fallbacks - write to UI
+        WriteDefaultIfEmpty(TotalRuntimeSecondsVar, 0.0, "TotalRuntimeSeconds");
+        WriteDefaultIfEmpty(GoodPartCountVar, 0, "GoodPartCount");
+        WriteDefaultIfEmpty(BadPartCountVar, 0, "BadPartCount");
+        WriteDefaultIfEmpty(IdealCycleTimeSecondsVar, 30.0, "IdealCycleTimeSeconds");
+        WriteDefaultIfEmpty(PlannedProductionTimeHoursVar, 8.0, "PlannedProductionTimeHours");
+        WriteDefaultIfEmpty(NumberOfShiftsVar, 3, "NumberOfShifts");
+        WriteDefaultIfEmpty(ShiftStartTimeVar, "06:00:00", "ShiftStartTime");
+        WriteDefaultIfEmpty(ProductionTargetVar, 1000, "ProductionTarget");
+        
+        // Configuration input variables with fallbacks - write to UI
+        WriteDefaultIfEmpty(UpdateRateMsVar, 1000, "UpdateRateMs");
+        WriteDefaultIfEmpty(QualityTargetVar, 95.0, "QualityTarget");
+        WriteDefaultIfEmpty(PerformanceTargetVar, 85.0, "PerformanceTarget");
+        WriteDefaultIfEmpty(AvailabilityTargetVar, 90.0, "AvailabilityTarget");
+        WriteDefaultIfEmpty(OEETargetVar, 72.7, "OEETarget");
+        WriteDefaultIfEmpty(LoggingVerbosityVar, 1, "LoggingVerbosity");
+        
+        // Configuration variables with fallbacks - write to UI
+        WriteDefaultIfEmpty(EnableRealTimeCalcVar, true, "EnableRealTimeCalc");
+        WriteDefaultIfEmpty(MinimumRunTimeVar, 60.0, "MinimumRunTime");
+        WriteDefaultIfEmpty(GoodOEEThresholdVar, 80.0, "GoodOEE_Threshold");
+        WriteDefaultIfEmpty(PoorOEEThresholdVar, 60.0, "PoorOEE_Threshold");
+        WriteDefaultIfEmpty(EnableLoggingVar, true, "EnableLogging");
+        WriteDefaultIfEmpty(EnableAlarmsVar, true, "EnableAlarms");
+        WriteDefaultIfEmpty(SystemHealthyVar, true, "SystemHealthy");
+        
+        LogInfo("Input variable initialization completed. Default values are now visible in UI.");
+    }
+
+    private void WriteDefaultIfEmpty(IUAVariable var, object defaultValue, string varName)
+    {
+        if (var == null) 
+        {
+            LogWarning($"Variable {varName} not found - cannot set default value");
+            return;
+        }
+        
+        try
+        {
+            var currentValue = GetUnderlyingValue(var);
+            
+            // Check if value is null, empty, or invalid
+            bool needsDefault = false;
+            
+            if (currentValue == null)
+            {
+                needsDefault = true;
+            }
+            else if (defaultValue is double)
+            {
+                if (currentValue is double d && (double.IsNaN(d) || double.IsInfinity(d)))
+                    needsDefault = true;
+                else if (!double.TryParse(currentValue.ToString(), out double testDouble))
+                    needsDefault = true;
+                else if (testDouble == 0.0 && varName.Contains("Target")) // Special case for target values
+                    needsDefault = true;
+            }
+            else if (defaultValue is int)
+            {
+                if (!int.TryParse(currentValue.ToString(), out int testInt))
+                    needsDefault = true;
+                else if (testInt == 0 && (varName.Contains("Target") || varName.Contains("Shifts"))) // Special case for targets and shifts
+                    needsDefault = true;
+            }
+            else if (defaultValue is bool)
+            {
+                // For booleans, only set default if truly invalid
+                if (!bool.TryParse(currentValue.ToString(), out _))
+                    needsDefault = true;
+            }
+            else if (defaultValue is string)
+            {
+                if (string.IsNullOrWhiteSpace(currentValue?.ToString()))
+                    needsDefault = true;
+            }
+            
+            if (needsDefault)
+            {
+                // Write the default value to the variable so it appears in UI
+                var.SetValue(defaultValue);
+                LogInfo($"✓ Set UI default for {varName}: {defaultValue}");
+            }
+            else
+            {
+                LogInfo($"• {varName} already has value: {currentValue}");
+            }
+        }
+        catch (Exception ex)
+        {
+            LogError($"Failed to write default to UI for '{varName}': {ex.Message}");
+        }
+    }
+
     private void SetDefaultValue(IUAVariable var, object defaultValue, string varName)
     {
         if (var == null) return;
@@ -580,27 +681,47 @@ public class OEE_Calculator : BaseNetLogic
 
     private void ReadConfiguration()
     {
+        // Read update rate with fallback
         if (UpdateRateMsVar != null && ReadIntVar(UpdateRateMsVar, -1) is int u && u > 0)
             _updateRateMs = u;
+        else
+            _updateRateMs = 1000; // Default fallback
 
+        // Read target values with fallbacks
         _qualityTarget = ReadDoubleVar(QualityTargetVar, 95.0);
         _performanceTarget = ReadDoubleVar(PerformanceTargetVar, 85.0);
         _availabilityTarget = ReadDoubleVar(AvailabilityTargetVar, 90.0);
         _oeeTarget = ReadDoubleVar(OEETargetVar, 72.7);
         _productionTarget = ReadIntVar(ProductionTargetVar, 1000);
-        _numberOfShifts = ReadIntVar(NumberOfShiftsVar, 3);
         
+        // Read number of shifts and check if it changed
+        int newNumberOfShifts = ReadIntVar(NumberOfShiftsVar, 3);
+        if (newNumberOfShifts != _lastNumberOfShifts)
+        {
+            LogInfo($"Number of shifts changed from {_lastNumberOfShifts} to {newNumberOfShifts} - updating planned production time");
+            UpdatePlannedProductionTimeForShifts(newNumberOfShifts);
+            _lastNumberOfShifts = newNumberOfShifts;
+        }
+        _numberOfShifts = newNumberOfShifts;
+        
+        // Read shift start time with fallback
         if (ShiftStartTimeVar != null)
         {
             var shiftTimeStr = GetUnderlyingValue(ShiftStartTimeVar)?.ToString();
             if (!string.IsNullOrWhiteSpace(shiftTimeStr))
                 _shiftStartTime = shiftTimeStr;
+            else
+                _shiftStartTime = "06:00:00"; // Default fallback
+        }
+        else
+        {
+            _shiftStartTime = "06:00:00"; // Default fallback
         }
         
         // Calculate hours per shift from 24 hours divided by number of shifts
         _calculatedHoursPerShift = _numberOfShifts > 0 ? 24.0 / _numberOfShifts : 8.0;
         
-        // Read configuration flags
+        // Read configuration flags with fallbacks
         _enableRealTimeCalc = ReadBoolVar(EnableRealTimeCalcVar, true);
         _minimumRunTime = ReadDoubleVar(MinimumRunTimeVar, 60.0);
         _goodOEEThreshold = ReadDoubleVar(GoodOEEThresholdVar, 80.0);
@@ -609,22 +730,61 @@ public class OEE_Calculator : BaseNetLogic
         _enableAlarms = ReadBoolVar(EnableAlarmsVar, true);
         _systemHealthy = ReadBoolVar(SystemHealthyVar, true);
 
+        // Read logging verbosity with fallback
         if (LoggingVerbosityVar != null)
             _loggingVerbosity = ReadIntVar(LoggingVerbosityVar, 1);
+        else
+            _loggingVerbosity = 1; // Default fallback
+            
+        LogInfo($"Configuration loaded - UpdateRate: {_updateRateMs}ms, Shifts: {_numberOfShifts}, StartTime: {_shiftStartTime}");
+    }
+
+    private void UpdatePlannedProductionTimeForShifts(int numberOfShifts)
+    {
+        if (PlannedProductionTimeHoursVar == null)
+        {
+            LogWarning("PlannedProductionTimeHours variable not found - cannot update for shift changes");
+            return;
+        }
+
+        try
+        {
+            // Calculate hours per shift based on 24-hour day
+            double hoursPerShift = numberOfShifts > 0 ? 24.0 / numberOfShifts : 8.0;
+            
+            // Set the planned production time to match the shift duration
+            PlannedProductionTimeHoursVar.SetValue(hoursPerShift);
+            
+            LogInfo($"✓ Updated PlannedProductionTimeHours to {hoursPerShift} hours for {numberOfShifts} shifts");
+            
+            // Clear cached planned production values to force recalculation
+            _cachedPlannedRaw = null;
+            _cachedPlannedHours = double.NaN;
+            _cachedPlannedValid = false;
+        }
+        catch (Exception ex)
+        {
+            LogError($"Failed to update planned production time for shifts: {ex.Message}");
+        }
     }
 
     private async Task RunLoopAsync(CancellationToken token)
     {
         int loopCount = 0;
+        DateTime lastConfigCheck = DateTime.MinValue;
+        
         while (!token.IsCancellationRequested)
         {
             try
             {
                 await Task.Delay(_updateRateMs, token);
 
-                if (loopCount % 30 == 0)
+                // Check configuration every 2-3 seconds regardless of update rate
+                var timeSinceConfigCheck = DateTime.Now - lastConfigCheck;
+                if (timeSinceConfigCheck.TotalSeconds >= 2.0)
                 {
                     ReadConfiguration();
+                    lastConfigCheck = DateTime.Now;
                 }
 
                 var calculations = PerformCalculations();
@@ -1098,15 +1258,14 @@ public class OEE_Calculator : BaseNetLogic
                 }
             }
             
-            // Check for shift changes
-            var timeSinceLastCheck = now - _lastShiftCalculation;
-            if (timeSinceLastCheck.TotalMinutes > 1) // Check every minute
-            {
-                var timeToShiftEnd = (_currentShiftEnd - now).TotalMinutes;
-                _shiftChangeImminent = timeToShiftEnd <= 15 && timeToShiftEnd > 0; // 15 minutes warning
-                _shiftChangeOccurred = timeToShiftEnd <= 0 && timeSinceLastCheck.TotalMinutes < 5;
-                _lastShiftCalculation = now;
-            }
+            // Check for shift changes - check every calculation cycle for precise timing
+            var timeToShiftEnd = (_currentShiftEnd - now).TotalSeconds;
+            
+            // ShiftChangeImminent: True 1 second before shift change (for data logging)
+            _shiftChangeImminent = timeToShiftEnd <= 1.0 && timeToShiftEnd > 0.0;
+            
+            // ShiftChangeOccurred: True 0.5 seconds before shift change (for counter reset)
+            _shiftChangeOccurred = timeToShiftEnd <= 0.5 && timeToShiftEnd > 0.0;
             
             // Update results
             results.CurrentShiftNumber = _currentShiftNumber;
