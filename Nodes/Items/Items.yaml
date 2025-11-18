@@ -471,7 +471,7 @@ Children:
   - Name: LibraryItemVersion
     Type: BaseDataVariableType
     DataType: UInt32
-    Value: 3
+    Value: 4
   - Name: OEEType
     Id: g=06b34fa69308a8aa3236bfd7579e7dfc
     Supertype: BaseObjectType
@@ -689,30 +689,6 @@ Children:
       - Name: SystemHealthy
         Type: BaseDataVariableType
         DataType: Boolean
-- Name: OEE_CompleteDashboardBuilder
-  Type: ObjectLibraryItem
-  Children:
-  - Name: LibraryItemGuid
-    Type: BaseDataVariableType
-    DataType: Guid
-    Value: "5513755d2aff568bc55de6a24b5b00f7"
-  - Name: LibraryItemVersion
-    Type: BaseDataVariableType
-    DataType: UInt32
-    Value: 2
-  - Name: OEE_CompleteDashboardBuilder
-    Id: g=2472dbdd559aee3b78806bf9c03b71b3
-    Supertype: NetLogic
-    ReferenceType: HasComponent
-    Children:
-    - Class: Method
-      Name: CreateCompleteDashboards
-    - Class: Method
-      Name: TestMethod
-    - Name: BehaviourStartPriority
-      Type: BehaviourStartPriorityVariableType
-      DataType: Byte
-      Value: 180
 - Name: OEEUIGenerator
   Type: ObjectLibraryItem
   Children:
@@ -753,3 +729,46 @@ Children:
       Name: GenerateOEEUI
     - Class: Method
       Name: GenerateWidgetsOnly
+- Name: OEE_Calculator
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "df1a323b316cc8b33530cc98b2089152"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Name: OEE_Calculator
+    Id: g=c75237ebbbffb4e77f1379285a13cd4b
+    Supertype: NetLogic
+    ReferenceType: HasComponent
+    Children:
+    - Name: OEEDataSource
+      Type: NodePointer
+      DataType: NodeId
+      Children:
+      - Name: Kind
+        Type: PropertyType
+        DataType: NodeId
+        Value: "/Objects/FrommOptixLibrariy/Items/OEEType/OEEType"
+      - Name: NodeClass
+        Type: PropertyType
+        DataType: NodePointerNodeClass
+        ModellingRule: Optional
+    - Class: Method
+      Name: GetDataSourceInfo
+    - Class: Method
+      Name: SetOEEDataSource
+      Children:
+      - Name: ns=0;InputArguments
+        Type: BaseVariableType
+        DataType: Argument
+        ReferenceType: HasProperty
+        ModellingRule: None
+        ValueRank: OneDimension
+        ArrayDimensions: [0]
+        Value: [{"TypeId":{"Id":296},"Body":{"Name":"oeeInstanceNodeId","DataType":{"Id":17},"ValueRank":-1,"ArrayDimensions":[],"Description":{"NamespaceIndex":-1,"LocaleId":"","Text":""}}}]
+    - Class: Method
+      Name: ForceCalculation
