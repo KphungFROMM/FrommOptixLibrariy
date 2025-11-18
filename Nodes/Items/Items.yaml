@@ -739,7 +739,7 @@ Children:
   - Name: LibraryItemVersion
     Type: BaseDataVariableType
     DataType: UInt32
-    Value: 2
+    Value: 3
   - Name: OEE_Calculator
     Id: g=c75237ebbbffb4e77f1379285a13cd4b
     Supertype: NetLogic

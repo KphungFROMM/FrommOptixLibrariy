@@ -119,6 +119,9 @@ public class OEE_Calculator : BaseNetLogic
     private readonly TimeSpan WriteRetryCooldown = TimeSpan.FromSeconds(30);
     private readonly Dictionary<IUAVariable, DateTime> _lastWriteFailureUtc = new Dictionary<IUAVariable, DateTime>();
 
+    // Value change detection for efficiency
+    private readonly Dictionary<IUAVariable, object> _lastWrittenValues = new Dictionary<IUAVariable, object>();
+
     // Cached values
     private object _cachedIdealRaw = null;
     private double _cachedIdealSeconds = 0.0;
@@ -127,6 +130,12 @@ public class OEE_Calculator : BaseNetLogic
     private object _cachedPlannedRaw = null;
     private double _cachedPlannedHours = double.NaN;
     private bool _cachedPlannedValid = false;
+
+    // Cache formatted strings to avoid repeated string operations
+    private string _lastTotalRuntimeFormatted = "";
+    private double _lastTotalRuntimeSeconds = -1;
+    private string _lastDowntimeFormatted = "";
+    private double _lastDowntimeSeconds = -1;
 
     // Trending data
     private readonly Queue<double> _qualityHistory = new Queue<double>();
@@ -874,9 +883,21 @@ public class OEE_Calculator : BaseNetLogic
         // Hours per shift (derived from number of shifts)
         results.HoursPerShift = _calculatedHoursPerShift;
 
-        // Time formatting
-        results.TotalRuntimeFormatted = FormatTimeSpan(TimeSpan.FromSeconds(runtimeSeconds));
-        results.DowntimeFormatted = FormatTimeSpan(TimeSpan.FromSeconds(Math.Max(0, plannedSeconds - runtimeSeconds)));
+        // Time formatting with caching
+        if (Math.Abs(runtimeSeconds - _lastTotalRuntimeSeconds) > 0.1)
+        {
+            _lastTotalRuntimeFormatted = FormatTimeSpan(TimeSpan.FromSeconds(runtimeSeconds));
+            _lastTotalRuntimeSeconds = runtimeSeconds;
+        }
+        results.TotalRuntimeFormatted = _lastTotalRuntimeFormatted;
+        
+        double downtimeSeconds = Math.Max(0, plannedSeconds - runtimeSeconds);
+        if (Math.Abs(downtimeSeconds - _lastDowntimeSeconds) > 0.1)
+        {
+            _lastDowntimeFormatted = FormatTimeSpan(TimeSpan.FromSeconds(downtimeSeconds));
+            _lastDowntimeSeconds = downtimeSeconds;
+        }
+        results.DowntimeFormatted = _lastDowntimeFormatted;
         
         // Production analysis
         results.TargetVsActualParts = totalCount - _productionTarget;
@@ -929,19 +950,25 @@ public class OEE_Calculator : BaseNetLogic
 
     private void UpdateTrendingData(CalculationResults results)
     {
-        // Add to history
-        _qualityHistory.Enqueue(results.Quality);
-        _performanceHistory.Enqueue(results.Performance);
-        _availabilityHistory.Enqueue(results.Availability);
-        _oeeHistory.Enqueue(results.OEE);
+        // Add to history (only if significantly different to reduce noise)
+        bool shouldAddToHistory = _qualityHistory.Count == 0 || 
+                                 Math.Abs(_qualityHistory.Last() - results.Quality) > 0.1;
+        
+        if (shouldAddToHistory)
+        {
+            _qualityHistory.Enqueue(results.Quality);
+            _performanceHistory.Enqueue(results.Performance);
+            _availabilityHistory.Enqueue(results.Availability);
+            _oeeHistory.Enqueue(results.OEE);
 
-        // Maintain window size
-        while (_qualityHistory.Count > MaxHistorySize) _qualityHistory.Dequeue();
-        while (_performanceHistory.Count > MaxHistorySize) _performanceHistory.Dequeue();
-        while (_availabilityHistory.Count > MaxHistorySize) _availabilityHistory.Dequeue();
-        while (_oeeHistory.Count > MaxHistorySize) _oeeHistory.Dequeue();
+            // Maintain window size
+            while (_qualityHistory.Count > MaxHistorySize) _qualityHistory.Dequeue();
+            while (_performanceHistory.Count > MaxHistorySize) _performanceHistory.Dequeue();
+            while (_availabilityHistory.Count > MaxHistorySize) _availabilityHistory.Dequeue();
+            while (_oeeHistory.Count > MaxHistorySize) _oeeHistory.Dequeue();
+        }
 
-        // Calculate trends and statistics
+        // Calculate trends and statistics (only when we have enough data)
         if (_qualityHistory.Count >= 2)
         {
             results.QualityTrend = CalculateTrend(_qualityHistory);
@@ -1110,7 +1137,31 @@ public class OEE_Calculator : BaseNetLogic
     private void WriteIfExists(IUAVariable var, object value)
     {
         if (!_outputPresenceFlags.ContainsKey(var) || !_outputPresenceFlags[var] || var == null) return;
-        TrySetValueWithCooldown(var, value);
+        
+        // Only write if value has changed (efficiency improvement)
+        if (_lastWrittenValues.TryGetValue(var, out object lastValue))
+        {
+            if (ValuesAreEqual(lastValue, value)) return; // Skip write if unchanged
+        }
+        
+        if (TrySetValueWithCooldown(var, value))
+        {
+            _lastWrittenValues[var] = value; // Cache the written value
+        }
+    }
+
+    private bool ValuesAreEqual(object value1, object value2)
+    {
+        if (value1 == null && value2 == null) return true;
+        if (value1 == null || value2 == null) return false;
+        
+        // Handle double precision comparison
+        if (value1 is double d1 && value2 is double d2)
+        {
+            return Math.Abs(d1 - d2) < 0.001; // 0.1% precision for doubles
+        }
+        
+        return value1.Equals(value2);
     }
 
     private bool TrySetValueWithCooldown(IUAVariable var, object value)
