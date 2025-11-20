@@ -1,2 +1,220 @@
 Name: Types
 Type: FolderType
+Children:
+- Name: OEEType
+  Id: g=06b34fa69308a8aa3236bfd7579e7dfc
+  Supertype: BaseObjectType
+  Children:
+  - Name: Inputs
+    Type: FolderType
+    Children:
+    - Name: TotalRuntimeSeconds
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: GoodPartCount
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: BadPartCount
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: IdealCycleTimeSeconds
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: PlannedProductionTimeHours
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: NumberOfShifts
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: ShiftStartTime
+      Type: BaseDataVariableType
+      DataType: String
+    - Name: ProductionTarget
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: QualityTarget
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: PerformanceTarget
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: AvailabilityTarget
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: OEETarget
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: UpdateRateMs
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: LoggingVerbosity
+      Type: BaseDataVariableType
+      DataType: Int32
+  - Name: Outputs
+    Type: FolderType
+    Children:
+    - Name: TotalCount
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: Quality
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: Performance
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: Availability
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: OEE
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: AvgCycleTime
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: PartsPerHour
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: ExpectedPartCount
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: DowntimeFormatted
+      Type: BaseDataVariableType
+      DataType: String
+    - Name: TotalRuntimeFormatted
+      Type: BaseDataVariableType
+      DataType: String
+    - Name: HoursPerShift
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: CurrentShiftNumber
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: ShiftStartTimeOutput
+      Type: BaseDataVariableType
+      DataType: String
+    - Name: ShiftEndTime
+      Type: BaseDataVariableType
+      DataType: String
+    - Name: TimeIntoShift
+      Type: BaseDataVariableType
+      DataType: String
+    - Name: TimeRemainingInShift
+      Type: BaseDataVariableType
+      DataType: String
+    - Name: ShiftChangeOccurred
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: ShiftChangeImminent
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: ProjectedTotalCount
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: RemainingTimeAtCurrentRate
+      Type: BaseDataVariableType
+      DataType: String
+    - Name: ProductionBehindSchedule
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: RequiredRateToTarget
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: TargetVsActualParts
+      Type: BaseDataVariableType
+      DataType: Int32
+    - Name: LastUpdateTime
+      Type: BaseDataVariableType
+      DataType: String
+    - Name: SystemStatus
+      Type: BaseDataVariableType
+      DataType: String
+    - Name: CalculationValid
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: DataQualityScore
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: QualityTrend
+      Type: BaseDataVariableType
+      DataType: String
+    - Name: PerformanceTrend
+      Type: BaseDataVariableType
+      DataType: String
+    - Name: AvailabilityTrend
+      Type: BaseDataVariableType
+      DataType: String
+    - Name: OEETrend
+      Type: BaseDataVariableType
+      DataType: String
+    - Name: MinQuality
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: MaxQuality
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: AvgQuality
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: MinPerformance
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: MaxPerformance
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: AvgPerformance
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: MinAvailability
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: MaxAvailability
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: AvgAvailability
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: MinOEE
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: MaxOEE
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: AvgOEE
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: QualityVsTarget
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: PerformanceVsTarget
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: AvailabilityVsTarget
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: OEEVsTarget
+      Type: BaseDataVariableType
+      DataType: Double
+  - Name: Configuration
+    Type: FolderType
+    Children:
+    - Name: EnableRealTimeCalc
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: MinimumRunTime
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: GoodOEE_Threshold
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: PoorOEE_Threshold
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: EnableLogging
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: EnableAlarms
+      Type: BaseDataVariableType
+      DataType: Boolean
+    - Name: SystemHealthy
+      Type: BaseDataVariableType
+      DataType: Boolean
