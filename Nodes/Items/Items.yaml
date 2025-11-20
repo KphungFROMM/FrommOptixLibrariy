@@ -103,46 +103,6 @@ Children:
       Type: BaseDataVariableType
       DataType: String
       Value: "0"
-- Name: OEEUIGenerator
-  Type: ObjectLibraryItem
-  Children:
-  - Name: LibraryItemGuid
-    Type: BaseDataVariableType
-    DataType: Guid
-    Value: "ce3d97b89ecd7f604400e9599278d5a1"
-  - Name: LibraryItemVersion
-    Type: BaseDataVariableType
-    DataType: UInt32
-    Value: 5
-  - Name: OEEUIGenerator
-    Id: g=d8386ff01da74630d5807b5be6d22a07
-    Supertype: NetLogic
-    ReferenceType: HasComponent
-    Children:
-    - Class: Method
-      Name: CreateOEEDashboard
-    - Name: BehaviourStartPriority
-      Type: BehaviourStartPriorityVariableType
-      DataType: Byte
-      Value: 180
-    - Class: Method
-      Name: CreateMachineDetailScreen
-    - Class: Method
-      Name: CreateOEEConfigurationScreen
-    - Class: Method
-      Name: CreateReportsAnalyticsScreen
-    - Class: Method
-      Name: VerifyDataLinks
-    - Class: Method
-      Name: CreateOEEWidgetLibrary
-    - Class: Method
-      Name: VerifyPanelCreation
-    - Class: Method
-      Name: VerifyWidgetCreation
-    - Class: Method
-      Name: GenerateOEEUI
-    - Class: Method
-      Name: GenerateWidgetsOnly
 - Name: OEE_Calculator
   Type: ObjectLibraryItem
   Children:
@@ -186,3 +146,57 @@ Children:
         Value: [{"TypeId":{"Id":296},"Body":{"Name":"oeeInstanceNodeId","DataType":{"Id":17},"ValueRank":-1,"ArrayDimensions":[],"Description":{"NamespaceIndex":-1,"LocaleId":"","Text":""}}}]
     - Class: Method
       Name: ForceCalculation
+- Name: OEEWidgetGenerator
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "6976690a5f60aabc24b131a1d5cbcc8a"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Name: OEEWidgetGenerator
+    Id: g=4212da8697ed65b270d1eaf7a50e873d
+    Supertype: NetLogic
+    ReferenceType: HasComponent
+    Children:
+    - Name: BehaviourStartPriority
+      Type: BehaviourStartPriorityVariableType
+      DataType: Byte
+      Value: 180
+    - Class: Method
+      Name: GenerateOperatorDashboard
+    - Class: Method
+      Name: GenerateAllWidgets
+    - Class: Method
+      Name: GenerateAvailabilityCard
+    - Class: Method
+      Name: GenerateDataInput
+    - Class: Method
+      Name: GenerateExecutiveDashboard
+    - Class: Method
+      Name: GenerateForecastCard
+    - Class: Method
+      Name: GenerateOEECard
+    - Class: Method
+      Name: GeneratePerformanceCard
+    - Class: Method
+      Name: GenerateProductionConfig
+    - Class: Method
+      Name: GenerateQualityCard
+    - Class: Method
+      Name: GenerateShiftDetailCard
+    - Class: Method
+      Name: GenerateShiftPacerCard
+    - Class: Method
+      Name: GenerateShiftStatsCard
+    - Class: Method
+      Name: GenerateSystemConfig
+    - Class: Method
+      Name: GenerateSystemHealthCard
+    - Class: Method
+      Name: GenerateTargetsConfig
+    - Class: Method
+      Name: GenerateHistoricalDashboard
