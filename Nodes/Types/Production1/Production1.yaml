@@ -1,0 +1,21 @@
+Name: Production
+Type: FolderType
+Children:
+- Name: ProjectedTotalCount
+  Type: BaseDataVariableType
+  DataType: Int32
+- Name: RemainingTimeAtCurrentRate
+  Type: BaseDataVariableType
+  DataType: String
+- Name: ProductionBehindSchedule
+  Type: BaseDataVariableType
+  DataType: Boolean
+- Name: RequiredRateToTarget
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: TargetVsActualParts
+  Type: BaseDataVariableType
+  DataType: Int32
+- Name: ProductionProgress
+  Type: BaseDataVariableType
+  DataType: Double

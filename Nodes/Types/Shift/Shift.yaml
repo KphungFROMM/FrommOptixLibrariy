@@ -1,0 +1,30 @@
+Name: Shift
+Type: FolderType
+Children:
+- Name: HoursPerShift
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: CurrentShiftNumber
+  Type: BaseDataVariableType
+  DataType: Int32
+- Name: ShiftStartTimeOutput
+  Type: BaseDataVariableType
+  DataType: String
+- Name: ShiftEndTime
+  Type: BaseDataVariableType
+  DataType: String
+- Name: TimeIntoShift
+  Type: BaseDataVariableType
+  DataType: String
+- Name: TimeRemainingInShift
+  Type: BaseDataVariableType
+  DataType: String
+- Name: ShiftChangeOccurred
+  Type: BaseDataVariableType
+  DataType: Boolean
+- Name: ShiftChangeImminent
+  Type: BaseDataVariableType
+  DataType: Boolean
+- Name: ShiftProgress
+  Type: BaseDataVariableType
+  DataType: Double

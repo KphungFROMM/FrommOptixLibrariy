@@ -1,0 +1,21 @@
+Name: System
+Type: FolderType
+Children:
+- Name: SystemStatus
+  Type: BaseDataVariableType
+  DataType: String
+- Name: CalculationValid
+  Type: BaseDataVariableType
+  DataType: Boolean
+- Name: DataQualityScore
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: LastUpdateTime
+  Type: BaseDataVariableType
+  DataType: String
+- Name: DowntimeFormatted
+  Type: BaseDataVariableType
+  DataType: String
+- Name: TotalRuntimeFormatted
+  Type: BaseDataVariableType
+  DataType: String

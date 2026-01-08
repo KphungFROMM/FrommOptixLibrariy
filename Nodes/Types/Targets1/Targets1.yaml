@@ -1,0 +1,15 @@
+Name: Targets
+Type: FolderType
+Children:
+- Name: QualityVsTarget
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: PerformanceVsTarget
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: AvailabilityVsTarget
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: OEEVsTarget
+  Type: BaseDataVariableType
+  DataType: Double

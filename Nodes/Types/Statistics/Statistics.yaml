@@ -1,0 +1,39 @@
+Name: Statistics
+Type: FolderType
+Children:
+- Name: MinQuality
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: MaxQuality
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: AvgQuality
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: MinPerformance
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: MaxPerformance
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: AvgPerformance
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: MinAvailability
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: MaxAvailability
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: AvgAvailability
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: MinOEE
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: MaxOEE
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: AvgOEE
+  Type: BaseDataVariableType
+  DataType: Double

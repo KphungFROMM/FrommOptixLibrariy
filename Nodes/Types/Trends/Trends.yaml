@@ -1,0 +1,15 @@
+Name: Trends
+Type: FolderType
+Children:
+- Name: QualityTrend
+  Type: BaseDataVariableType
+  DataType: String
+- Name: PerformanceTrend
+  Type: BaseDataVariableType
+  DataType: String
+- Name: AvailabilityTrend
+  Type: BaseDataVariableType
+  DataType: String
+- Name: OEETrend
+  Type: BaseDataVariableType
+  DataType: String

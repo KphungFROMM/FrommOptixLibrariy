@@ -1,0 +1,9 @@
+Name: System
+Type: FolderType
+Children:
+- Name: UpdateRateMs
+  Type: BaseDataVariableType
+  DataType: Int32
+- Name: LoggingVerbosity
+  Type: BaseDataVariableType
+  DataType: Int32

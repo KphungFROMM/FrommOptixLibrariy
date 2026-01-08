@@ -21,16 +21,20 @@ Project:
    Uri: 'urn:FTOptix:NetLogic'
    Module: FTOptix.NetLogic
    Version: 4.0
+  6:
+   Uri: 'urn:FTOptix:UI'
+   Module: FTOptix.UI
+   Version: 18.1
  Statistics:
-  TotalNodeCount: 147
-  Objects: 15
-  ObjectTypes: 5
-  Variables: 107
+  TotalNodeCount: 2208
+  Objects: 301
+  ObjectTypes: 6
+  Variables: 1876
   VariableTypes: 0
   DataTypes: 0
-  Methods: 20
-  References: 0
+  Methods: 25
+  References: 3
   ReferenceTypes: 0
-  Files: 4
+  Files: 15
  Nodes:
  - File: Nodes/FrommOptixLibrariy.yaml

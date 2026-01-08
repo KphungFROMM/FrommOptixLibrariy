@@ -1,0 +1,12 @@
+Name: Data
+Type: FolderType
+Children:
+- Name: TotalRuntimeSeconds
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: GoodPartCount
+  Type: BaseDataVariableType
+  DataType: Int32
+- Name: BadPartCount
+  Type: BaseDataVariableType
+  DataType: Int32

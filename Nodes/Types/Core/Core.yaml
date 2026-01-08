@@ -1,0 +1,27 @@
+Name: Core
+Type: FolderType
+Children:
+- Name: TotalCount
+  Type: BaseDataVariableType
+  DataType: Int32
+- Name: Quality
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: Performance
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: Availability
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: OEE
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: AvgCycleTime
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: PartsPerHour
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: ExpectedPartCount
+  Type: BaseDataVariableType
+  DataType: Int32
