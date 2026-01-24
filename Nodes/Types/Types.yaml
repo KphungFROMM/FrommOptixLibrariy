@@ -46,3 +46,6 @@ Children:
     - Name: SystemHealthy
       Type: BaseDataVariableType
       DataType: Boolean
+- Class: Reference
+  Type: HasComponent
+  Target: g=85c30642f1cddf5f38e584437f9382c8

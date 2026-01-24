@@ -7787,3 +7787,150 @@ Children:
           Type: BaseVariableType
           DataType: Size
           Value: 12.0
+- Name: OEEGauge
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "5d18fd2741c0d3c1a05d72e45166f8bc"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 3
+  - Name: OEEGauge
+    Id: g=85c30642f1cddf5f38e584437f9382c8
+    Supertype: AdvancedSVGImage
+    ReferenceType: HasComponent
+    Children:
+    - Name: SVGElementProperties
+      Type: BaseObjectType
+      Children:
+      - Name: AdvancedSVGImageProperty1
+        Type: AdvancedSVGImageElementProperty
+        Children:
+        - Name: ID
+          Type: BaseDataVariableType
+          DataType: String
+          Value: "progress"
+        - Name: Property
+          Type: BaseDataVariableType
+          DataType: AdvancedSVGImagePropertyClass
+        - Name: Value
+          Type: BaseDataVariableType
+          DataType: Color
+          Value: "#000000"
+    - Name: Path
+      Type: BaseDataVariableType
+      DataType: ResourceUri
+      Value: "ns=4;%PROJECTDIR%/res/CircularBarGraph.svg"
+    - Class: Reference
+      Target: ns=6;i=1360
+      Direction: Forward
+    - Name: Width
+      Type: BaseVariableType
+      DataType: Size
+      ModellingRule: Optional
+      Value: 250.0
+    - Name: Height
+      Type: BaseVariableType
+      DataType: Size
+      ModellingRule: Optional
+      Value: 250.0
+    - Name: CircularBarGraphLogic
+      Type: NetLogic
+      Children:
+      - Name: CurrentValue
+        Type: BaseDataVariableType
+        DataType: Double
+        Children:
+        - Name: DynamicLink
+          Type: DynamicLink
+          DataType: NodePath
+          Value: "../../CurrentValue"
+          Children:
+          - Name: Mode
+            Type: BaseVariableType
+            DataType: DynamicLinkMode
+            ModellingRule: Optional
+            Value: 2
+      - Name: MinValue
+        Type: BaseDataVariableType
+        DataType: Double
+        Children:
+        - Name: DynamicLink
+          Type: DynamicLink
+          DataType: NodePath
+          Value: "../../MinValue"
+          Children:
+          - Name: Mode
+            Type: BaseVariableType
+            DataType: DynamicLinkMode
+            ModellingRule: Optional
+            Value: 2
+      - Name: MaxValue
+        Type: BaseDataVariableType
+        DataType: Double
+        Value: 100.0
+        Children:
+        - Name: DynamicLink
+          Type: DynamicLink
+          DataType: NodePath
+          Value: "../../MaxValue"
+          Children:
+          - Name: Mode
+            Type: BaseVariableType
+            DataType: DynamicLinkMode
+            ModellingRule: Optional
+            Value: 2
+      - Class: Method
+        Name: SetBarWidth
+        Children:
+        - Name: ns=0;InputArguments
+          Type: BaseVariableType
+          DataType: Argument
+          ReferenceType: HasProperty
+          ValueRank: OneDimension
+          ArrayDimensions: [0]
+          Value: [{"TypeId":{"Id":296},"Body":{"Name":"width","DataType":{"Id":11},"ValueRank":-1,"ArrayDimensions":[],"Description":{"NamespaceIndex":-1,"LocaleId":"","Text":""}}}]
+      - Class: Method
+        Name: SetColors
+        Children:
+        - Name: ns=0;InputArguments
+          Type: BaseVariableType
+          DataType: Argument
+          ReferenceType: HasProperty
+          ValueRank: OneDimension
+          ArrayDimensions: [0]
+          Value: [{"TypeId":{"Id":296},"Body":{"Name":"barColor","DataType":{"Id":7},"ValueRank":-1,"ArrayDimensions":[],"Description":{"NamespaceIndex":-1,"LocaleId":"","Text":""}}},{"TypeId":{"Id":296},"Body":{"Name":"backgroundColor","DataType":{"Id":7},"ValueRank":-1,"ArrayDimensions":[],"Description":{"NamespaceIndex":-1,"LocaleId":"","Text":""}}}]
+      - Class: Method
+        Name: SetRange
+        Children:
+        - Name: ns=0;InputArguments
+          Type: BaseVariableType
+          DataType: Argument
+          ReferenceType: HasProperty
+          ValueRank: OneDimension
+          ArrayDimensions: [0]
+          Value: [{"TypeId":{"Id":296},"Body":{"Name":"min","DataType":{"Id":11},"ValueRank":-1,"ArrayDimensions":[],"Description":{"NamespaceIndex":-1,"LocaleId":"","Text":""}}},{"TypeId":{"Id":296},"Body":{"Name":"max","DataType":{"Id":11},"ValueRank":-1,"ArrayDimensions":[],"Description":{"NamespaceIndex":-1,"LocaleId":"","Text":""}}}]
+      - Class: Method
+        Name: SetValue
+        Children:
+        - Name: ns=0;InputArguments
+          Type: BaseVariableType
+          DataType: Argument
+          ReferenceType: HasProperty
+          ValueRank: OneDimension
+          ArrayDimensions: [0]
+          Value: [{"TypeId":{"Id":296},"Body":{"Name":"value","DataType":{"Id":11},"ValueRank":-1,"ArrayDimensions":[],"Description":{"NamespaceIndex":-1,"LocaleId":"","Text":""}}}]
+    - Name: CurrentValue
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: MinValue
+      Type: BaseDataVariableType
+      DataType: Double
+    - Name: MaxValue
+      Type: BaseDataVariableType
+      DataType: Double
+      Value: 100.0
+- File: OEETemplates/OEETemplates.yaml
