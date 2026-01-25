@@ -1,0 +1,21 @@
+Name: Production_Metrics
+Type: FolderType
+Children:
+- Name: goodUnits
+  Type: BaseDataVariableType
+  DataType: Int32
+- Name: defectRate
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: currentRate
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: productionProgressPercent
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: totalRuntimeFormatted
+  Type: BaseDataVariableType
+  DataType: String
+- Name: downtimeFormatted
+  Type: BaseDataVariableType
+  DataType: String

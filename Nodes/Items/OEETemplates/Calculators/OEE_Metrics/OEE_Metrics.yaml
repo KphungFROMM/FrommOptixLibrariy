@@ -1,18 +1,18 @@
-Name: Production
+Name: OEE_Metrics
 Type: FolderType
 Children:
-- Name: IdealCycleTimeSeconds
+- Name: availability
   Type: BaseDataVariableType
   DataType: Double
-- Name: PlannedProductionTimeHours
+- Name: performance
   Type: BaseDataVariableType
   DataType: Double
-- Name: NumberOfShifts
+- Name: quality
   Type: BaseDataVariableType
-  DataType: Int32
-- Name: ShiftStartTime
+  DataType: Double
+- Name: oeeValue
   Type: BaseDataVariableType
-  DataType: String
-- Name: ProductionTarget
+  DataType: Double
+- Name: downtime
   Type: BaseDataVariableType
-  DataType: Int32
+  DataType: Double

@@ -1,0 +1,15 @@
+Name: PLC_Data
+Type: FolderType
+Children:
+- Name: runtime
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: partsProduced
+  Type: BaseDataVariableType
+  DataType: Int32
+- Name: defectiveUnits
+  Type: BaseDataVariableType
+  DataType: Int32
+- Name: idealCycleTime
+  Type: BaseDataVariableType
+  DataType: Double

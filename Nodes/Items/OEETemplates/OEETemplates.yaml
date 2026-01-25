@@ -420,7 +420,7 @@ Children:
       - Name: Kind
         Type: PropertyType
         DataType: NodeId
-        Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+        Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
 - Name: AvailabiltyCard
   Type: ObjectLibraryItem
   Children:
@@ -840,7 +840,7 @@ Children:
       - Name: Kind
         Type: PropertyType
         DataType: NodeId
-        Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+        Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
 - Name: PerformanceCard
   Type: ObjectLibraryItem
   Children:
@@ -1260,7 +1260,7 @@ Children:
       - Name: Kind
         Type: PropertyType
         DataType: NodeId
-        Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+        Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
 - Name: QualityCard
   Type: ObjectLibraryItem
   Children:
@@ -1680,4 +1680,5 @@ Children:
       - Name: Kind
         Type: PropertyType
         DataType: NodeId
-        Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+        Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
+- File: Calculators/Calculators.yaml

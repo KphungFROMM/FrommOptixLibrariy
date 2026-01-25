@@ -1,0 +1,27 @@
+Name: Shift_Info
+Type: FolderType
+Children:
+- Name: scheduledTime
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: currentShift
+  Type: BaseDataVariableType
+  DataType: Int32
+- Name: shiftStartTime
+  Type: BaseDataVariableType
+  DataType: DateTime
+- Name: shiftElapsedTime
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: shiftRemainingTime
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: shiftProgressPercent
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: timeIntoShiftFormatted
+  Type: BaseDataVariableType
+  DataType: String
+- Name: timeRemainingFormatted
+  Type: BaseDataVariableType
+  DataType: String

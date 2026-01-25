@@ -1,0 +1,15 @@
+Name: Configuration
+Type: FolderType
+Children:
+- Name: numberOfShifts
+  Type: BaseDataVariableType
+  DataType: Int32
+- Name: shift1StartTime
+  Type: BaseDataVariableType
+  DataType: DateTime
+- Name: breakTime
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: shiftChangeLeadSeconds
+  Type: BaseDataVariableType
+  DataType: Double

@@ -1,0 +1,18 @@
+Name: Gaps
+Type: FolderType
+Children:
+- Name: oeeGap
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: productionGap
+  Type: BaseDataVariableType
+  DataType: Int32
+- Name: availabilityGap
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: performanceGap
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: qualityGap
+  Type: BaseDataVariableType
+  DataType: Double

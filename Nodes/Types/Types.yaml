@@ -1,51 +1,8 @@
 Name: Types
 Type: FolderType
 Children:
-- Name: OEEType
-  Id: g=06b34fa69308a8aa3236bfd7579e7dfc
-  Supertype: BaseObjectType
-  Children:
-  - Name: Inputs
-    Type: FolderType
-    Children:
-    - File: Data/Data.yaml
-    - File: Production/Production.yaml
-    - File: Targets/Targets.yaml
-    - File: System/System.yaml
-  - Name: Outputs
-    Type: FolderType
-    Children:
-    - File: Core/Core.yaml
-    - File: Shift/Shift.yaml
-    - File: Production1/Production1.yaml
-    - File: System1/System1.yaml
-    - File: Trends/Trends.yaml
-    - File: Statistics/Statistics.yaml
-    - File: Targets1/Targets1.yaml
-  - Name: Configuration
-    Type: FolderType
-    Children:
-    - Name: EnableRealTimeCalc
-      Type: BaseDataVariableType
-      DataType: Boolean
-    - Name: MinimumRunTime
-      Type: BaseDataVariableType
-      DataType: Double
-    - Name: GoodOEE_Threshold
-      Type: BaseDataVariableType
-      DataType: Double
-    - Name: PoorOEE_Threshold
-      Type: BaseDataVariableType
-      DataType: Double
-    - Name: EnableLogging
-      Type: BaseDataVariableType
-      DataType: Boolean
-    - Name: EnableAlarms
-      Type: BaseDataVariableType
-      DataType: Boolean
-    - Name: SystemHealthy
-      Type: BaseDataVariableType
-      DataType: Boolean
 - Class: Reference
   Type: HasComponent
   Target: g=85c30642f1cddf5f38e584437f9382c8
+- Class: Reference
+  Target: g=06b34fa69308a8aa3236bfd7579e7dfc

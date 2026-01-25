@@ -126,7 +126,7 @@ Children:
       - Name: Kind
         Type: PropertyType
         DataType: NodeId
-        Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+        Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: NodeClass
         Type: PropertyType
         DataType: NodePointerNodeClass
@@ -146,90 +146,6 @@ Children:
         Value: [{"TypeId":{"Id":296},"Body":{"Name":"oeeInstanceNodeId","DataType":{"Id":17},"ValueRank":-1,"ArrayDimensions":[],"Description":{"NamespaceIndex":-1,"LocaleId":"","Text":""}}}]
     - Class: Method
       Name: ForceCalculation
-- Name: OEEWidgetGenerator
-  Type: ObjectLibraryItem
-  Children:
-  - Name: LibraryItemGuid
-    Type: BaseDataVariableType
-    DataType: Guid
-    Value: "6976690a5f60aabc24b131a1d5cbcc8a"
-  - Name: LibraryItemVersion
-    Type: BaseDataVariableType
-    DataType: UInt32
-    Value: 1
-  - Name: OEEWidgetGenerator
-    Id: g=4212da8697ed65b270d1eaf7a50e873d
-    Supertype: NetLogic
-    ReferenceType: HasComponent
-    Children:
-    - Name: BehaviourStartPriority
-      Type: BehaviourStartPriorityVariableType
-      DataType: Byte
-      Value: 180
-    - Class: Method
-      Name: GenerateOperatorDashboard
-    - Class: Method
-      Name: GenerateAllWidgets
-    - Class: Method
-      Name: GenerateAvailabilityCard
-    - Class: Method
-      Name: GenerateDataInput
-    - Class: Method
-      Name: GenerateExecutiveDashboard
-    - Class: Method
-      Name: GenerateForecastCard
-    - Class: Method
-      Name: GenerateOEECard
-    - Class: Method
-      Name: GeneratePerformanceCard
-    - Class: Method
-      Name: GenerateProductionConfig
-    - Class: Method
-      Name: GenerateQualityCard
-    - Class: Method
-      Name: GenerateShiftDetailCard
-    - Class: Method
-      Name: GenerateShiftPacerCard
-    - Class: Method
-      Name: GenerateShiftStatsCard
-    - Class: Method
-      Name: GenerateSystemConfig
-    - Class: Method
-      Name: GenerateSystemHealthCard
-    - Class: Method
-      Name: GenerateTargetsConfig
-    - Class: Method
-      Name: GenerateHistoricalDashboard
-- Name: NewOEEWidgetGenerator
-  Type: ObjectLibraryItem
-  Children:
-  - Name: LibraryItemGuid
-    Type: BaseDataVariableType
-    DataType: Guid
-    Value: "de2a2875921578cdcf1d2277d0fdddd7"
-  - Name: LibraryItemVersion
-    Type: BaseDataVariableType
-    DataType: UInt32
-    Value: 1
-  - Name: NewOEEWidgetGenerator
-    Id: g=e076109f34abc30e3af9c3e25d40a386
-    Supertype: NetLogic
-    ReferenceType: HasComponent
-    Children:
-    - Name: BehaviourStartPriority
-      Type: BehaviourStartPriorityVariableType
-      DataType: Byte
-      Value: 180
-    - Class: Method
-      Name: GenerateGaugeCards
-    - Class: Method
-      Name: GenerateProductionCards
-    - Class: Method
-      Name: GenerateShiftCards
-    - Class: Method
-      Name: GenerateConfigurationCards
-    - Class: Method
-      Name: GenerateDiagnosticsCards
 - Name: OEE
   Type: ObjectLibraryItem
   Children:
@@ -262,7 +178,7 @@ Children:
         - Name: Kind
           Type: BaseDataVariableType
           DataType: NodeId
-          Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+          Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: BackgroundCard
         Type: Rectangle
         Children:
@@ -467,7 +383,7 @@ Children:
         - Name: Kind
           Type: BaseDataVariableType
           DataType: NodeId
-          Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+          Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: BackgroundCard
         Type: Rectangle
         Children:
@@ -982,7 +898,7 @@ Children:
         - Name: Kind
           Type: BaseDataVariableType
           DataType: NodeId
-          Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+          Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: BackgroundCard
         Type: Rectangle
         Children:
@@ -1342,7 +1258,7 @@ Children:
         - Name: Kind
           Type: BaseDataVariableType
           DataType: NodeId
-          Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+          Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: BackgroundCard
         Type: Rectangle
         Children:
@@ -2006,7 +1922,7 @@ Children:
         - Name: Kind
           Type: BaseDataVariableType
           DataType: NodeId
-          Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+          Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: BackgroundCard
         Type: Rectangle
         Children:
@@ -2374,7 +2290,7 @@ Children:
         - Name: Kind
           Type: BaseDataVariableType
           DataType: NodeId
-          Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+          Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: BackgroundCard
         Type: Rectangle
         Children:
@@ -3021,7 +2937,7 @@ Children:
         - Name: Kind
           Type: BaseDataVariableType
           DataType: NodeId
-          Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+          Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: BackgroundCard
         Type: Rectangle
         Children:
@@ -3522,7 +3438,7 @@ Children:
         - Name: Kind
           Type: BaseDataVariableType
           DataType: NodeId
-          Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+          Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: BackgroundCard
         Type: Rectangle
         Children:
@@ -3990,7 +3906,7 @@ Children:
         - Name: Kind
           Type: BaseDataVariableType
           DataType: NodeId
-          Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+          Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: BackgroundCard
         Type: Rectangle
         Children:
@@ -4275,7 +4191,7 @@ Children:
         - Name: Kind
           Type: BaseDataVariableType
           DataType: NodeId
-          Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+          Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: BackgroundCard
         Type: Rectangle
         Children:
@@ -5826,7 +5742,7 @@ Children:
         - Name: Kind
           Type: BaseDataVariableType
           DataType: NodeId
-          Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+          Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: BackgroundCard
         Type: Rectangle
         Children:
@@ -6327,7 +6243,7 @@ Children:
         - Name: Kind
           Type: BaseDataVariableType
           DataType: NodeId
-          Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+          Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: BackgroundCard
         Type: Rectangle
         Children:
@@ -6536,7 +6452,7 @@ Children:
         - Name: Kind
           Type: BaseDataVariableType
           DataType: NodeId
-          Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+          Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: BackgroundCard
         Type: Rectangle
         Children:
@@ -6893,7 +6809,7 @@ Children:
         - Name: Kind
           Type: BaseDataVariableType
           DataType: NodeId
-          Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+          Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: TitleLabel
         Type: Label
         Children:
@@ -7167,7 +7083,7 @@ Children:
         - Name: Kind
           Type: BaseDataVariableType
           DataType: NodeId
-          Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+          Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: TitleLabel
         Type: Label
         Children:
@@ -7396,7 +7312,7 @@ Children:
         - Name: Kind
           Type: BaseDataVariableType
           DataType: NodeId
-          Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
+          Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
       - Name: TitleLabel
         Type: Label
         Children:

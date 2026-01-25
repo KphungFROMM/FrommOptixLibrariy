@@ -1,0 +1,27 @@
+Name: Status
+Type: FolderType
+Children:
+- Name: isRunning
+  Type: BaseDataVariableType
+  DataType: Boolean
+- Name: isOeeOnTarget
+  Type: BaseDataVariableType
+  DataType: Boolean
+- Name: isProductionOnTarget
+  Type: BaseDataVariableType
+  DataType: Boolean
+- Name: isAvailabilityOnTarget
+  Type: BaseDataVariableType
+  DataType: Boolean
+- Name: isPerformanceOnTarget
+  Type: BaseDataVariableType
+  DataType: Boolean
+- Name: isQualityOnTarget
+  Type: BaseDataVariableType
+  DataType: Boolean
+- Name: shiftChangeSoon
+  Type: BaseDataVariableType
+  DataType: Boolean
+- Name: systemStatus
+  Type: BaseDataVariableType
+  DataType: String

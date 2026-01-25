@@ -1,0 +1,18 @@
+Name: Targets
+Type: FolderType
+Children:
+- Name: oeeTarget
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: productionTarget
+  Type: BaseDataVariableType
+  DataType: Int32
+- Name: availabilityTarget
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: performanceTarget
+  Type: BaseDataVariableType
+  DataType: Double
+- Name: qualityTarget
+  Type: BaseDataVariableType
+  DataType: Double

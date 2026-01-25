@@ -1,0 +1,53 @@
+Name: Calculators
+Type: FolderType
+Children:
+- File: Advance/Advance.yaml
+- Name: OEECalculator
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "f4433204ba79ed08b2c09158b37de032"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Name: OEECalculator
+    Id: g=8bd2362c461441f689e74bb779f7c3ca
+    Supertype: NetLogic
+    ReferenceType: HasComponent
+    Children:
+    - Name: ProductionLinesFolder
+      Type: BaseDataVariableType
+      DataType: NodeId
+      Value: {"IdType":2,"Id":"5d6effc01bbbf554d54b2eed52e55c5f","Namespace":4}
+- Name: ProductionLine
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "d4b6c6bff09fbddb77e76102c0e8764e"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Name: ProductionLine
+    Id: g=15c97e04bf876438f269074cb5e6a8d3
+    Supertype: BaseObjectType
+    Children:
+    - Name: Inputs
+      Type: FolderType
+      Children:
+      - File: PLC_Data/PLC_Data.yaml
+      - File: Configuration/Configuration.yaml
+      - File: Targets/Targets.yaml
+    - Name: Outputs
+      Type: FolderType
+      Children:
+      - File: OEE_Metrics/OEE_Metrics.yaml
+      - File: Shift_Info/Shift_Info.yaml
+      - File: Production_Metrics/Production_Metrics.yaml
+      - File: Gaps/Gaps.yaml
+      - File: Status/Status.yaml
