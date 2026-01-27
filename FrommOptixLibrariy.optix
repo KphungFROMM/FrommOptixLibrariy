@@ -42,15 +42,15 @@ Project:
    Module: FTOptix.HMIProject.Net
    Version: 4.9
  Statistics:
-  TotalNodeCount: 2670
-  Objects: 388
-  ObjectTypes: 12
-  Variables: 2261
+  TotalNodeCount: 4111
+  Objects: 639
+  ObjectTypes: 13
+  Variables: 3450
   VariableTypes: 0
   DataTypes: 0
   Methods: 9
-  References: 10
+  References: 14
   ReferenceTypes: 0
-  Files: 26
+  Files: 28
  Nodes:
  - File: Nodes/FrommOptixLibrariy.yaml
