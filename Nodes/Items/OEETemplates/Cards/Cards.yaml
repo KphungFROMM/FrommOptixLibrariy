@@ -2157,3 +2157,3251 @@ Children:
         Type: PropertyType
         DataType: NodeId
         Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
+- Name: ProductionDataCard
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "410e86ce020dd7de00e52fe451ba4f62"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Name: ProductionDataCard
+    Id: g=c867ff2c59d40d0a9bc70e8c53671247
+    Supertype: Panel
+    ReferenceType: HasComponent
+    Children:
+    - Name: Width
+      Type: BaseVariableType
+      DataType: Size
+      ModellingRule: Optional
+      Value: 300.0
+    - Name: Height
+      Type: BaseVariableType
+      DataType: Size
+      ModellingRule: Optional
+      Value: 300.0
+    - Name: Bg
+      Type: Rectangle
+      Children:
+      - Name: Width
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 50.0
+      - Name: Height
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 50.0
+      - Name: HorizontalAlignment
+        Type: BaseVariableType
+        DataType: HorizontalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: VerticalAlignment
+        Type: BaseVariableType
+        DataType: VerticalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: CornerRadius
+        Type: BaseDataVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 16.0
+      - Name: BorderColor
+        Type: BaseDataVariableType
+        DataType: Color
+        ModellingRule: Optional
+        Value: "#e2e8f0"
+      - Name: BorderThickness
+        Type: BaseDataVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 2.0
+    - Name: ProductionDataContentLayout
+      Type: ColumnLayout
+      Children:
+      - Name: Width
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 438.0
+      - Name: Height
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 280.0
+      - Name: LeftMargin
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 5.0
+      - Name: TopMargin
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 5.0
+      - Name: ProductionDataTitle
+        Type: Label
+        Children:
+        - Name: Text
+          Type: BaseDataVariableType
+          DataType: LocalizedText
+          ModellingRule: Optional
+          Value: {"LocaleId":"en-US","Text":"PRODUCTION DATA"}
+        - Name: TextColor
+          Type: BaseDataVariableType
+          DataType: Color
+          ModellingRule: Optional
+          Value: "#0f172a"
+        - Name: FontSize
+          Type: BaseDataVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 16.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 438.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 25.0
+      - Name: ProductionDataItem0Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: ProductionDataItem0Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Total Count"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: ProductionDataItem0Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: DynamicLink
+              Type: DynamicLink
+              DataType: NodePath
+              Value: "../../../../OEEDataSource/Outputs/Core/TotalCount"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: ProductionDataItem1Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: ProductionDataItem1Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Good Parts"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: ProductionDataItem1Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: DynamicLink
+              Type: DynamicLink
+              DataType: NodePath
+              Value: "../../../../OEEDataSource/Inputs/Data/GoodPartCount"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: ProductionDataItem2Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: ProductionDataItem2Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Bad Parts"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: ProductionDataItem2Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: DynamicLink
+              Type: DynamicLink
+              DataType: NodePath
+              Value: "../../../../OEEDataSource/Inputs/Data/BadPartCount"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: ProductionDataItem3Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: ProductionDataItem3Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Expected Count"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: ProductionDataItem3Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: DynamicLink
+              Type: DynamicLink
+              DataType: NodePath
+              Value: "../../../../OEEDataSource/Outputs/Core/ExpectedPartCount"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: ProductionDataItem4Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: ProductionDataItem4Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Production Gap"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: ProductionDataItem4Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: DynamicLink
+              Type: DynamicLink
+              DataType: NodePath
+              Value: "../../../../OEEDataSource/Outputs/Production/TargetVsActualParts"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: ProductionDataItem5Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: ProductionDataItem5Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Production Progress"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: ProductionDataItem5Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: StringFormatter1
+              Type: StringFormatter
+              Children:
+              - Name: Format
+                Type: BaseDataVariableType
+                DataType: LocalizedText
+                ReferenceType: HasParameter
+                ModellingRule: Optional
+                Value: {"LocaleId":"en-US","Text":"{0:f1}%"}
+              - Name: ns=2;Source0
+                Type: BaseDataVariableType
+                DataType: BaseDataType
+                ReferenceType: HasSource
+                Children:
+                - Name: DynamicLink
+                  Type: DynamicLink
+                  DataType: NodePath
+                  Value: "../../../../OEEDataSource/Outputs/Production/ProductionProgress"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: HorizontalAlignment
+        Type: BaseVariableType
+        DataType: HorizontalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: VerticalAlignment
+        Type: BaseVariableType
+        DataType: VerticalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: RightMargin
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 5.0
+      - Name: BottomMargin
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 5.0
+    - Name: OEEDataSource
+      Type: NodePointer
+      DataType: NodeId
+      Children:
+      - Name: Kind
+        Type: PropertyType
+        DataType: NodeId
+        Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
+- Name: ShiftInfoCard
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "2a9564cac4613d74cfc41b6e173ae6ea"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Name: ShiftInfoCard
+    Id: g=8e5395309bc29e1ccf9606703e25b84f
+    Supertype: Panel
+    ReferenceType: HasComponent
+    Children:
+    - Name: Width
+      Type: BaseVariableType
+      DataType: Size
+      ModellingRule: Optional
+      Value: 300.0
+    - Name: Height
+      Type: BaseVariableType
+      DataType: Size
+      ModellingRule: Optional
+      Value: 300.0
+    - Name: Bg
+      Type: Rectangle
+      Children:
+      - Name: Width
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 50.0
+      - Name: Height
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 50.0
+      - Name: HorizontalAlignment
+        Type: BaseVariableType
+        DataType: HorizontalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: VerticalAlignment
+        Type: BaseVariableType
+        DataType: VerticalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: CornerRadius
+        Type: BaseDataVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 16.0
+      - Name: BorderColor
+        Type: BaseDataVariableType
+        DataType: Color
+        ModellingRule: Optional
+        Value: "#e2e8f0"
+      - Name: BorderThickness
+        Type: BaseDataVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 2.0
+    - Name: OEEDataSource
+      Type: NodePointer
+      DataType: NodeId
+      Children:
+      - Name: Kind
+        Type: PropertyType
+        DataType: NodeId
+        Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
+    - Name: ShiftInformationContentLayout
+      Type: ColumnLayout
+      Children:
+      - Name: Width
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 438.0
+      - Name: Height
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 280.0
+      - Name: LeftMargin
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 5.0
+      - Name: TopMargin
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 5.0
+      - Name: ShiftInformationTitle
+        Type: Label
+        Children:
+        - Name: Text
+          Type: BaseDataVariableType
+          DataType: LocalizedText
+          ModellingRule: Optional
+          Value: {"LocaleId":"en-US","Text":"SHIFT INFORMATION"}
+        - Name: TextColor
+          Type: BaseDataVariableType
+          DataType: Color
+          ModellingRule: Optional
+          Value: "#0f172a"
+        - Name: FontSize
+          Type: BaseDataVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 16.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 438.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 25.0
+      - Name: ShiftInformationItem0Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: ShiftInformationItem0Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Current Shift"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: ShiftInformationItem0Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: DynamicLink
+              Type: DynamicLink
+              DataType: NodePath
+              Value: "../../../../OEEDataSource/Outputs/Shift/CurrentShiftNumber"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: ShiftInformationItem1Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: ShiftInformationItem1Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Shift Start"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: ShiftInformationItem1Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: DynamicLink
+              Type: DynamicLink
+              DataType: NodePath
+              Value: "../../../../OEEDataSource/Outputs/Shift/ShiftStartTimeOutput"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: ShiftInformationItem2Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: ShiftInformationItem2Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Shift End"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: ShiftInformationItem2Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: DynamicLink
+              Type: DynamicLink
+              DataType: NodePath
+              Value: "../../../../OEEDataSource/Outputs/Shift/ShiftEndTime"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: ShiftInformationItem3Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: ShiftInformationItem3Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Hours Per Shift"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: ShiftInformationItem3Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: DynamicLink
+              Type: DynamicLink
+              DataType: NodePath
+              Value: "../../../../OEEDataSource/Outputs/Shift/HoursPerShift"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: ShiftInformationItem4Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: ShiftInformationItem4Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Shift Progress"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: ShiftInformationItem4Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: StringFormatter1
+              Type: StringFormatter
+              Children:
+              - Name: Format
+                Type: BaseDataVariableType
+                DataType: LocalizedText
+                ReferenceType: HasParameter
+                ModellingRule: Optional
+                Value: {"LocaleId":"en-US","Text":"{0:f1}%"}
+              - Name: ns=2;Source0
+                Type: BaseDataVariableType
+                DataType: BaseDataType
+                ReferenceType: HasSource
+                Children:
+                - Name: DynamicLink
+                  Type: DynamicLink
+                  DataType: NodePath
+                  Value: "../../../../OEEDataSource/Outputs/Shift/ShiftProgress"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: HorizontalAlignment
+        Type: BaseVariableType
+        DataType: HorizontalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: VerticalAlignment
+        Type: BaseVariableType
+        DataType: VerticalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: RightMargin
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 5.0
+      - Name: BottomMargin
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 5.0
+- Name: PerformanceMetricCard
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "38e68bbdb0bad2ce6e3ef7b80152ffe8"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Name: PerformanceMetricCard
+    Id: g=4aa86e730b86ac788a51e4d891b25b8c
+    Supertype: Panel
+    ReferenceType: HasComponent
+    Children:
+    - Name: Width
+      Type: BaseVariableType
+      DataType: Size
+      ModellingRule: Optional
+      Value: 300.0
+    - Name: Height
+      Type: BaseVariableType
+      DataType: Size
+      ModellingRule: Optional
+      Value: 300.0
+    - Name: Bg
+      Type: Rectangle
+      Children:
+      - Name: Width
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 50.0
+      - Name: Height
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 50.0
+      - Name: HorizontalAlignment
+        Type: BaseVariableType
+        DataType: HorizontalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: VerticalAlignment
+        Type: BaseVariableType
+        DataType: VerticalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: CornerRadius
+        Type: BaseDataVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 16.0
+      - Name: BorderColor
+        Type: BaseDataVariableType
+        DataType: Color
+        ModellingRule: Optional
+        Value: "#e2e8f0"
+      - Name: BorderThickness
+        Type: BaseDataVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 2.0
+    - Name: OEEDataSource
+      Type: NodePointer
+      DataType: NodeId
+      Children:
+      - Name: Kind
+        Type: PropertyType
+        DataType: NodeId
+        Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
+    - Name: PerformanceMetricsContentLayout
+      Type: ColumnLayout
+      Children:
+      - Name: Width
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 438.0
+      - Name: Height
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 280.0
+      - Name: LeftMargin
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+      - Name: TopMargin
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+      - Name: PerformanceMetricsTitle
+        Type: Label
+        Children:
+        - Name: Text
+          Type: BaseDataVariableType
+          DataType: LocalizedText
+          ModellingRule: Optional
+          Value: {"LocaleId":"en-US","Text":"PERFORMANCE METRICS"}
+        - Name: TextColor
+          Type: BaseDataVariableType
+          DataType: Color
+          ModellingRule: Optional
+          Value: "#0f172a"
+        - Name: FontSize
+          Type: BaseDataVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 16.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 438.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 25.0
+      - Name: PerformanceMetricsItem0Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: PerformanceMetricsItem0Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Avg Cycle Time"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: PerformanceMetricsItem0Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: StringFormatter1
+              Type: StringFormatter
+              Children:
+              - Name: Format
+                Type: BaseDataVariableType
+                DataType: LocalizedText
+                ReferenceType: HasParameter
+                ModellingRule: Optional
+                Value: {"LocaleId":"en-US","Text":"{0} sec"}
+              - Name: ns=2;Source0
+                Type: BaseDataVariableType
+                DataType: BaseDataType
+                ReferenceType: HasSource
+                Children:
+                - Name: DynamicLink
+                  Type: DynamicLink
+                  DataType: NodePath
+                  Value: "../../../../../../OEEDataSource/Outputs/Core/AvgCycleTime"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: PerformanceMetricsItem1Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: PerformanceMetricsItem1Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Parts Per Hour"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: PerformanceMetricsItem1Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: DynamicLink
+              Type: DynamicLink
+              DataType: NodePath
+              Value: "../../../../OEEDataSource/Outputs/Core/PartsPerHour"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: PerformanceMetricsItem2Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: PerformanceMetricsItem2Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Required Rate"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: PerformanceMetricsItem2Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: StringFormatter1
+              Type: StringFormatter
+              Children:
+              - Name: Format
+                Type: BaseDataVariableType
+                DataType: LocalizedText
+                ReferenceType: HasParameter
+                ModellingRule: Optional
+                Value: {"LocaleId":"en-US","Text":"{0}/hr"}
+              - Name: ns=2;Source0
+                Type: BaseDataVariableType
+                DataType: BaseDataType
+                ReferenceType: HasSource
+                Children:
+                - Name: DynamicLink
+                  Type: DynamicLink
+                  DataType: NodePath
+                  Value: "../../../../OEEDataSource/Outputs/Production/RequiredRateToTarget"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: PerformanceMetricsItem3Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: PerformanceMetricsItem3Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Behind Schedule"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: PerformanceMetricsItem3Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: KeyValueConverter1
+              Type: ValueMapConverter
+              Children:
+              - Name: Source
+                Type: BaseDataVariableType
+                DataType: BaseDataType
+                ReferenceType: HasSource
+                Children:
+                - Name: DynamicLink
+                  Type: DynamicLink
+                  DataType: NodePath
+                  Value: "../../../../OEEDataSource/Outputs/Production/ProductionBehindSchedule"
+              - Name: ns=2;Pairs
+                Type: BaseObjectType
+                ModellingRule: None
+                Children:
+                - Name: Pair
+                  Type: ValueMapPair
+                  ModellingRule: None
+                  Children:
+                  - Name: Key
+                    Type: BaseDataVariableType
+                    DataType: UInt32
+                    ModellingRule: None
+                  - Name: Value
+                    Type: BaseDataVariableType
+                    DataType: LocalizedText
+                    ModellingRule: None
+                    Value: {"LocaleId":"en-US","Text":"No"}
+                - Name: Pair1
+                  Type: ValueMapPair
+                  ModellingRule: None
+                  Children:
+                  - Name: Key
+                    Type: BaseDataVariableType
+                    DataType: UInt32
+                    ModellingRule: None
+                  - Name: Value
+                    Type: BaseDataVariableType
+                    DataType: LocalizedText
+                    ModellingRule: None
+                    Value: {"LocaleId":"en-US","Text":"Yes"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: PerformanceMetricsItem4Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: PerformanceMetricsItem4Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Time to Target"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: PerformanceMetricsItem4Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: DynamicLink
+              Type: DynamicLink
+              DataType: NodePath
+              Value: "../../../../OEEDataSource/Outputs/Production/RemainingTimeAtCurrentRate"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: HorizontalAlignment
+        Type: BaseVariableType
+        DataType: HorizontalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: VerticalAlignment
+        Type: BaseVariableType
+        DataType: VerticalAlignment
+        ModellingRule: Optional
+        Value: 3
+- Name: RuntimeInfoCard
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "2fbeb94379839bdecdd0d21e3ad9ceea"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Name: RuntimeInfoCard
+    Id: g=2d0b5390fd492c508966b1f0c48a60e6
+    Supertype: Panel
+    ReferenceType: HasComponent
+    Children:
+    - Name: Width
+      Type: BaseVariableType
+      DataType: Size
+      ModellingRule: Optional
+      Value: 300.0
+    - Name: Height
+      Type: BaseVariableType
+      DataType: Size
+      ModellingRule: Optional
+      Value: 300.0
+    - Name: Bg
+      Type: Rectangle
+      Children:
+      - Name: Width
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 50.0
+      - Name: Height
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 50.0
+      - Name: HorizontalAlignment
+        Type: BaseVariableType
+        DataType: HorizontalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: VerticalAlignment
+        Type: BaseVariableType
+        DataType: VerticalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: CornerRadius
+        Type: BaseDataVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 16.0
+      - Name: BorderColor
+        Type: BaseDataVariableType
+        DataType: Color
+        ModellingRule: Optional
+        Value: "#e2e8f0"
+      - Name: BorderThickness
+        Type: BaseDataVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 2.0
+    - Name: OEEDataSource
+      Type: NodePointer
+      DataType: NodeId
+      Children:
+      - Name: Kind
+        Type: PropertyType
+        DataType: NodeId
+        Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
+    - Name: RuntimeInformationContentLayout
+      Type: ColumnLayout
+      Children:
+      - Name: Width
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 438.0
+      - Name: Height
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 280.0
+      - Name: LeftMargin
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+      - Name: TopMargin
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+      - Name: RuntimeInformationTitle
+        Type: Label
+        Children:
+        - Name: Text
+          Type: BaseDataVariableType
+          DataType: LocalizedText
+          ModellingRule: Optional
+          Value: {"LocaleId":"en-US","Text":"RUNTIME INFORMATION"}
+        - Name: TextColor
+          Type: BaseDataVariableType
+          DataType: Color
+          ModellingRule: Optional
+          Value: "#0f172a"
+        - Name: FontSize
+          Type: BaseDataVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 16.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 438.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 25.0
+      - Name: RuntimeInformationItem0Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: RuntimeInformationItem0Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Total Runtime"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: RuntimeInformationItem0Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: DynamicLink
+              Type: DynamicLink
+              DataType: NodePath
+              Value: "../../../../OEEDataSource/Outputs/System/TotalRuntimeFormatted"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: RuntimeInformationItem1Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: RuntimeInformationItem1Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Total Downtime"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: RuntimeInformationItem1Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: DynamicLink
+              Type: DynamicLink
+              DataType: NodePath
+              Value: "../../../../OEEDataSource/Outputs/System/DowntimeFormatted"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: RuntimeInformationItem2Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: RuntimeInformationItem2Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Calculation Valid"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: RuntimeInformationItem2Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: DynamicLink
+              Type: DynamicLink
+              DataType: NodePath
+              Value: "../../../../OEEDataSource/Outputs/System/CalculationValid"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: RuntimeInformationItem3Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: RuntimeInformationItem3Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"System Health"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: RuntimeInformationItem3Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: DynamicLink
+              Type: DynamicLink
+              DataType: NodePath
+              Value: "../../../../OEEDataSource/Outputs/System/SystemStatus"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: RuntimeInformationItem4Row
+        Type: RowLayout
+        Children:
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 398.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 35.0
+        - Name: LeftMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 20.0
+        - Name: TopMargin
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+        - Name: RuntimeInformationItem4Label
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            ModellingRule: Optional
+            Value: {"LocaleId":"en-US","Text":"Update Rate"}
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#64748b"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: RuntimeInformationItem4Value
+          Type: Label
+          Children:
+          - Name: Text
+            Type: BaseDataVariableType
+            DataType: LocalizedText
+            Children:
+            - Name: DynamicLink
+              Type: DynamicLink
+              DataType: NodePath
+              Value: "../../../../OEEDataSource/Inputs/System/UpdateRateMs"
+          - Name: TextColor
+            Type: BaseDataVariableType
+            DataType: Color
+            ModellingRule: Optional
+            Value: "#0f172a"
+          - Name: FontSize
+            Type: BaseDataVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 14.0
+          - Name: HorizontalAlignment
+            Type: BaseVariableType
+            DataType: HorizontalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: VerticalAlignment
+            Type: BaseVariableType
+            DataType: VerticalAlignment
+            ModellingRule: Optional
+            Value: 3
+          - Name: Width
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 199.0
+          - Name: Height
+            Type: BaseVariableType
+            DataType: Size
+            ModellingRule: Optional
+            Value: 35.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+      - Name: HorizontalAlignment
+        Type: BaseVariableType
+        DataType: HorizontalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: VerticalAlignment
+        Type: BaseVariableType
+        DataType: VerticalAlignment
+        ModellingRule: Optional
+        Value: 3
+- Name: HeaderCard
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "1865f048fe15b6c9b45018feda56f09b"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Name: HeaderCard
+    Id: g=5244ce9fabbfedc82ad7f012a89e24b7
+    Supertype: Panel
+    ReferenceType: HasComponent
+    Children:
+    - Name: Width
+      Type: BaseVariableType
+      DataType: Size
+      ModellingRule: Optional
+      Value: 1140.0
+    - Name: Height
+      Type: BaseVariableType
+      DataType: Size
+      ModellingRule: Optional
+      Value: 100.0
+    - Name: Bg
+      Type: Rectangle
+      Children:
+      - Name: Width
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 50.0
+      - Name: Height
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 50.0
+      - Name: HorizontalAlignment
+        Type: BaseVariableType
+        DataType: HorizontalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: VerticalAlignment
+        Type: BaseVariableType
+        DataType: VerticalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: CornerRadius
+        Type: BaseDataVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 16.0
+      - Name: BorderColor
+        Type: BaseDataVariableType
+        DataType: Color
+        ModellingRule: Optional
+        Value: "#e2e8f0"
+      - Name: BorderThickness
+        Type: BaseDataVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 2.0
+    - Name: OEEDataSource
+      Type: NodePointer
+      DataType: NodeId
+      Children:
+      - Name: Kind
+        Type: PropertyType
+        DataType: NodeId
+        Value: "/Objects/FrommOptixLibrariy/Items/OEETemplates/Calculators/Advance/OEEType/OEEType"
+    - Name: HeaderContentLayout
+      Type: ColumnLayout
+      Children:
+      - Name: Width
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 1864.0
+      - Name: Height
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 120.0
+      - Name: LeftMargin
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 5.0
+      - Name: TopMargin
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 5.0
+      - Name: HeaderTitle
+        Type: Label
+        Children:
+        - Name: Text
+          Type: BaseDataVariableType
+          DataType: LocalizedText
+          ModellingRule: Optional
+          Value: {"LocaleId":"en-US","Text":"Advanced OEE Calculator Dashboard"}
+        - Name: TextColor
+          Type: BaseDataVariableType
+          DataType: Color
+          ModellingRule: Optional
+          Value: "#0f172a"
+        - Name: FontSize
+          Type: BaseDataVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 36.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 1864.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 60.0
+      - Name: HeaderMeta
+        Type: Label
+        Children:
+        - Name: Text
+          Type: BaseDataVariableType
+          DataType: LocalizedText
+          Children:
+          - Name: StringFormatter1
+            Type: StringFormatter
+            Children:
+            - Name: Format
+              Type: BaseDataVariableType
+              DataType: LocalizedText
+              ReferenceType: HasParameter
+              ModellingRule: Optional
+              Value: {"LocaleId":"en-US","Text":"Shift {0} • Time Into Shift: {1} • Status: {2} • Data Quality: {3}"}
+            - Name: ns=2;Source0
+              Type: BaseDataVariableType
+              DataType: BaseDataType
+              ReferenceType: HasSource
+              Children:
+              - Name: DynamicLink
+                Type: DynamicLink
+                DataType: NodePath
+                Value: "../../../../../OEEDataSource/Outputs/Shift/CurrentShiftNumber"
+            - Name: ns=2;Source1
+              Type: BaseDataVariableType
+              DataType: BaseDataType
+              ReferenceType: HasSource
+              Children:
+              - Name: DynamicLink
+                Type: DynamicLink
+                DataType: NodePath
+                Value: "../../../../../OEEDataSource/Outputs/Shift/TimeIntoShift"
+            - Name: ns=2;Source2
+              Type: BaseDataVariableType
+              DataType: BaseDataType
+              ReferenceType: HasSource
+              Children:
+              - Name: DynamicLink
+                Type: DynamicLink
+                DataType: NodePath
+                Value: "../../../../../OEEDataSource/Outputs/System/SystemStatus"
+            - Name: ns=2;Source3
+              Type: BaseDataVariableType
+              DataType: BaseDataType
+              ReferenceType: HasSource
+              Children:
+              - Name: DynamicLink
+                Type: DynamicLink
+                DataType: NodePath
+                Value: "../../../../../OEEDataSource/Outputs/System/DataQualityScore"
+        - Name: TextColor
+          Type: BaseDataVariableType
+          DataType: Color
+          ModellingRule: Optional
+          Value: "#64748b"
+        - Name: FontSize
+          Type: BaseDataVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 15.0
+        - Name: HorizontalAlignment
+          Type: BaseVariableType
+          DataType: HorizontalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: VerticalAlignment
+          Type: BaseVariableType
+          DataType: VerticalAlignment
+          ModellingRule: Optional
+          Value: 3
+        - Name: Width
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 1864.0
+        - Name: Height
+          Type: BaseVariableType
+          DataType: Size
+          ModellingRule: Optional
+          Value: 60.0
+      - Name: HorizontalAlignment
+        Type: BaseVariableType
+        DataType: HorizontalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: VerticalAlignment
+        Type: BaseVariableType
+        DataType: VerticalAlignment
+        ModellingRule: Optional
+        Value: 3
+      - Name: RightMargin
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 5.0
+      - Name: BottomMargin
+        Type: BaseVariableType
+        DataType: Size
+        ModellingRule: Optional
+        Value: 5.0
