@@ -261,38 +261,6 @@ Children:
     Type: BaseDataVariableType
     DataType: String
     Value: "0"
-- Name: OEE_Calculator
-  Id: g=b3ce1f05a5168203c66583d2d4f3cd5a
-  Supertype: NetLogic
-  ReferenceType: HasComponent
-  Children:
-  - Name: OEEDataSource
-    Type: NodePointer
-    DataType: NodeId
-    Children:
-    - Name: Kind
-      Type: PropertyType
-      DataType: NodeId
-      Value: "/Objects/FrommOptixLibrariy/Types/OEEType"
-    - Name: NodeClass
-      Type: PropertyType
-      DataType: NodePointerNodeClass
-      ModellingRule: Optional
-  - Class: Method
-    Name: GetDataSourceInfo
-  - Class: Method
-    Name: SetOEEDataSource
-    Children:
-    - Name: ns=0;InputArguments
-      Type: BaseVariableType
-      DataType: Argument
-      ReferenceType: HasProperty
-      ModellingRule: None
-      ValueRank: OneDimension
-      ArrayDimensions: [0]
-      Value: [{"TypeId":{"Id":296},"Body":{"Name":"oeeInstanceNodeId","DataType":{"Id":17},"ValueRank":-1,"ArrayDimensions":[],"Description":{"NamespaceIndex":-1,"LocaleId":"","Text":""}}}]
-  - Class: Method
-    Name: ForceCalculation
 - Name: OEECalculator
   Id: g=8bd2362c461441f689e74bb779f7c3ca
   Supertype: NetLogic

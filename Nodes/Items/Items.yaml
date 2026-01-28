@@ -29,20 +29,6 @@ Children:
   - Class: Reference
     Type: HasOwnedType
     Target: g=c3c04d48d895c34f4c6b1df14531c9b5
-- Name: OEE_Calculator
-  Type: ObjectLibraryItem
-  Children:
-  - Name: LibraryItemGuid
-    Type: BaseDataVariableType
-    DataType: Guid
-    Value: "d02f049e4d83123265e3c401c11539bf"
-  - Name: LibraryItemVersion
-    Type: BaseDataVariableType
-    DataType: UInt32
-    Value: 3
-  - Class: Reference
-    Type: HasOwnedType
-    Target: g=b3ce1f05a5168203c66583d2d4f3cd5a
 - Name: OEE
   Type: ObjectLibraryItem
   Children:
