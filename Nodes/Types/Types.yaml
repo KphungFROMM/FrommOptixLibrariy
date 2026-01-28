@@ -11697,7 +11697,7 @@ Children:
                   ModellingRule: Optional
                   Value: 20.0
 - Name: AdvanceOEE_Calculator
-  Id: g=8c1038df949c77242cec3e030cdccb90
+  Id: g=8c8e4d5e05365d738f35b12827575e4e
   Supertype: NetLogic
   ReferenceType: HasComponent
   Children:

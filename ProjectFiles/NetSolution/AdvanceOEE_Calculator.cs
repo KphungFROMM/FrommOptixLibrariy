@@ -205,6 +205,7 @@ public class AdvanceOEE_Calculator : BaseNetLogic
         state.TotalRuntimeSecondsVar = GetVariableFromPath(instance, "Inputs/Data/TotalRuntimeSeconds");
         state.GoodPartCountVar = GetVariableFromPath(instance, "Inputs/Data/GoodPartCount");
         state.BadPartCountVar = GetVariableFromPath(instance, "Inputs/Data/BadPartCount");
+        state.RunningStatusVar = GetVariableFromPath(instance, "Inputs/Data/RunningStatus");
         
         // Input mappings - Production
         state.IdealCycleTimeSecondsVar = GetVariableFromPath(instance, "Inputs/Production/IdealCycleTimeSeconds");
@@ -224,13 +225,7 @@ public class AdvanceOEE_Calculator : BaseNetLogic
         state.OEETargetVar = GetVariableFromPath(instance, "Inputs/Targets/OEETarget");
         
         // Configuration folder mappings
-        state.EnableRealTimeCalcVar = GetVariableFromPath(instance, "Configuration/EnableRealTimeCalc");
-        state.MinimumRunTimeVar = GetVariableFromPath(instance, "Configuration/MinimumRunTime");
-        state.GoodOEEThresholdVar = GetVariableFromPath(instance, "Configuration/GoodOEE_Threshold");
         state.PoorOEEThresholdVar = GetVariableFromPath(instance, "Configuration/PoorOEE_Threshold");
-        state.EnableLoggingVar = GetVariableFromPath(instance, "Configuration/EnableLogging");
-        state.EnableAlarmsVar = GetVariableFromPath(instance, "Configuration/EnableAlarms");
-        state.SystemHealthyVar = GetVariableFromPath(instance, "Configuration/SystemHealthy");
 
         // Output mappings - Core
         state.TotalCountVar = GetVariableFromPath(instance, "Outputs/Core/TotalCount");
@@ -329,7 +324,7 @@ public class AdvanceOEE_Calculator : BaseNetLogic
     {
         var allVars = new IUAVariable[] 
         {
-            state.TotalRuntimeSecondsVar, state.GoodPartCountVar, state.BadPartCountVar, state.IdealCycleTimeSecondsVar,
+            state.TotalRuntimeSecondsVar, state.GoodPartCountVar, state.BadPartCountVar, state.RunningStatusVar, state.IdealCycleTimeSecondsVar,
             state.PlannedProductionTimeHoursVar, state.NumberOfShiftsVar, state.ShiftStartTimeVar, state.ProductionTargetVar,
             state.TotalCountVar, state.QualityVar, state.PerformanceVar, state.AvailabilityVar, state.OEEVar, state.AvgCycleTimeVar,
             state.PartsPerHourVar, state.SystemStatusVar, state.CalculationValidVar, state.DataQualityScoreVar,
@@ -384,13 +379,7 @@ public class AdvanceOEE_Calculator : BaseNetLogic
         WriteDefaultIfEmpty(state, state.PerformanceTargetVar, 85.0, "PerformanceTarget");
         WriteDefaultIfEmpty(state, state.AvailabilityTargetVar, 90.0, "AvailabilityTarget");
         WriteDefaultIfEmpty(state, state.OEETargetVar, 72.7, "OEETarget");
-        WriteDefaultIfEmpty(state, state.EnableRealTimeCalcVar, true, "EnableRealTimeCalc");
-        WriteDefaultIfEmpty(state, state.MinimumRunTimeVar, 60.0, "MinimumRunTime");
-        WriteDefaultIfEmpty(state, state.GoodOEEThresholdVar, 80.0, "GoodOEE_Threshold");
         WriteDefaultIfEmpty(state, state.PoorOEEThresholdVar, 60.0, "PoorOEE_Threshold");
-        WriteDefaultIfEmpty(state, state.EnableLoggingVar, true, "EnableLogging");
-        WriteDefaultIfEmpty(state, state.EnableAlarmsVar, true, "EnableAlarms");
-        WriteDefaultIfEmpty(state, state.SystemHealthyVar, true, "SystemHealthy");
     }
 
     private void WriteDefaultIfEmpty(InstanceState state, IUAVariable var, object defaultValue, string varName)
@@ -462,13 +451,7 @@ public class AdvanceOEE_Calculator : BaseNetLogic
         state.PerformanceTarget = ReadDoubleVar(state.PerformanceTargetVar, 85.0);
         state.AvailabilityTarget = ReadDoubleVar(state.AvailabilityTargetVar, 90.0);
         state.OEETarget = ReadDoubleVar(state.OEETargetVar, 72.7);
-        state.EnableRealTimeCalc = ReadBoolVar(state.EnableRealTimeCalcVar, true);
-        state.MinimumRunTime = ReadDoubleVar(state.MinimumRunTimeVar, 60.0);
-        state.GoodOEEThreshold = ReadDoubleVar(state.GoodOEEThresholdVar, 80.0);
         state.PoorOEEThreshold = ReadDoubleVar(state.PoorOEEThresholdVar, 60.0);
-        state.EnableLogging = ReadBoolVar(state.EnableLoggingVar, true);
-        state.EnableAlarms = ReadBoolVar(state.EnableAlarmsVar, true);
-        state.SystemHealthy = ReadBoolVar(state.SystemHealthyVar, true);
         state.LoggingVerbosity = ReadIntVar(state.LoggingVerbosityVar, 1);
     }
 
@@ -642,7 +625,20 @@ public class AdvanceOEE_Calculator : BaseNetLogic
             results.ProjectedTotalCount = 0;
         }
 
-        results.SystemStatus = DetermineSystemStatus(state, runtimeSeconds);
+        // SystemStatus strictly from RunningStatus boolean
+        bool running = false;
+        if (state.RunningStatusVar != null)
+            running = ReadBoolVar(state.RunningStatusVar, false);
+        results.SystemStatus = running ? "Running" : "Stopped";
+
+        // Log transitions when verbosity enabled
+        if (!string.Equals(state.LastSystemStatus, results.SystemStatus))
+        {
+            if (state.LoggingVerbosity >= 1)
+                LogInfo($"[{state.InstanceName}] SystemStatus changed to {results.SystemStatus} (source=RunningStatus)");
+            state.LastSystemStatus = results.SystemStatus;
+        }
+
         state.PreviousRuntimeSeconds = runtimeSeconds;
 
         results.TargetVsActualParts = totalCount - state.ProductionTarget;
@@ -1155,6 +1151,7 @@ public class AdvanceOEE_Calculator : BaseNetLogic
         public IUAVariable TotalRuntimeSecondsVar;
         public IUAVariable GoodPartCountVar;
         public IUAVariable BadPartCountVar;
+        public IUAVariable RunningStatusVar;
         
         // Input variables - Production
         public IUAVariable IdealCycleTimeSecondsVar;
@@ -1174,13 +1171,7 @@ public class AdvanceOEE_Calculator : BaseNetLogic
         public IUAVariable OEETargetVar;
         
         // Configuration variables
-        public IUAVariable EnableRealTimeCalcVar;
-        public IUAVariable MinimumRunTimeVar;
-        public IUAVariable GoodOEEThresholdVar;
         public IUAVariable PoorOEEThresholdVar;
-        public IUAVariable EnableLoggingVar;
-        public IUAVariable EnableAlarmsVar;
-        public IUAVariable SystemHealthyVar;
 
         // Output variables - Core
         public IUAVariable TotalCountVar;
@@ -1289,16 +1280,11 @@ public class AdvanceOEE_Calculator : BaseNetLogic
         public double CalculatedHoursPerShift = 8.0;
 
         // Configuration flags
-        public bool EnableRealTimeCalc = true;
-        public double MinimumRunTime = 60.0;
-        public double GoodOEEThreshold = 80.0;
         public double PoorOEEThreshold = 60.0;
-        public bool EnableLogging = true;
-        public bool EnableAlarms = true;
-        public bool SystemHealthy = true;
 
         // State tracking
         public double PreviousRuntimeSeconds = -1.0;
+        public string LastSystemStatus = "";
 
         // Settings
         public int UpdateRateMs = 1000;
