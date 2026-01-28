@@ -13,15 +13,9 @@ Children:
     Type: BaseDataVariableType
     DataType: UInt32
     Value: 1
-  - Name: OEECalculator
-    Id: g=8bd2362c461441f689e74bb779f7c3ca
-    Supertype: NetLogic
-    ReferenceType: HasComponent
-    Children:
-    - Name: ProductionLinesFolder
-      Type: BaseDataVariableType
-      DataType: NodeId
-      Value: {"IdType":2,"Id":"5d6effc01bbbf554d54b2eed52e55c5f","Namespace":4}
+  - Class: Reference
+    Type: HasOwnedType
+    Target: g=8bd2362c461441f689e74bb779f7c3ca
 - Name: ProductionLine
   Type: ObjectLibraryItem
   Children:
@@ -33,21 +27,6 @@ Children:
     Type: BaseDataVariableType
     DataType: UInt32
     Value: 1
-  - Name: ProductionLine
-    Id: g=15c97e04bf876438f269074cb5e6a8d3
-    Supertype: BaseObjectType
-    Children:
-    - Name: Inputs
-      Type: FolderType
-      Children:
-      - File: PLC_Data/PLC_Data.yaml
-      - File: Configuration/Configuration.yaml
-      - File: Targets/Targets.yaml
-    - Name: Outputs
-      Type: FolderType
-      Children:
-      - File: OEE_Metrics/OEE_Metrics.yaml
-      - File: Shift_Info/Shift_Info.yaml
-      - File: Production_Metrics/Production_Metrics.yaml
-      - File: Gaps/Gaps.yaml
-      - File: Status/Status.yaml
+  - Class: Reference
+    Type: HasOwnedType
+    Target: g=15c97e04bf876438f269074cb5e6a8d3

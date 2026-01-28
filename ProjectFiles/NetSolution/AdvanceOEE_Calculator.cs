@@ -7,6 +7,12 @@ using UAManagedCore;
 using FTOptix.NetLogic;
 using FTOptix.Core;
 using FTOptix.HMIProject;
+using FTOptix.EventLogger;
+using FTOptix.Store;
+using FTOptix.SQLiteStore;
+using FTOptix.DataLogger;
+using FTOptix.WebUI;
+using FTOptix.ODBCStore;
 
 /// <summary>
 /// AdvanceOEE_Calculator - Multi-Instance OEE Calculator with Folder Scanning
@@ -364,14 +370,12 @@ public class AdvanceOEE_Calculator : BaseNetLogic
 
     private void EnsureInputDefaults(InstanceState state)
     {
-        if (state.DefaultsInitialized) return;
-
         WriteDefaultIfEmpty(state, state.TotalRuntimeSecondsVar, 0.0, "TotalRuntimeSeconds");
         WriteDefaultIfEmpty(state, state.GoodPartCountVar, 0, "GoodPartCount");
         WriteDefaultIfEmpty(state, state.BadPartCountVar, 0, "BadPartCount");
         WriteDefaultIfEmpty(state, state.IdealCycleTimeSecondsVar, 30.0, "IdealCycleTimeSeconds");
         WriteDefaultIfEmpty(state, state.PlannedProductionTimeHoursVar, 8.0, "PlannedProductionTimeHours");
-        WriteDefaultIfEmpty(state, state.NumberOfShiftsVar, 3, "NumberOfShifts");
+        WriteDefaultIfEmpty(state, state.NumberOfShiftsVar, 1, "NumberOfShifts");
         WriteDefaultIfEmpty(state, state.ShiftStartTimeVar, DateTime.Today.AddHours(6), "ShiftStartTime");
         WriteDefaultIfEmpty(state, state.ProductionTargetVar, 1000, "ProductionTarget");
         WriteDefaultIfEmpty(state, state.UpdateRateMsVar, 1000, "UpdateRateMs");
@@ -387,8 +391,6 @@ public class AdvanceOEE_Calculator : BaseNetLogic
         WriteDefaultIfEmpty(state, state.EnableLoggingVar, true, "EnableLogging");
         WriteDefaultIfEmpty(state, state.EnableAlarmsVar, true, "EnableAlarms");
         WriteDefaultIfEmpty(state, state.SystemHealthyVar, true, "SystemHealthy");
-
-        state.DefaultsInitialized = true;
     }
 
     private void WriteDefaultIfEmpty(InstanceState state, IUAVariable var, object defaultValue, string varName)
@@ -455,7 +457,7 @@ public class AdvanceOEE_Calculator : BaseNetLogic
         }
 
         state.ProductionTarget = ReadIntVar(state.ProductionTargetVar, 1000);
-        state.NumberOfShifts = ReadIntVar(state.NumberOfShiftsVar, 3);
+        state.NumberOfShifts = Math.Max(1, ReadIntVar(state.NumberOfShiftsVar, 1));
         state.QualityTarget = ReadDoubleVar(state.QualityTargetVar, 95.0);
         state.PerformanceTarget = ReadDoubleVar(state.PerformanceTargetVar, 85.0);
         state.AvailabilityTarget = ReadDoubleVar(state.AvailabilityTargetVar, 90.0);
@@ -501,6 +503,7 @@ public class AdvanceOEE_Calculator : BaseNetLogic
     /// </summary>
     private void CalculateForInstance(IUANode instance, InstanceState state)
     {
+        RefreshDynamicInputs(state);
         var results = PerformCalculations(state);
         UpdateTrendingData(state, results);
         UpdateShiftInformation(state, DateTime.Now, results);
@@ -510,6 +513,26 @@ public class AdvanceOEE_Calculator : BaseNetLogic
     #endregion
 
     #region OEE Calculations
+
+    private void RefreshDynamicInputs(InstanceState state)
+    {
+        var newShifts = Math.Max(1, ReadIntVar(state.NumberOfShiftsVar, state.NumberOfShifts));
+        var newShiftStart = ReadDateTimeVar(state.ShiftStartTimeVar, state.ShiftStartDateTime);
+
+        if (newShifts != state.NumberOfShifts || newShiftStart != state.ShiftStartDateTime)
+        {
+            state.LastShiftCalculation = DateTime.MinValue; // force immediate recompute on change
+        }
+
+        state.NumberOfShifts = newShifts;
+        state.ShiftStartDateTime = newShiftStart;
+
+        state.ProductionTarget = ReadIntVar(state.ProductionTargetVar, state.ProductionTarget);
+        state.QualityTarget = ReadDoubleVar(state.QualityTargetVar, state.QualityTarget);
+        state.PerformanceTarget = ReadDoubleVar(state.PerformanceTargetVar, state.PerformanceTarget);
+        state.AvailabilityTarget = ReadDoubleVar(state.AvailabilityTargetVar, state.AvailabilityTarget);
+        state.OEETarget = ReadDoubleVar(state.OEETargetVar, state.OEETarget);
+    }
 
     private CalculationResults PerformCalculations(InstanceState state)
     {
@@ -571,7 +594,8 @@ public class AdvanceOEE_Calculator : BaseNetLogic
         if (Math.Abs(runtimeSeconds - state.LastTotalRuntimeSeconds) > 0.1)
         {
             state.LastTotalRuntimeSeconds = runtimeSeconds;
-            results.TotalRuntimeFormatted = FormatTimeSpan(TimeSpan.FromSeconds(runtimeSeconds));
+            state.LastTotalRuntimeFormatted = FormatTimeSpan(TimeSpan.FromSeconds(runtimeSeconds));
+            results.TotalRuntimeFormatted = state.LastTotalRuntimeFormatted;
         }
         else
         {
@@ -582,7 +606,8 @@ public class AdvanceOEE_Calculator : BaseNetLogic
         if (Math.Abs(downtimeSeconds - state.LastDowntimeSeconds) > 0.1)
         {
             state.LastDowntimeSeconds = downtimeSeconds;
-            results.DowntimeFormatted = FormatTimeSpan(TimeSpan.FromSeconds(downtimeSeconds));
+            state.LastDowntimeFormatted = FormatTimeSpan(TimeSpan.FromSeconds(downtimeSeconds));
+            results.DowntimeFormatted = state.LastDowntimeFormatted;
         }
         else
         {
@@ -656,27 +681,16 @@ public class AdvanceOEE_Calculator : BaseNetLogic
     private double GetPlannedProductionSeconds(InstanceState state)
     {
         var plannedRaw = GetUnderlyingValue(state.PlannedProductionTimeHoursVar);
-        if (!object.Equals(plannedRaw, state.CachedPlannedRaw))
-        {
-            if (TryGetDoubleFromRaw(plannedRaw, out double hours))
-            {
-                state.CachedPlannedHours = hours;
-                state.CachedPlannedValid = true;
-            }
-            else
-            {
-                state.CachedPlannedHours = double.NaN;
-                state.CachedPlannedValid = false;
-            }
-            state.CachedPlannedRaw = plannedRaw;
-        }
+        double plannedHours;
+        int numberOfShifts = Math.Max(1, state.NumberOfShifts);
+        double maxPlannedHours = 24.0 / numberOfShifts;
 
-        if (state.CachedPlannedValid)
+        if (!TryGetDoubleFromRaw(plannedRaw, out plannedHours) || plannedHours <= 0.0 || plannedHours > maxPlannedHours)
         {
-            return state.CachedPlannedHours * 3600.0;
+            // Use calculated value if user input is invalid or exceeds max for number of shifts
+            plannedHours = maxPlannedHours;
         }
-
-        return double.NaN;
+        return plannedHours * 3600.0;
     }
 
     #endregion
@@ -773,7 +787,7 @@ public class AdvanceOEE_Calculator : BaseNetLogic
 
     private void UpdateShiftInformation(InstanceState state, DateTime now, CalculationResults results)
     {
-        if ((now - state.LastShiftCalculation).TotalSeconds < 1.0)
+        if ((now - state.LastShiftCalculation).TotalSeconds < 5.0)
         {
             results.CurrentShiftNumber = state.CurrentShiftNumber;
             results.ShiftStartTimeOutput = state.CurrentShiftStart.ToString("HH:mm:ss");
@@ -781,40 +795,52 @@ public class AdvanceOEE_Calculator : BaseNetLogic
             results.ShiftChangeOccurred = state.ShiftChangeOccurred;
             results.ShiftChangeImminent = state.ShiftChangeImminent;
             results.HoursPerShift = state.CalculatedHoursPerShift;
+            
+            // Recalculate dynamic values that change every second
+            var cachedElapsedTime = Math.Max(0, (now - state.CurrentShiftStart).TotalSeconds);
+            var cachedDurationSeconds = (24 * 3600) / Math.Max(1, state.NumberOfShifts);
+            var cachedRemainingTime = Math.Max(0, cachedDurationSeconds - cachedElapsedTime);
+            
+            results.TimeIntoShift = FormatTimeSpan(TimeSpan.FromSeconds(cachedElapsedTime));
+            results.TimeRemainingInShift = FormatTimeSpan(TimeSpan.FromSeconds(cachedRemainingTime));
+            results.ShiftProgress = Math.Min(100.0, Math.Max(0.0, (cachedElapsedTime / cachedDurationSeconds) * 100.0));
             return;
         }
 
         state.LastShiftCalculation = now;
 
-        var numberOfShifts = Math.Max(1, Math.Min(3, state.NumberOfShifts));
+        var numberOfShifts = Math.Max(1, state.NumberOfShifts);
         var shiftDurationSeconds = (24 * 3600) / numberOfShifts;
         state.CalculatedHoursPerShift = shiftDurationSeconds / 3600.0;
 
         var shift1Time = state.ShiftStartDateTime.TimeOfDay;
 
-        var currentTime = now.TimeOfDay;
-        var secondsSinceShift1 = (currentTime - shift1Time).TotalSeconds;
-        if (secondsSinceShift1 < 0)
-        {
-            secondsSinceShift1 += 24 * 3600;
-        }
-
-        var currentShift = ((int)(secondsSinceShift1 / shiftDurationSeconds) % numberOfShifts) + 1;
-        var shiftStartOffset = (currentShift - 1) * shiftDurationSeconds;
-        var shiftStartTime = now.Date.Add(shift1Time).AddSeconds(shiftStartOffset);
+        // Calculate total seconds since the first shift start time (could be yesterday or today)
+        var todayShift1 = now.Date.Add(shift1Time);
+        var yesterdayShift1 = todayShift1.AddDays(-1);
         
-        if (shiftStartTime > now)
+        // Find which shift start time is most recent but still before now
+        var baseShiftTime = (now >= todayShift1) ? todayShift1 : yesterdayShift1;
+        var secondsSinceFirstShift = (now - baseShiftTime).TotalSeconds;
+        
+        // Ensure we handle the case properly
+        while (secondsSinceFirstShift < 0)
         {
-            shiftStartTime = shiftStartTime.AddDays(-1);
+            baseShiftTime = baseShiftTime.AddDays(-1);
+            secondsSinceFirstShift = (now - baseShiftTime).TotalSeconds;
         }
 
-        var shiftElapsedTime = (now - shiftStartTime).TotalSeconds;
-        var shiftRemainingTime = shiftDurationSeconds - shiftElapsedTime;
+        var currentShift = ((int)(secondsSinceFirstShift / shiftDurationSeconds) % numberOfShifts) + 1;
+        var shiftsCompleted = (int)(secondsSinceFirstShift / shiftDurationSeconds);
+        var shiftStartTime = baseShiftTime.AddSeconds(shiftsCompleted * shiftDurationSeconds);
+
+        var shiftElapsedTime = Math.Max(0, (now - shiftStartTime).TotalSeconds);
+        var shiftRemainingTime = Math.Max(0, shiftDurationSeconds - shiftElapsedTime);
 
         var shiftEndTime = shiftStartTime.AddSeconds(shiftDurationSeconds);
 
         bool shiftChangeOccurred = (state.CurrentShiftNumber != currentShift);
-        bool shiftChangeImminent = (shiftRemainingTime >= 0 && shiftRemainingTime <= 300);
+        bool shiftChangeImminent = (shiftRemainingTime >= 0 && shiftRemainingTime <= 3);
 
         state.CurrentShiftNumber = currentShift;
         state.CurrentShiftStart = shiftStartTime;
@@ -826,10 +852,10 @@ public class AdvanceOEE_Calculator : BaseNetLogic
         results.ShiftStartTimeOutput = shiftStartTime.ToString("HH:mm:ss");
         results.ShiftEndTime = shiftEndTime.ToString("HH:mm:ss");
         results.TimeIntoShift = FormatTimeSpan(TimeSpan.FromSeconds(shiftElapsedTime));
-        results.TimeRemainingInShift = FormatTimeSpan(TimeSpan.FromSeconds(Math.Max(0, shiftRemainingTime)));
+        results.TimeRemainingInShift = FormatTimeSpan(TimeSpan.FromSeconds(shiftRemainingTime));
         results.ShiftChangeOccurred = shiftChangeOccurred;
         results.ShiftChangeImminent = shiftChangeImminent;
-        results.ShiftProgress = Math.Min(100.0, (shiftElapsedTime / shiftDurationSeconds) * 100.0);
+        results.ShiftProgress = Math.Min(100.0, Math.Max(0.0, (shiftElapsedTime / shiftDurationSeconds) * 100.0));
         results.HoursPerShift = state.CalculatedHoursPerShift;
     }
 

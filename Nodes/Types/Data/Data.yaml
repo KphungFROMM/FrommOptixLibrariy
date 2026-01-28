@@ -10,3 +10,6 @@ Children:
 - Name: BadPartCount
   Type: BaseDataVariableType
   DataType: Int32
+- Name: RunningStatus
+  Type: BaseDataVariableType
+  DataType: Boolean
