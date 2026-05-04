@@ -1,0 +1,4 @@
+Name: Scripts
+Type: FolderType
+Children:
+- File: Loggers/Loggers.yaml

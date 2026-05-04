@@ -7601,3 +7601,5 @@ Children:
     Type: HasOwnedType
     Target: g=85c30642f1cddf5f38e584437f9382c8
 - File: OEETemplates/OEETemplates.yaml
+- File: Object_Library/Object_Library.yaml
+- File: Scripts/Scripts.yaml

@@ -1,0 +1,17 @@
+Name: Loggers
+Type: FolderType
+Children:
+- Name: OnBitLoggerWithHandShake
+  Type: ObjectLibraryItem
+  Children:
+  - Name: LibraryItemGuid
+    Type: BaseDataVariableType
+    DataType: Guid
+    Value: "5c59b4944f4eb630b153c5003559ca99"
+  - Name: LibraryItemVersion
+    Type: BaseDataVariableType
+    DataType: UInt32
+    Value: 1
+  - Class: Reference
+    Type: HasOwnedType
+    Target: g=99d87f4f784bf353ca7f37bafc4be786

@@ -11676,3 +11676,22 @@ Children:
   - Name: OEEInstancesFolder
     Type: BaseDataVariableType
     DataType: NodeId
+- Name: OnBitLoggerWithHandShake
+  Id: g=99d87f4f784bf353ca7f37bafc4be786
+  Supertype: NetLogic
+  ReferenceType: HasComponent
+  Children:
+  - Name: LoggerInstance
+    Type: NodePointer
+    DataType: NodeId
+    Children:
+    - Name: Kind
+      Type: PropertyType
+      DataType: NodeId
+      Value: "/Types/ObjectTypes/BaseObjectType/DataLogger"
+  - Name: TriggerBit
+    Type: BaseDataVariableType
+    DataType: Boolean
+  - Name: HandShake
+    Type: BaseDataVariableType
+    DataType: Boolean
